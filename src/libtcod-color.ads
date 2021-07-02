@@ -29,7 +29,8 @@ package Libtcod.Color is
 
 
    -- Setters/getters --
-   procedure set_RGB(color : in out RGB_Color; r, g, b : RGB_Component);
+   procedure set_RGB(color : in out RGB_Color; r, g, b : RGB_Component)
+     with Inline;
 
    procedure set_red(color : in out RGB_Color; r : RGB_Component)
      with Inline;
@@ -62,16 +63,22 @@ package Libtcod.Color is
    
    -- Operators --
    
-   function "="(a, b : RGB_Color) return Boolean;
-   function "-"(a, b : RGB_Color) return RGB_Color;
-   function "+"(a, b : RGB_Color) return RGB_Color;
-   function "*"(a, b : RGB_Color) return RGB_Color;
-   function "*"(a : RGB_Color; scalar : Color_Factor) return RGB_Color;
+   function "="(a, b : RGB_Color) return Boolean
+     with Inline;
+   function "-"(a, b : RGB_Color) return RGB_Color
+     with Inline;
+   function "+"(a, b : RGB_Color) return RGB_Color
+     with Inline;
+   function "*"(a, b : RGB_Color) return RGB_Color
+     with Inline;
+   function "*"(a : RGB_Color; scalar : Color_Factor) return RGB_Color
+     with Inline;
    
    
    -- Operations --
    
-   function interpolate(a, b : RGB_Color; coeff : Color_Factor) return RGB_Color;
+   function interpolate(a, b : RGB_Color; coeff : Color_Factor) return RGB_Color
+     with Inline;
    procedure shift_hue(color : aliased in out RGB_Color; shift : Hue);
    procedure scale_HSV(color : aliased in out RGB_Color;
                        sat_coeff : Saturation; value_coeff : Value);
