@@ -1,21 +1,28 @@
 project Libtcod_Ada is
-   type Platform is ("macos", "windows", "linux");
 
-   current_platform : Platform := external ("Platform");
-
+   type Platform is
+      ("macos", "windows", "linux");
+   Current_Platform : Platform := external ("Platform");
    for Source_Dirs use ("src", "src/generated");
    for Object_Dir use "obj";
    for Main use ("main.adb");
 
    package Linker is
-      for Default_Switches ("ada") use ("-ltcod");
+      case Current_Platform is
 
-      case current_platform is
-         -- When building libtcod from source, it gets installed here
-         when "macos" => for Switches ("ada") use ("-L/usr/local/lib");
-         when others => null;
+         when "macos" =>
+            for Switches ("Ada") use ("-L/usr/local/lib", "-ltcod");
+
+         when "windows" =>
+
+         when "linux" =>
+
       end case;
    end Linker;
+
+   package Compiler is
+      for Switches ("ada") use ("-gnat12");
+   end Compiler;
 
 end Libtcod_Ada;
 
