@@ -34,10 +34,28 @@ package body Libtcod.Color is
    end set_RGB;
 
    -------------
+   -- set_RGBA --
+   -------------
+
+   procedure set_RGBA(color : in out RGBA_Color; r, g, b : RGB_Component;
+                      a : Alpha) is
+   begin
+      color.r := unsigned_char(r);
+      color.g := unsigned_char(g);
+      color.b := unsigned_char(b);
+      color.a := unsigned_char(a);
+   end set_RGBA;
+
+   -------------
    -- set_red --
    -------------
 
    procedure set_red(color : in out RGB_Color; r : RGB_Component) is
+   begin
+      color.r := unsigned_char(r);
+   end set_red;
+
+   procedure set_red(color : in out RGBA_Color; r : RGB_Component) is
    begin
       color.r := unsigned_char(r);
    end set_red;
@@ -49,11 +67,19 @@ package body Libtcod.Color is
    function get_red(color : RGB_Color) return RGB_Component is
      (RGB_Component(color.r));
 
+   function get_red(color : RGBA_Color) return RGB_Component is
+     (RGB_Component(color.r));
+
    ---------------
    -- set_green --
    ---------------
 
    procedure set_green(color : in out RGB_Color; g : RGB_Component) is
+   begin
+      color.g := unsigned_char(g);
+   end set_green;
+
+   procedure set_green(color : in out RGBA_Color; g : RGB_Component) is
    begin
       color.g := unsigned_char(g);
    end set_green;
@@ -65,11 +91,19 @@ package body Libtcod.Color is
    function get_green(color : RGB_Color) return RGB_Component is
      (RGB_Component(color.g));
 
+   function get_green(color : RGBA_Color) return RGB_Component is
+     (RGB_Component(color.g));
+
    --------------
    -- set_blue --
    --------------
 
    procedure set_blue(color : in out RGB_Color; b : RGB_Component) is
+   begin
+      color.b := unsigned_char(b);
+   end set_blue;
+
+   procedure set_blue(color : in out RGBA_Color; b : RGB_Component) is
    begin
       color.b := unsigned_char(b);
    end set_blue;
@@ -81,6 +115,24 @@ package body Libtcod.Color is
    function get_blue(color : RGB_Color) return RGB_Component is
      (RGB_Component(color.b));
 
+   function get_blue(color : RGBA_Color) return RGB_Component is
+     (RGB_Component(color.b));
+
+   --------------
+   -- set_alpha --
+   --------------
+
+   procedure set_alpha(color : in out RGBA_Color; a : Alpha) is
+   begin
+      color.a := unsigned_char(a);
+   end set_alpha;
+
+   --------------
+   -- get_alpha --
+   --------------
+
+   function get_alpha(color : RGBA_Color) return Alpha is (Alpha(color.a));
+
    -------------
    -- set_HSV --
    -------------
@@ -90,6 +142,24 @@ package body Libtcod.Color is
    begin
       TCOD_color_set_HSV(color'Access, float(h), float(s), float(v));
    end set_HSV;
+
+   -------------
+   -- get_HSV --
+   -------------
+
+   procedure get_HSV(color : RGB_Color;
+                     h : out Hue; s : out Saturation; v : out Value) is
+      -- This looks like a lot of copying, but checking on Compiler Explorer,
+      -- this actually compiles down to same assembly (plus range checks) in -O3
+      -- as passing/setting args with plain Floats and pointers
+      temp_h, temp_s, temp_v : aliased Float;
+   begin
+      TCOD_color_get_HSV(color, temp_h'Access,
+                         temp_s'Access, temp_v'Access);
+      h := Hue(temp_h);
+      s := Saturation(temp_s);
+      v := Value(temp_v);
+   end get_HSV;
 
    -------------
    -- set_hue --

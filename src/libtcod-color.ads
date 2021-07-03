@@ -5,15 +5,17 @@ package Libtcod.Color is
 
    type RGB_Component is new Interfaces.C.unsigned_char;
    type Alpha is new Interfaces.C.unsigned_char;
-   type Hue is new Interfaces.C.C_float range 0.0 .. 360.0;
-   type Saturation is new Interfaces.C.C_float range 0.0 .. 1.0;
-   type Value is new Interfaces.C.C_float range 0.0 .. 1.0;
-   type Color_Factor is new Interfaces.C.C_float;
-   
+   type Hue is new Float range 0.0 .. 360.0;
+   type Saturation is new Float range 0.0 .. 1.0;
+   type Value is new Float range 0.0 .. 1.0;
+   type Color_Factor is new Float;
+
 
    -- A three channel color struct
    type RGB_Color is private;
-   
+
+   type RGBA_Color is private;
+
    type Color_Index is new Interfaces.C.int;
    type Color_Array is array(Color_Index range <>) of aliased RGB_Color
      with Convention => C, Dynamic_Predicate => Color_Array'Length > 0;
@@ -29,38 +31,46 @@ package Libtcod.Color is
 
 
    -- Setters/getters --
-   procedure set_RGB(color : in out RGB_Color; r, g, b : RGB_Component)
-     with Inline;
+   procedure set_RGB(color : in out RGB_Color; r, g, b : RGB_Component) with Inline;
+   procedure set_RGBA(color : in out RGBA_Color; r, g, b : RGB_Component;
+                      a : Alpha) with Inline;
 
-   procedure set_red(color : in out RGB_Color; r : RGB_Component)
-     with Inline;
-   function get_red(color : RGB_Color) return RGB_Component
-     with Inline;
+   procedure set_red(color : in out RGB_Color; r : RGB_Component) with Inline;
+   function get_red(color : RGB_Color) return RGB_Component with Inline;
+   procedure set_red(color : in out RGBA_Color; r : RGB_Component) with Inline;
+   function get_red(color : RGBA_Color) return RGB_Component with Inline;
 
-   procedure set_green(color : in out RGB_Color; g : RGB_Component)
-     with Inline;
-   function get_green(color : RGB_Color) return RGB_Component
-     with Inline;
+   procedure set_green(color : in out RGB_Color; g : RGB_Component) with Inline;
+   function get_green(color : RGB_Color) return RGB_Component with Inline;
+   procedure set_green(color : in out RGBA_Color; g : RGB_Component) with Inline;
+   function get_green(color : RGBA_Color) return RGB_Component with Inline;
 
-   procedure set_blue(color : in out RGB_Color; b : RGB_Component)
-     with Inline;
-   function get_blue(color : RGB_Color) return RGB_Component
-     with Inline;
+   procedure set_blue(color : in out RGB_Color; b : RGB_Component) with Inline;
+   function get_blue(color : RGB_Color) return RGB_Component with Inline;
+   procedure set_blue(color : in out RGBA_Color; b : RGB_Component) with Inline;
+   function get_blue(color : RGBA_Color) return RGB_Component with Inline;
 
+   procedure set_alpha(color : in out RGBA_Color; a : Alpha) with Inline;
+   function get_alpha(color : RGBA_Color) return Alpha with Inline;
+
+
+   -- HSV --
 
    procedure set_HSV(color : aliased in out RGB_Color;
-                     h : Hue; s : Saturation; v : Value);
+                     h : Hue; s : Saturation; v : Value) with Inline;
+   procedure get_HSV(color : RGB_Color;
+                     h : out Hue; s : out Saturation; v : out Value) with Inline;
 
    procedure set_hue(color : aliased in out RGB_Color; h : Hue);
    function get_hue(color : RGB_Color) return Hue;
-   
+
    procedure set_saturation(color : aliased in out RGB_Color; s : Saturation);
    function get_saturation(color : RGB_Color) return Saturation;
-   
+
    procedure set_value(color : aliased in out RGB_Color; v : Value);
    function get_value(color : RGB_Color) return Value;
 
-   
+
    -- Operators --
    
    function "="(a, b : RGB_Color) return Boolean
@@ -1085,5 +1095,6 @@ package Libtcod.Color is
 private
    
    type RGB_Color is new color_h.TCOD_ColorRGB;
+   type RGBA_Color is new color_h.TCOD_ColorRGBA;
 
 end Libtcod.Color;
