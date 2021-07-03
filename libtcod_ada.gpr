@@ -8,14 +8,17 @@ project Libtcod_Ada is
    for Main use ("main.adb");
 
    package Linker is
+
       case Current_Platform is
 
          when "macos" =>
-            for Switches ("Ada") use ("-L/usr/local/lib", "-ltcod");
+            for Switches ("ada") use ("-L/usr/local/lib", "-ltcod", "-lsdl2", "-lz",
+                                      "-lgcc_eh");
 
          when "windows" =>
 
          when "linux" =>
+            for Switches ("ada") use ("-ltcod", "-lsdl2", "-lz", "-lgcc_eh");
 
       end case;
    end Linker;
