@@ -16,12 +16,6 @@ package Libtcod.Color is
 
    type RGBA_Color is private;
 
-   type Color_Index is new Interfaces.C.int;
-   type Color_Array is array(Color_Index range <>) of aliased RGB_Color
-     with Convention => C, Dynamic_Predicate => Color_Array'Length > 0;
-   type Color_Index_Array is array(Color_Index range <>) of aliased Color_Index
-     with Convention => C, Dynamic_Predicate => Color_Index_Array'Length > 0;
-
    
    -- Constructors --
    

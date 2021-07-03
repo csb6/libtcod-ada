@@ -5,7 +5,6 @@ with Interfaces.C; use Interfaces.C;
 with color_h;
 with Interfaces.C.Extensions;
 with System;
-with utypes_uuint8_t_h;
 
 package console_h is
 
@@ -89,7 +88,7 @@ package console_h is
       fg : aliased color_h.TCOD_ColorRGBA;  -- console.h:88
       bg : aliased color_h.TCOD_ColorRGBA;  -- console.h:92
    end record
-   with Convention => C_Pass_By_Copy;  -- console.h:76
+     with Convention => C_Pass_By_Copy;  -- console.h:76
 
   --*
   --      The tile glyph color, rendered on top of the background.
@@ -152,7 +151,7 @@ package console_h is
       userdata : System.Address;  -- console.h:182
       on_delete : access procedure (arg1 : access TCOD_Console);  -- console.h:184
    end record
-   with Convention => C_Pass_By_Copy;  -- console.h:102
+     with Convention => C_Pass_By_Copy;  -- console.h:102
 
   --* A contiguous array of console tiles.  
   --* Default background operator for print & print_rect functions.  
@@ -508,7 +507,7 @@ package console_h is
   -- *  \param fadecol Color to fade towards.
   --  
 
-   procedure TCOD_console_set_fade (val : utypes_uuint8_t_h.uint8_t; fade : color_h.TCOD_color_t)  -- console.h:379
+   procedure TCOD_console_set_fade (val : unsigned_char; fade : color_h.TCOD_color_t)  -- console.h:379
    with Import => True, 
         Convention => C, 
         External_Name => "TCOD_console_set_fade";
@@ -519,7 +518,7 @@ package console_h is
   -- *  \return At 255 colors are normal and at 0 colors are completely faded.
   --  
 
-   function TCOD_console_get_fade return utypes_uuint8_t_h.uint8_t  -- console.h:385
+   function TCOD_console_get_fade return unsigned_char  -- console.h:385
    with Import => True, 
         Convention => C, 
         External_Name => "TCOD_console_get_fade";
