@@ -1,8 +1,7 @@
 with Ada.Unchecked_Conversion, Interfaces.C.Strings, Interfaces.C.Extensions;
 with Libtcod.Color.Conversions;
-with color_h, error_h, console_init_h, console_types_h, sys_h, console_etc_h;
-use Libtcod.Color.Conversions, color_h, console_init_h, console_etc_h, console_types_h,
-    sys_h;
+with color_h, error_h, console_init_h, console_types_h, console_etc_h;
+use Libtcod.Color.Conversions, color_h, console_init_h, console_etc_h, console_types_h;
 
 package body Libtcod.Console is
    use Interfaces.C, Interfaces.C.Extensions, console_h;

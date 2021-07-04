@@ -1,4 +1,5 @@
 package body Libtcod.Input is
+   use sys_h;
 
    ---------------------
    -- check_for_event --
@@ -6,6 +7,6 @@ package body Libtcod.Input is
 
    function check_for_event (m : aliased out Mouse;
                              k : aliased out Key) return Event_Type is
-     (Event_Type(TCOD_sys_check_for_event(0, k'Access, m'Access)));
+     (TCOD_sys_check_for_event(0, k'Access, m'Access));
 
 end Libtcod.Input;
