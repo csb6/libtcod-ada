@@ -60,6 +60,10 @@ package Libtcod.Console is
    function make_screen(w : Width; h : Height) return Screen;
 
    -- Operations --
+   procedure set_title(title : String);
+   procedure set_fullscreen(val : Boolean) with Inline;
+   function is_fullscreen return Boolean with Inline;
+
    function is_window_closed return Boolean with Inline;
 
    procedure check_for_event(mouse : aliased out Input.Mouse;

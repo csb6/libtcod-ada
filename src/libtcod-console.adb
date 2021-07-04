@@ -61,6 +61,20 @@ package body Libtcod.Console is
    end Finalize;
 
 
+   procedure set_title(title : String) is
+      title_ptr : Strings.chars_ptr := Strings.New_String(title);
+   begin
+      TCOD_console_set_window_title(title_ptr);
+      Strings.Free(title_ptr);
+   end;
+
+   procedure set_fullscreen(val : Boolean) is
+   begin
+      TCOD_console_set_fullscreen(bool(val));
+   end;
+
+   function is_fullscreen return Boolean is (Boolean(TCOD_console_is_fullscreen));
+
    ----------------------
    -- is_window_closed --
    ----------------------
