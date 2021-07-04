@@ -323,10 +323,10 @@ package parser_h is
 
   -- the parser  
   -- list of structures  
-   type anon1532_array1568 is array (0 .. 15) of TCOD_parser_custom_t;
+   type anon2165_array2201 is array (0 .. 15) of TCOD_parser_custom_t;
    type TCOD_Parser is record
       structs : list_h.TCOD_list_t;  -- parser.h:174
-      customs : anon1532_array1568;  -- parser.h:176
+      customs : anon2165_array2201;  -- parser.h:176
       fatal : aliased Extensions.bool;  -- parser.h:178
       props : list_h.TCOD_list_t;  -- parser.h:180
    end record

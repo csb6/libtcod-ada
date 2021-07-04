@@ -88,7 +88,7 @@ package console_h is
       fg : aliased color_h.TCOD_ColorRGBA;  -- console.h:88
       bg : aliased color_h.TCOD_ColorRGBA;  -- console.h:92
    end record
-     with Convention => C_Pass_By_Copy;  -- console.h:76
+   with Convention => C_Pass_By_Copy;  -- console.h:76
 
   --*
   --      The tile glyph color, rendered on top of the background.
@@ -151,7 +151,7 @@ package console_h is
       userdata : System.Address;  -- console.h:182
       on_delete : access procedure (arg1 : access TCOD_Console);  -- console.h:184
    end record
-     with Convention => C_Pass_By_Copy;  -- console.h:102
+   with Convention => C_Pass_By_Copy;  -- console.h:102
 
   --* A contiguous array of console tiles.  
   --* Default background operator for print & print_rect functions.  

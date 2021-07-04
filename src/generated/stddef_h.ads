@@ -79,8 +79,6 @@ package stddef_h is
 
   -- __size_t is a typedef on FreeBSD 5, must not trash it.  
   -- __size_t is also a typedef on VMS.   
-   subtype size_t is unsigned_long;  -- /Users/coleblakley/opt/GNAT/2020/lib/gcc/x86_64-apple-darwin17.7.0/8.4.1/include/stddef.h:216
-
   -- Wide character type.
   --   Locale-writers should change this as necessary to
   --   be big enough to hold unique values not between 0 and 127,
@@ -108,8 +106,6 @@ package stddef_h is
   -- FreeBSD 5 can't be handled well using "traditional" logic above
   --   since it no longer defines _BSD_RUNE_T_ yet still desires to export
   --   rune_t in some cases...  
-
-   subtype wchar_t is int;  -- /Users/coleblakley/opt/GNAT/2020/lib/gcc/x86_64-apple-darwin17.7.0/8.4.1/include/stddef.h:328
 
   --  In 4.3bsd-net2, leave these undefined to indicate that size_t, etc.
   --    are already defined.   

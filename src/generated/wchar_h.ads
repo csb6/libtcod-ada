@@ -14,6 +14,8 @@ with Interfaces.C.Extensions;
 
 package wchar_h is
 
+   --  unsupported macro: WCHAR_MIN __DARWIN_WCHAR_MIN
+   --  unsupported macro: WCHAR_MAX __DARWIN_WCHAR_MAX
   ---
   -- * Copyright (c)1999 Citrus Project,
   -- * All rights reserved.

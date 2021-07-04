@@ -77,8 +77,6 @@ package stdint_h is
    --  unsupported macro: PTRDIFF_MIN INTMAX_MIN
    --  unsupported macro: PTRDIFF_MAX INTMAX_MAX
    --  unsupported macro: SIZE_MAX UINTPTR_MAX
-   --  unsupported macro: WCHAR_MAX __WCHAR_MAX__
-   --  unsupported macro: WCHAR_MIN (-WCHAR_MAX-1)
    --  unsupported macro: WINT_MIN INT32_MIN
    --  unsupported macro: WINT_MAX INT32_MAX
    --  unsupported macro: SIG_ATOMIC_MIN INT32_MIN

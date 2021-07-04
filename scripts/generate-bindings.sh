@@ -14,10 +14,6 @@ gnat_compiler="/users/coleblakley/opt/GNAT/2020/bin/gcc"
 # Flags for the generation process
 gnat_flags="-std=c99 -c -fdump-ada-spec"
 
-cd src
-mkdir generated
-cd ..
-
 cd libtcod/src/libtcod
-$gnat_compiler $gnat_flags -I. -C bresenham.h color.h console.h fov.h path.h parser.h
+$gnat_compiler $gnat_flags -I. -C libtcod.h
 mv *.ads ../../../src/generated

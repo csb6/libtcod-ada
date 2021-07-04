@@ -44,67 +44,67 @@ package sys_upthread_upthread_types_h is
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:57
 
   -- Argument to pass
-   subtype anon844_array846 is Interfaces.C.char_array (0 .. 55);
+   subtype anon820_array822 is Interfaces.C.char_array (0 .. 55);
    type u_opaque_pthread_attr_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:64
-      uu_opaque : aliased anon844_array846;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:65
+      uu_opaque : aliased anon820_array822;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:65
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:63
 
-   subtype anon847_array849 is Interfaces.C.char_array (0 .. 39);
+   subtype anon823_array825 is Interfaces.C.char_array (0 .. 39);
    type u_opaque_pthread_cond_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:69
-      uu_opaque : aliased anon847_array849;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:70
+      uu_opaque : aliased anon823_array825;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:70
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:68
 
-   subtype anon850_array852 is Interfaces.C.char_array (0 .. 7);
+   subtype anon826_array828 is Interfaces.C.char_array (0 .. 7);
    type u_opaque_pthread_condattr_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:74
-      uu_opaque : aliased anon850_array852;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:75
+      uu_opaque : aliased anon826_array828;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:75
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:73
 
-   subtype anon853_array846 is Interfaces.C.char_array (0 .. 55);
+   subtype anon829_array822 is Interfaces.C.char_array (0 .. 55);
    type u_opaque_pthread_mutex_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:79
-      uu_opaque : aliased anon853_array846;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:80
+      uu_opaque : aliased anon829_array822;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:80
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:78
 
-   subtype anon854_array852 is Interfaces.C.char_array (0 .. 7);
+   subtype anon830_array828 is Interfaces.C.char_array (0 .. 7);
    type u_opaque_pthread_mutexattr_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:84
-      uu_opaque : aliased anon854_array852;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:85
+      uu_opaque : aliased anon830_array828;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:85
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:83
 
-   subtype anon855_array852 is Interfaces.C.char_array (0 .. 7);
+   subtype anon831_array828 is Interfaces.C.char_array (0 .. 7);
    type u_opaque_pthread_once_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:89
-      uu_opaque : aliased anon855_array852;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:90
+      uu_opaque : aliased anon831_array828;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:90
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:88
 
-   subtype anon856_array858 is Interfaces.C.char_array (0 .. 191);
+   subtype anon832_array834 is Interfaces.C.char_array (0 .. 191);
    type u_opaque_pthread_rwlock_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:94
-      uu_opaque : aliased anon856_array858;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:95
+      uu_opaque : aliased anon832_array834;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:95
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:93
 
-   subtype anon859_array860 is Interfaces.C.char_array (0 .. 15);
+   subtype anon835_array836 is Interfaces.C.char_array (0 .. 15);
    type u_opaque_pthread_rwlockattr_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:99
-      uu_opaque : aliased anon859_array860;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:100
+      uu_opaque : aliased anon835_array836;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:100
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:98
 
-   subtype anon861_array863 is Interfaces.C.char_array (0 .. 8175);
+   subtype anon837_array839 is Interfaces.C.char_array (0 .. 8175);
    type u_opaque_pthread_t is record
       uu_sig : aliased long;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:104
       uu_cleanup_stack : access uu_darwin_pthread_handler_rec;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:105
-      uu_opaque : aliased anon861_array863;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:106
+      uu_opaque : aliased anon837_array839;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:106
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h:103
 

@@ -118,8 +118,8 @@ package ustdio_h is
   --  
 
   -- current position in (some) buffer  
-   type anon963_array975 is array (0 .. 2) of aliased unsigned_char;
-   type anon963_array976 is array (0 .. 0) of aliased unsigned_char;
+   type anon887_array899 is array (0 .. 2) of aliased unsigned_char;
+   type anon887_array900 is array (0 .. 0) of aliased unsigned_char;
    type uu_sFILE is record
       u_p : access unsigned_char;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:127
       u_r : aliased int;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:128
@@ -145,8 +145,8 @@ package ustdio_h is
       u_ub : aliased uu_sbuf;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:143
       u_extra : access uu_sFILEX;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:144
       u_ur : aliased int;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:145
-      u_ubuf : aliased anon963_array975;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:148
-      u_nbuf : aliased anon963_array976;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:149
+      u_ubuf : aliased anon887_array899;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:148
+      u_nbuf : aliased anon887_array900;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:149
       u_lb : aliased uu_sbuf;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:152
       u_blksize : aliased int;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:155
       u_offset : aliased fpos_t;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:156

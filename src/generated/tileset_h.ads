@@ -6,7 +6,7 @@ with System;
 limited with color_h;
 with error_h;
 with Interfaces.C.Strings;
-with stddef_h;
+with sys_utypes_usize_t_h;
 
 package tileset_h is
 
@@ -197,7 +197,7 @@ package tileset_h is
   --  
 
    function TCOD_tileset_load_mem
-     (arg1 : stddef_h.size_t;
+     (arg1 : sys_utypes_usize_t_h.size_t;
       arg2 : access unsigned_char;
       arg3 : int;
       arg4 : int;

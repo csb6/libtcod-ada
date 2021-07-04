@@ -71,9 +71,9 @@ package runetype_h is
 
   -- CHARCLASS_NAME_MAX = 14  
   -- charclass mask  
-   subtype u_RuneCharClass_array1208 is Interfaces.C.char_array (0 .. 13);
+   subtype u_RuneCharClass_array1132 is Interfaces.C.char_array (0 .. 13);
    type u_RuneCharClass is record
-      uu_name : aliased u_RuneCharClass_array1208;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:73
+      uu_name : aliased u_RuneCharClass_array1132;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:73
       uu_mask : aliased i386_utypes_h.uu_uint32_t;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:74
    end record
    with Convention => C_Pass_By_Copy;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:75
@@ -90,13 +90,13 @@ package runetype_h is
   --	 * extra fields to deal with arbitrary character classes
   --	  
 
-   subtype u_RuneLocale_array852 is Interfaces.C.char_array (0 .. 7);
-   subtype u_RuneLocale_array1212 is Interfaces.C.char_array (0 .. 31);
-   type u_RuneLocale_array1223 is array (0 .. 255) of aliased i386_utypes_h.uu_uint32_t;
-   type u_RuneLocale_array1225 is array (0 .. 255) of aliased i386_utypes_h.uu_darwin_rune_t;
+   subtype u_RuneLocale_array828 is Interfaces.C.char_array (0 .. 7);
+   subtype u_RuneLocale_array1136 is Interfaces.C.char_array (0 .. 31);
+   type u_RuneLocale_array1147 is array (0 .. 255) of aliased i386_utypes_h.uu_uint32_t;
+   type u_RuneLocale_array1149 is array (0 .. 255) of aliased i386_utypes_h.uu_darwin_rune_t;
    type u_RuneLocale is record
-      uu_magic : aliased u_RuneLocale_array852;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:78
-      uu_encoding : aliased u_RuneLocale_array1212;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:79
+      uu_magic : aliased u_RuneLocale_array828;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:78
+      uu_encoding : aliased u_RuneLocale_array1136;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:79
       uu_sgetrune : access function
            (arg1 : Interfaces.C.Strings.chars_ptr;
             arg2 : i386_utypes_h.uu_darwin_size_t;
@@ -107,9 +107,9 @@ package runetype_h is
             arg3 : i386_utypes_h.uu_darwin_size_t;
             arg4 : System.Address) return int;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:82
       uu_invalid_rune : aliased i386_utypes_h.uu_darwin_rune_t;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:83
-      uu_runetype : aliased u_RuneLocale_array1223;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:85
-      uu_maplower : aliased u_RuneLocale_array1225;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:86
-      uu_mapupper : aliased u_RuneLocale_array1225;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:87
+      uu_runetype : aliased u_RuneLocale_array1147;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:85
+      uu_maplower : aliased u_RuneLocale_array1149;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:86
+      uu_mapupper : aliased u_RuneLocale_array1149;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:87
       uu_runetype_ext : aliased u_RuneRange;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:94
       uu_maplower_ext : aliased u_RuneRange;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:95
       uu_mapupper_ext : aliased u_RuneRange;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:96

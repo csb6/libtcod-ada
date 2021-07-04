@@ -83,11 +83,11 @@ package i386_utypes_h is
   --  
 
   -- for alignment  
-   subtype uu_mbstate_t_array805 is Interfaces.C.char_array (0 .. 127);
+   subtype uu_mbstate_t_array781 is Interfaces.C.char_array (0 .. 127);
    type uu_mbstate_t (discr : unsigned := 0) is record
       case discr is
          when 0 =>
-            uu_mbstate8 : aliased uu_mbstate_t_array805;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/_types.h:77
+            uu_mbstate8 : aliased uu_mbstate_t_array781;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/_types.h:77
          when others =>
             u_mbstateL : aliased Long_Long_Integer;  -- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/i386/_types.h:78
       end case;

@@ -67,8 +67,8 @@ package lex_h is
 
   -- private stuff  
   -- is this object a savepoint (no free in destructor)  
-   type TCOD_lex_t_array1380 is array (0 .. 99, 0 .. 4) of aliased char;
-   type TCOD_lex_t_array1383 is array (0 .. 99, 0 .. 19) of aliased char;
+   type TCOD_lex_t_array2045 is array (0 .. 99, 0 .. 4) of aliased char;
+   type TCOD_lex_t_array2048 is array (0 .. 99, 0 .. 19) of aliased char;
    type TCOD_lex_t is record
       file_line : aliased int;  -- lex.h:67
       token_type : aliased int;  -- lex.h:67
@@ -85,8 +85,8 @@ package lex_h is
       nb_symbols : aliased int;  -- lex.h:77
       nb_keywords : aliased int;  -- lex.h:77
       flags : aliased int;  -- lex.h:77
-      symbols : aliased TCOD_lex_t_array1380;  -- lex.h:78
-      keywords : aliased TCOD_lex_t_array1383;  -- lex.h:78
+      symbols : aliased TCOD_lex_t_array2045;  -- lex.h:78
+      keywords : aliased TCOD_lex_t_array2048;  -- lex.h:78
       simpleCmt : Interfaces.C.Strings.chars_ptr;  -- lex.h:79
       cmtStart : Interfaces.C.Strings.chars_ptr;  -- lex.h:80
       cmtStop : Interfaces.C.Strings.chars_ptr;  -- lex.h:80
