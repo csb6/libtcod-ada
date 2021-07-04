@@ -17,7 +17,9 @@ procedure Main is
    use Ada.Exceptions;
 begin
    while not Libtcod.Console.is_window_closed loop
-      Libtcod.Console.check_for_event(mouse, key);
+      case Libtcod.Input.check_for_event(mouse, key) is
+         when others => null;
+      end case;
       Libtcod.Console.flush;
    end loop;
 exception

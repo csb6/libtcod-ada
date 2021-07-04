@@ -66,8 +66,6 @@ package Libtcod.Console is
 
    function is_window_closed return Boolean with Inline;
 
-   procedure check_for_event(mouse : aliased out Input.Mouse;
-                             key : aliased out Input.Key);
    procedure flush;
 
    function get_width(s : Screen) return Width with Inline;

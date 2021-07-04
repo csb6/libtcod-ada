@@ -82,12 +82,9 @@ package body Libtcod.Console is
    function is_window_closed return Boolean is
      (Boolean(TCOD_console_is_window_closed));
 
-   procedure check_for_event(mouse : aliased out Input.Mouse;
-                             key : aliased out Input.Key) is
-      e : TCOD_event_t := TCOD_sys_check_for_event(0, key'Access, mouse'Access);
-   begin
-      null;
-   end;
+   -----------
+   -- flush --
+   -----------
 
    procedure flush is
       e : error_h.TCOD_Error := TCOD_console_flush;
