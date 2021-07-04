@@ -1,3 +1,5 @@
+with "libtcod.gpr";
+
 project Libtcod_Ada is
 
    type Platform is
@@ -12,14 +14,12 @@ project Libtcod_Ada is
       case Current_Platform is
 
          when "macos" =>
-            for Switches ("ada") use ("-L/usr/local/lib", "-ltcod", "-lsdl2", "-lz",
-                                      "-lgcc_eh");
+            for Switches ("ada") use ("-L/usr/local/lib", "-lsdl2", "-lz");
 
          when "windows" =>
 
          when "linux" =>
-            for Switches ("ada") use ("-ltcod", "-lsdl2", "-lz", "-lgcc_eh");
-
+            for Switches ("ada") use ("-lsdl2", "-lz");
       end case;
    end Linker;
 

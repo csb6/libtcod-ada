@@ -1,0 +1,12 @@
+library project Libtcod is
+
+   for Languages use ("C");
+   for Source_Dirs use ("libtcod/src/libtcod", "libtcod/src/vendor",
+                        "libtcod/src/vendor/utf8proc");
+   for Excluded_Source_Files use ("utf8proc_data.c");
+   for Object_Dir use "obj/libtcod";
+   for Library_Dir use "lib/libtcod";
+   for Library_Kind use "static";
+   for Library_Name use "tcod";
+
+end Libtcod;

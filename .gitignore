@@ -1,3 +1,6 @@
-obj/
+obj/*
 *~
 .#*
+lib/libtcod/*
+libtcod/.*
+libtcod/appveyor.yml
