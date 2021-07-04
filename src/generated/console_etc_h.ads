@@ -119,7 +119,7 @@ package console_etc_h is
   --  
 
    function TCOD_console_flush return error_h.TCOD_Error  -- console_etc.h:83
-   with Import => True, 
+     with Import => True, 
         Convention => C, 
         External_Name => "TCOD_console_flush";
 

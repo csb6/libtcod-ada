@@ -16,9 +16,9 @@ package Libtcod.Color is
 
    type RGBA_Color is private;
 
-   
+
    -- Constructors --
-   
+
    function make_RGB_color(r, g, b : RGB_Component) return RGB_Color;
 
    function make_HSV_color(h : Hue; s : Saturation; v : Value) return RGB_Color;

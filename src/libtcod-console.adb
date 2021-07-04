@@ -1,8 +1,11 @@
-with Ada.Unchecked_Conversion, Libtcod.Color.Conversions, color_h;
-use Libtcod.Color.Conversions, color_h;
+with Ada.Unchecked_Conversion, Interfaces.C.Strings, Interfaces.C.Extensions;
+with Libtcod.Color.Conversions;
+with color_h, error_h, console_init_h, console_types_h, sys_h, console_etc_h;
+use Libtcod.Color.Conversions, color_h, console_init_h, console_etc_h, console_types_h,
+    sys_h;
 
 package body Libtcod.Console is
-   use Interfaces.C, console_h;
+   use Interfaces.C, Interfaces.C.Extensions, console_h;
 
    function Background_Mode_To_Bgflag is new Ada.Unchecked_Conversion
      (Source => Background_Mode, Target => TCOD_bkgnd_flag_t);
@@ -12,6 +15,26 @@ package body Libtcod.Console is
      (Source => Alignment_Type, Target => TCOD_alignment_t);
    function To_Alignment_Type is new Ada.Unchecked_Conversion
      (Source => TCOD_alignment_t, Target => Alignment_Type);
+   function To_Renderer_Type is new Ada.Unchecked_Conversion
+     (Source => Renderer_Type, Target => console_types_h.TCOD_renderer_t);
+
+   ---------------
+   -- init_root --
+   ---------------
+
+   function init_root(w : Width; h : Height; title : String;
+                      fullscreen : Boolean; renderer : Renderer_Type) return Root is
+      title_ptr : Strings.chars_ptr := Strings.New_String(title);
+      err : error_h.TCOD_Error;
+   begin
+      err := TCOD_console_init_root(int(w), int(h), title_ptr,
+                                    bool(fullscreen), To_Renderer_Type(renderer));
+      Strings.Free(title_ptr);
+      if err /= error_h.TCOD_E_OK then
+         raise Error with Strings.Value(error_h.TCOD_get_error);
+      end if;
+      return result : Root;
+   end init_root;
 
    -----------------
    -- make_screen --
@@ -20,17 +43,45 @@ package body Libtcod.Console is
    function make_screen(w : Width; h : Height) return Screen is
    begin
       return result : Screen :=
-        Screen'(Screen_Parent with TCOD_console_new(int(w), int(h)));
+        Screen'(Limited_Controlled with TCOD_console_new(int(w), int(h)));
    end make_screen;
 
    --------------
    -- Finalize --
    --------------
 
+   overriding procedure Finalize(self : in out Root) is
+   begin
+      TCOD_quit;
+   end Finalize;
+
    overriding procedure Finalize(self : in out Screen) is
    begin
       TCOD_console_delete(self.data);
    end Finalize;
+
+
+   ----------------------
+   -- is_window_closed --
+   ----------------------
+
+   function is_window_closed return Boolean is
+     (Boolean(TCOD_console_is_window_closed));
+
+   procedure check_for_event(mouse : aliased out Input.Mouse;
+                             key : aliased out Input.Key) is
+      e : TCOD_event_t := TCOD_sys_check_for_event(0, key'Access, mouse'Access);
+   begin
+      null;
+   end;
+
+   procedure flush is
+      e : error_h.TCOD_Error := TCOD_console_flush;
+   begin
+      if TCOD_console_flush /= error_h.TCOD_E_OK then
+         raise Error with Strings.Value(error_h.TCOD_get_error);
+      end if;
+   end;
 
    ---------------
    -- get_width --
@@ -228,8 +279,7 @@ package body Libtcod.Console is
    -- get_fade --
    --------------
 
-   function get_fade return Fade is
-     (Fade(TCOD_console_get_fade));
+   function get_fade return Fade is (Fade(TCOD_console_get_fade));
 
    ----------------------
    -- get_fading_color --
