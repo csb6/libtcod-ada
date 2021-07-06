@@ -1,9 +1,10 @@
 with bresenham_h, fov_h, path_h, parser_h;
 with Libtcod.Color, Libtcod.Console, Ada.Text_IO, Ada.Exceptions, Libtcod.Input,
      Libtcod.Clipboard;
-use type Libtcod.Color.RGB_Color;
+use type Libtcod.Color.RGB_Color, Libtcod.Input.Event_Type;
 
 procedure Main is
+   use Ada.Exceptions, Libtcod.Input;
    package IO renames Ada.Text_IO;
 
    root : Libtcod.Console.Root :=
@@ -14,16 +15,19 @@ procedure Main is
    screen : Libtcod.Console.Screen := Libtcod.Console.make_screen(100, 100);
    mouse : aliased Libtcod.Input.Mouse;
    key : aliased Libtcod.Input.Key;
-
-   use Ada.Exceptions;
+   event : Event_Type;
 begin
-   Libtcod.Clipboard.set("Hello there!");
-   IO.Put_Line(Libtcod.Clipboard.get);
-
    while not Libtcod.Console.is_window_closed loop
-      case Libtcod.Input.check_for_event(mouse, key) is
-         when others => null;
-      end case;
+      event := check_for_event(Event_Key_Press, mouse, key);
+      if event = Event_Key_Press then
+         case get_key_type(key) is
+            when Function_Key_Type => IO.Put_Line("Function Key");
+            when Digit_Key_Type => IO.Put_Line("Digit: " & get_char(key)'Image);
+            when Key_Char => IO.Put_Line("Letter: " & get_char(key)'Image);
+            when Key_Backspace => IO.Put_Line("Backspace");
+            when others => null;
+         end case;
+      end if;
       Libtcod.Console.flush;
    end loop;
 exception
