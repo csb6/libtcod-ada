@@ -7,10 +7,6 @@ package Libtcod.Console is
    -- Basic types --
 
    type Unicode_Char is new Interfaces.C.int;
-   type Width is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
-   type Height is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
-   type X_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
-   type Y_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
    type Fade is new Interfaces.C.int range 0 .. 255;
 
    Error : exception;
