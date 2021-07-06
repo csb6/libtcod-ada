@@ -56,7 +56,8 @@ package Libtcod.Console is
 
    -- Constructors --
    function init_root(w : Width; h : Height; title : String;
-                      fullscreen : Boolean; renderer : Renderer_Type) return Root;
+                      fullscreen : Boolean := False;
+                      renderer : Renderer_Type := Renderer_SDL2) return Root;
    function make_screen(w : Width; h : Height) return Screen;
 
    -- Operations --

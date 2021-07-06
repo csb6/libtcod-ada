@@ -22,7 +22,8 @@ package body Libtcod.Console is
    ---------------
 
    function init_root(w : Width; h : Height; title : String;
-                      fullscreen : Boolean; renderer : Renderer_Type) return Root is
+                      fullscreen : Boolean := False;
+                      renderer : Renderer_Type := Renderer_SDL2) return Root is
       title_ptr : Strings.chars_ptr := Strings.New_String(title);
       err : error_h.TCOD_Error;
    begin
