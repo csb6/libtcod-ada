@@ -22,9 +22,13 @@ begin
       if event = Event_Key_Press then
          case get_key_type(key) is
             when Function_Key_Type => IO.Put_Line("Function Key");
-            when Digit_Key_Type => IO.Put_Line("Digit: " & get_char(key)'Image);
-            when Key_Char => IO.Put_Line("Letter: " & get_char(key)'Image);
             when Key_Backspace => IO.Put_Line("Backspace");
+            when Key_Text =>
+               case get_char(key) is
+                  when '0' .. '9' => IO.Put_Line("Digit: " & get_char(key)'Image);
+                  when 'a' .. 'z' | 'A' .. 'Z' => IO.Put_Line("Letter: " & get_char(key)'Image);
+                  when others => IO.Put_Line("Character: " & get_char(key)'Image);
+               end case;
             when others => null;
          end case;
       end if;

@@ -46,9 +46,10 @@ package Libtcod.Input is
       Key_Apps,
       -- Digits
       Key_0, Key_1, Key_2, Key_3, Key_4, Key_5, Key_6, Key_7, Key_8, Key_9,
+      -- Keypad Digits
       Key_Kp0, Key_Kp1, Key_Kp2, Key_Kp3, Key_Kp4, Key_Kp5, Key_Kp6, Key_Kp7,
       Key_Kp8, Key_Kp9,
-      -- Operators
+      -- Keypad Operators
       Key_Kpadd, Key_Kpsub, Key_Kpdiv, Key_Kpmul,
       Key_Kpdec,
       Key_Kpenter,
@@ -59,15 +60,18 @@ package Libtcod.Input is
       Key_Scrolllock,
       Key_Space,
       Key_Char,
+      -- (note: use Key_Text, then get_char to get characters that respect
+      -- holding shift)
       Key_Text)
      with Convention => C;
 
    subtype Arrow_Key_Type is Key_Type range Key_Up .. Key_Down;
-   subtype Digit_Key_Type is Key_Type range Key_0 .. Key_9;
-   subtype Operator_Key_Type is Key_Type range Key_Kpadd .. Key_Kpmul;
    subtype Function_Key_Type is Key_Type range Key_F1 .. Key_F12;
+   subtype Whitespace_Key_Type is Key_Type
+     with Static_Predicate => Whitespace_Key_Type in Key_Tab | Key_Enter | Key_Space;
 
    function get_key_type(k : Key) return Key_Type with Inline;
+   -- Note: get_char assumes that the current Key's Key_Type is Key_Text
    function get_char(k : Key) return Character with Inline;
    function alt(k : Key) return Boolean with Inline;
    function ctrl(k : Key) return Boolean with Inline;
