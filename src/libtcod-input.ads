@@ -79,7 +79,7 @@ package Libtcod.Input is
    function shift(k : Key) return Boolean with Inline;
 
    function check_for_event(kind : Event_Type; m : aliased out Mouse;
-                            k : aliased out Key) return Event_Type;
+                            k : aliased out Key) return Event_Type with Inline;
 
 private
 
