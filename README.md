@@ -54,3 +54,11 @@ the bindings.
 
 The static library will be found in the `lib/libtcod_ada` directory, while the example
 program `main`, located in the object directory.
+
+## License
+
+This binding is licensed under the BSD-3 License, the same license used by libtcod. Please
+see the libtcod documentation (located in the `libtcod` directory) for more information
+about libtcod's licensing/contributors.
+
+This binding is not an official binding of the libtcod project.
