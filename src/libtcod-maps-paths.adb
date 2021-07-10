@@ -45,8 +45,9 @@ package body Libtcod.Maps.Paths is
 
    function walk(p : Path; x : aliased in out X_Pos; y : aliased in out Y_Pos;
                  recalc_when_needed : Boolean := True) return Boolean is
-     (Boolean(TCOD_path_walk(p.data, X_Ptr_To_Int_Ptr(x'Access),
-                             Y_Ptr_To_Int_Ptr(y'Access), bool(recalc_when_needed))));
+     (Boolean(TCOD_path_walk(p.data, X_Ptr_To_Int_Ptr(x'Unchecked_Access),
+                             Y_Ptr_To_Int_Ptr(y'Unchecked_Access),
+                             bool(recalc_when_needed))));
 
    ---------
    -- get --
