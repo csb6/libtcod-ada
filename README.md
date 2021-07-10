@@ -5,7 +5,9 @@ is a library used in many rougelike games. It includes lots of useful functional
 such as field of view calculation, pathfinding, graphics, and more.
 
 This is a thick binding to the library, meaning that the API is Ada-like and not a minimal
-wrapper around the C functions (for example, most use of pointers are hidden on the Ada side).
+wrapper around the C functions (for example, most uses of pointers are hidden on the Ada side).
+However, there is mostly a one-to-one correspondence between the C functions and the
+Ada functions/procedures.
 
 Ada features such as strong typing, controlled types, and exceptions are used to reduce
 chances for error and to make the library more familiar to use. No explicit memory
@@ -41,12 +43,18 @@ work of linking it into a static library for you to use.
 Make sure that the SDL2 and zlib's header and library files are reachable from your PATH
 so that they are accessible to the Ada compiler.
 
-## Building
+### Build command
 
-Each OS uses gprbuild, but a flag indicating the current OS needs to be passed.
+gprbuild is the build tool on all platforms, but a flag indicating the current OS needs to
+be passed.
 
-After following the directions below,  static library will be found in the `lib/libtcod_ada`
-directory, while the example program `main` will located in the object directory.
+After following the directions below, a static library will be found in the `lib/libtcod_ada`
+directory, while the example program `main` will located in the `obj` directory. You can then
+run `main` (from the root directory of this repository) like so:
+
+```
+obj/main
+```
 
 ### Windows
 
@@ -66,8 +74,6 @@ gprbuild -Plibtcod_ada.gpr -XPlatform="macos"
 
 ### Linux
 
-### Windows
-
 In the root directory of this repository, run the following command:
 
 ```
@@ -80,4 +86,5 @@ This binding is licensed under the BSD-3 License, the same license used by libtc
 see the libtcod documentation (located in the `libtcod` directory) for more information
 about libtcod's licensing/contributors.
 
-This binding is not an official binding of the libtcod project.
+This binding is not an official binding of the libtcod project or written by the authors
+of libtcod.
