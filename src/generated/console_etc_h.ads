@@ -4,7 +4,6 @@ pragma Style_Checks (Off);
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings;
 with error_h;
-with sys_utypes_uwchar_t_h;
 with console_h;
 limited with context_viewport_h;
 with console_types_h;
@@ -83,7 +82,7 @@ package console_etc_h is
         External_Name => "TCOD_console_map_string_to_font";
 
    procedure TCOD_console_map_string_to_font_utf
-     (s : access sys_utypes_uwchar_t_h.wchar_t;
+     (s : access wchar_t;
       fontCharX : int;
       fontCharY : int)  -- console_etc.h:62
    with Import => True, 

@@ -4,10 +4,8 @@ pragma Style_Checks (Off);
 with Interfaces.C; use Interfaces.C;
 with System;
 with Interfaces.C.Strings;
-with Interfaces.C.Extensions;
+with Interfaces.C.Extensions; use Interfaces.C.Extensions;
 with list_h;
-with sys_utypes_usize_t_h;
-with utypes_uuint32_t_h;
 with console_types_h;
 with error_h;
 with image_h;
@@ -88,7 +86,7 @@ package sys_h is
         Convention => C, 
         External_Name => "TCOD_close_library";
 
-   function TCOD_sys_elapsed_milli return utypes_uuint32_t_h.uint32_t  -- sdl2/../sys.h:138
+   function TCOD_sys_elapsed_milli return Unsigned_32  -- sdl2/../sys.h:138
    with Import => True, 
         Convention => C, 
         External_Name => "TCOD_sys_elapsed_milli";
@@ -98,7 +96,7 @@ package sys_h is
         Convention => C, 
         External_Name => "TCOD_sys_elapsed_seconds";
 
-   procedure TCOD_sys_sleep_milli (val : utypes_uuint32_t_h.uint32_t)  -- sdl2/../sys.h:140
+   procedure TCOD_sys_sleep_milli (val : Unsigned_32)  -- sdl2/../sys.h:140
    with Import => True, 
         Convention => C, 
         External_Name => "TCOD_sys_sleep_milli";

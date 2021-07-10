@@ -2,8 +2,7 @@ pragma Ada_2012;
 pragma Style_Checks (Off);
 
 with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Extensions;
-with sys_utypes_uint32_t_h;
+with Interfaces.C.Extensions; use Interfaces.C.Extensions;
 with Interfaces.C.Strings;
 with color_h;
 with mersenne_types_h;
@@ -97,7 +96,7 @@ package parser_h is
          when 1 =>
             c : aliased char;  -- parser.h:92
          when 2 =>
-            i : aliased sys_utypes_uint32_t_h.int32_t;  -- parser.h:93
+            i : aliased Unsigned_32;  -- parser.h:93
          when 3 =>
             f : aliased float;  -- parser.h:94
          when 4 =>

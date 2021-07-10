@@ -2,8 +2,8 @@ pragma Ada_2012;
 pragma Style_Checks (Off);
 
 with Interfaces.C; use Interfaces.C;
+with Interfaces.C.Extensions; use Interfaces.C.Extensions;
 with mersenne_types_h;
-with utypes_uuint32_t_h;
 with Interfaces.C.Strings;
 
 package mersenne_h is
@@ -60,7 +60,7 @@ package mersenne_h is
         Convention => C, 
         External_Name => "TCOD_random_restore";
 
-   function TCOD_random_new_from_seed (algo : mersenne_types_h.TCOD_random_algo_t; seed : utypes_uuint32_t_h.uint32_t) return mersenne_types_h.TCOD_random_t  -- mersenne.h:45
+   function TCOD_random_new_from_seed (algo : mersenne_types_h.TCOD_random_algo_t; seed : Unsigned_32) return mersenne_types_h.TCOD_random_t  -- mersenne.h:45
    with Import => True, 
         Convention => C, 
         External_Name => "TCOD_random_new_from_seed";

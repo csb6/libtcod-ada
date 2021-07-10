@@ -5,10 +5,8 @@ with Interfaces.C; use Interfaces.C;
 with console_h;
 with Interfaces.C.Strings;
 with Interfaces.C.Extensions;
-with sys_utypes_uwchar_t_h;
 with color_h;
 with error_h;
-with sys_utypes_usize_t_h;
 
 package console_printing_h is
 
@@ -122,7 +120,7 @@ package console_printing_h is
      (con : access console_h.TCOD_Console;
       x : int;
       y : int;
-      fmt : access sys_utypes_uwchar_t_h.wchar_t  -- , ...
+      fmt : access wchar_t  -- , ...
       )  -- console_printing.h:78
    with Import => True, 
         Convention => C, 
@@ -134,7 +132,7 @@ package console_printing_h is
       y : int;
       flag : console_h.TCOD_bkgnd_flag_t;
       alignment : console_h.TCOD_alignment_t;
-      fmt : access sys_utypes_uwchar_t_h.wchar_t  -- , ...
+      fmt : access wchar_t  -- , ...
       )  -- console_printing.h:80
    with Import => True, 
         Convention => C, 
@@ -146,7 +144,7 @@ package console_printing_h is
       y : int;
       w : int;
       h : int;
-      fmt : access sys_utypes_uwchar_t_h.wchar_t  -- , ...
+      fmt : access wchar_t  -- , ...
       ) return int  -- console_printing.h:83
    with Import => True, 
         Convention => C, 
@@ -160,7 +158,7 @@ package console_printing_h is
       h : int;
       flag : console_h.TCOD_bkgnd_flag_t;
       alignment : console_h.TCOD_alignment_t;
-      fmt : access sys_utypes_uwchar_t_h.wchar_t  -- , ...
+      fmt : access wchar_t  -- , ...
       ) return int  -- console_printing.h:85
    with Import => True, 
         Convention => C, 
@@ -172,7 +170,7 @@ package console_printing_h is
       y : int;
       w : int;
       h : int;
-      fmt : access sys_utypes_uwchar_t_h.wchar_t  -- , ...
+      fmt : access wchar_t  -- , ...
       ) return int  -- console_printing.h:96
    with Import => True, 
         Convention => C, 
@@ -333,7 +331,7 @@ package console_printing_h is
      (con : access console_h.TCOD_Console;
       x : int;
       y : int;
-      n : sys_utypes_usize_t_h.size_t;
+      n : size_t;
       str : Interfaces.C.Strings.chars_ptr;
       fg : access constant color_h.TCOD_color_t;
       bg : access constant color_h.TCOD_color_t;
@@ -349,7 +347,7 @@ package console_printing_h is
       y : int;
       width : int;
       height : int;
-      n : sys_utypes_usize_t_h.size_t;
+      n : size_t;
       str : Interfaces.C.Strings.chars_ptr;
       fg : access constant color_h.TCOD_color_t;
       bg : access constant color_h.TCOD_color_t;
@@ -365,7 +363,7 @@ package console_printing_h is
       y : int;
       width : int;
       height : int;
-      n : sys_utypes_usize_t_h.size_t;
+      n : size_t;
       str : Interfaces.C.Strings.chars_ptr) return int  -- console_printing.h:230
    with Import => True, 
         Convention => C, 
@@ -373,7 +371,7 @@ package console_printing_h is
 
    function TCOD_console_get_height_rect_wn
      (width : int;
-      n : sys_utypes_usize_t_h.size_t;
+      n : size_t;
       str : Interfaces.C.Strings.chars_ptr) return int  -- console_printing.h:232
    with Import => True, 
         Convention => C, 
@@ -385,7 +383,7 @@ package console_printing_h is
       y : int;
       width : int;
       height : int;
-      n : sys_utypes_usize_t_h.size_t;
+      n : size_t;
       title : Interfaces.C.Strings.chars_ptr;
       fg : access constant color_h.TCOD_color_t;
       bg : access constant color_h.TCOD_color_t;
