@@ -41,19 +41,38 @@ work of linking it into a static library for you to use.
 Make sure that the SDL2 and zlib's header and library files are reachable from your PATH
 so that they are accessible to the Ada compiler.
 
-## Build
+## Building
+
+Each OS uses gprbuild, but a flag indicating the current OS needs to be passed.
+
+After following the directions below,  static library will be found in the `lib/libtcod_ada`
+directory, while the example program `main` will located in the object directory.
+
+### Windows
 
 In the root directory of this repository, run the following command:
 
 ```
-gprbuild -Plibtcod_ada.gpr
+gprbuild -Plibtcod_ada.gpr -XPlatform="windows"
 ```
 
-This will build libtcod and the bindings, as well as an example program that uses
-the bindings.
+### macOS
 
-The static library will be found in the `lib/libtcod_ada` directory, while the example
-program `main`, located in the object directory.
+In the root directory of this repository, run the following command:
+
+```
+gprbuild -Plibtcod_ada.gpr -XPlatform="macos"
+```
+
+### Linux
+
+### Windows
+
+In the root directory of this repository, run the following command:
+
+```
+gprbuild -Plibtcod_ada.gpr -XPlatform="linux"
+```
 
 ## License
 
