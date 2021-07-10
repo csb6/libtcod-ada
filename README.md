@@ -35,9 +35,9 @@ so in most cases you will already have it once you install GNAT
 - SDL2
 - zlib (practically every Unix-like OS should already have this installed)
 
-Note that the libtcod library itself does not have to be installed. A copy of the libtcod
+Note that the libtcod library itself *does not* have to be installed. A copy of the libtcod
 source code is embedded in this repository. The build system that handles building
-the bindings will handle building this version of libtcod as well and do all of the
+the bindings will handle building libtcod as well and do all of the
 work of linking it into a static library for you to use.
 
 Make sure that the SDL2 and zlib's header and library files are reachable from your PATH
@@ -83,7 +83,7 @@ gprbuild -Plibtcod_ada.gpr -XPlatform="linux"
 ## License
 
 This binding is licensed under the BSD-3 License, the same license used by libtcod. Please
-see the libtcod documentation (located in the `libtcod` directory) for more information
+see the libtcod documentation (located in the `third_party/libtcod` directory) for more information
 about libtcod's licensing/contributors.
 
 This binding is not an official binding of the libtcod project or written by the authors
