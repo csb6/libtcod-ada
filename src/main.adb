@@ -1,6 +1,6 @@
 with bresenham_h, fov_h, path_h, parser_h;
 with Libtcod.Color, Libtcod.Console, Ada.Text_IO, Ada.Exceptions, Libtcod.Input,
-     Libtcod.Maps.FOV, Libtcod.Maps.Paths, Libtcod.Clipboard, Libtcod.Lines;
+     Libtcod.Maps.FOV, Libtcod.Maps.Paths, Libtcod.Clipboard, Libtcod.Maps.Lines;
 use type Libtcod.Color.RGB_Color, Libtcod.Input.Event_Type;
 
 procedure Main is
@@ -16,7 +16,7 @@ procedure Main is
    map : Libtcod.Maps.Map := Libtcod.Maps.make_map(100, 100);
    path : Libtcod.Maps.Paths.Path := Libtcod.Maps.Paths.make_path(map, diagonal_cost => 1.0);
    status : Boolean;
-   point : Libtcod.Point;
+   point : Libtcod.Maps.Point;
 begin
    map.set_properties_all(walkable => True, transparent => False);
    status := Libtcod.Maps.Paths.compute(path, 0, 0, 10, 99);

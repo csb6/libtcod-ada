@@ -4,7 +4,15 @@ package Libtcod.Maps is
 
    Error : exception;
    
-   
+   type X_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
+   type Y_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
+
+   type Point is record
+      x : aliased X_Pos;
+      y : aliased Y_Pos;
+   end record;
+
+
    type Map is tagged limited private;
 
    function make_map(w : Width; h : Height) return Map;

@@ -1,6 +1,6 @@
 with Interfaces.C, Interfaces.C.Extensions, Ada.Unchecked_Conversion;
 
-package body Libtcod.Lines is
+package body Libtcod.Maps.Lines is
    use bresenham_h, Interfaces.C, Interfaces.C.Extensions;
    
    type Int_Ptr is access all int;
@@ -59,4 +59,4 @@ package body Libtcod.Lines is
      (Boolean(TCOD_line(int(start_x), int(start_y), int(end_x), int(end_y),
                         Line_Cb_To_TCOD_Cb(cb))));
    
-end Libtcod.Lines;
+end Libtcod.Maps.Lines;

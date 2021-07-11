@@ -1,6 +1,6 @@
 private with bresenham_h;
 
-package Libtcod.Lines is
+package Libtcod.Maps.Lines is
 
    -- Represent line in a data structure
    
@@ -31,4 +31,4 @@ private
       data : aliased bresenham_h.TCOD_bresenham_data_t;
    end record;
 
-end Libtcod.Lines;
+end Libtcod.Maps.Lines;
