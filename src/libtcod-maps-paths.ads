@@ -1,9 +1,7 @@
-private with path_h, Ada.Iterator_Interfaces;
+private with path_h;
 
 package Libtcod.Maps.Paths is
 
-   -- Note that an iterator is defined for Path, but that it does not recalculate
-   -- the path if a new obstacle appears. For that capability, use walk().
    type Path is limited private;
 
    
@@ -37,34 +35,8 @@ private
 
    type Path is new Ada.Finalization.Limited_Controlled with record
       data : access path_h.TCOD_Path;
-   end record
-     with Default_Iterator => Iterate,
-          Iterator_Element => Point,
-          Constant_Indexing => Element_Value;
+   end record;
 
    overriding procedure Finalize(p : in out Path);
-
-   type Cursor;
-
-   function Has_Element(pos : Cursor) return Boolean;
-
-   package Line_Iterators is new Ada.Iterator_Interfaces(Cursor, Has_Element);
-
-   type Iterator is new Line_Iterators.Forward_Iterator with record
-      data : access path_h.TCOD_Path;
-      i : Index;
-   end record;
-
-   type Cursor is record
-      data : access path_h.TCOD_Path;
-      i : Index;
-   end record;
-
-   overriding function First(it : Iterator) return Cursor;
-   overriding function Next(it : Iterator; pos : Cursor) return Cursor;
-
-   function Iterate(p : Path) return Line_Iterators.Forward_Iterator'Class;
-
-   function Element_Value(p : Path; pos : Cursor) return Point;
 
 end Libtcod.Maps.Paths;

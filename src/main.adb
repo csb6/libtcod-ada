@@ -16,10 +16,11 @@ procedure Main is
    map : Libtcod.Maps.Map := Libtcod.Maps.make_map(100, 100);
    path : Libtcod.Maps.Paths.Path := Libtcod.Maps.Paths.make_path(map, diagonal_cost => 1.0);
    status : Boolean;
+   point : Libtcod.Point;
 begin
    map.set_properties_all(walkable => True, transparent => False);
    status := Libtcod.Maps.Paths.compute(path, 0, 0, 10, 99);
-   for point of path loop
+   while Libtcod.Maps.Paths.walk(path, point.x, point.y) loop
       IO.Put_Line(point.x'Image & " " & point.y'Image);
    end loop;
 

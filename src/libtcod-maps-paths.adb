@@ -101,25 +101,4 @@ package body Libtcod.Maps.Paths is
       TCOD_path_reverse(p.data);
    end reverse_in_place;
 
-
-   function Has_Element(pos : Cursor) return Boolean is
-     (pos.i < Index(TCOD_path_size(pos.data)));
-
-   overriding function First(it : Iterator) return Cursor is
-     (Cursor'(data => it.data, i => it.i));
-
-   overriding function Next(it : Iterator; pos : Cursor) return Cursor is
-     (Cursor'(data => pos.data, i => pos.i + 1));
-
-   function Iterate(p : Path) return Line_Iterators.Forward_Iterator'Class is
-     (Iterator'(Line_Iterators.Forward_Iterator
-                with data => p.data, i => Index'First));
-
-   function Element_Value(p : Path; pos : Cursor) return Point is
-      result : Point;
-   begin
-      get(p, pos.i, result.x, result.y);
-      return result;
-   end Element_Value;
-
 end Libtcod.Maps.Paths;
