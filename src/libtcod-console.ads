@@ -115,7 +115,6 @@ private
 
    overriding procedure Finalize(self : in out Root);
 
-
    type Screen is new Ada.Finalization.Limited_Controlled with record
       data : access console_h.TCOD_Console;
    end record;

@@ -32,10 +32,22 @@ package body Libtcod.Maps is
       TCOD_map_set_properties(m.data, int(x), int(y), bool(transparent), bool(walkable));
    end set_properties;
    
+   procedure set_properties(m : in out Map; pt : Point;
+                            transparent, walkable : Boolean) is
+   begin
+      set_properties(m, pt.x, pt.y, transparent, walkable);
+   end set_properties;
+   
    function is_transparent(m : Map; x : X_Pos; y : Y_Pos) return Boolean is
      (Boolean(TCOD_map_is_transparent(m.data, int(x), int(y))));
+   
+   function is_transparent(m : Map; pt : Point) return Boolean is
+     (is_transparent(m, pt.x, pt.y));
 
    function is_walkable(m : Map; x : X_Pos; y : Y_Pos) return Boolean is
      (Boolean(TCOD_map_is_walkable(m.data, int(x), int(y))));
+   
+   function is_walkable(m : Map; pt : Point) return Boolean is
+     (is_walkable(m, pt.x, pt.y));
 
 end Libtcod.Maps;

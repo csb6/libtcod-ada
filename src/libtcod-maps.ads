@@ -21,11 +21,18 @@ package Libtcod.Maps is
    procedure set_properties(m : in out Map; x : X_Pos; y : Y_Pos;
                             transparent, walkable : Boolean) with Inline;
    
+   procedure set_properties(m : in out Map; pt : Point;
+                            transparent, walkable : Boolean) with Inline;
+   
    function is_transparent(m : Map; x : X_Pos; y : Y_Pos) return Boolean
      with Inline;
+   
+   function is_transparent(m : Map; pt : Point) return Boolean with Inline;
 
    function is_walkable(m : Map; x : X_Pos; y : Y_Pos) return Boolean
      with Inline;
+   
+   function is_walkable(m : Map; pt : Point) return Boolean with Inline;
    
 private
    

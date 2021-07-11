@@ -35,9 +35,16 @@ package Libtcod.Maps.FOV is
    procedure compute_FOV(m : in out Map; x : X_Pos; y : Y_Pos; max_radius : Radius;
                          light_walls : Boolean; algo : Algorithm_Type);
 
+   procedure compute_FOV(m : in out Map; pt : Point; max_radius : Radius;
+                         light_walls : Boolean; algo : Algorithm_Type) with Inline;
+
    function in_FOV(m : Map; x : X_Pos; y : Y_Pos) return Boolean with Inline;
+
+   function in_FOV(m : Map; pt : Point) return Boolean with Inline;
 
    procedure set_in_FOV(m : in out Map; x : X_Pos; y : Y_Pos; is_in : Boolean)
      with Inline;
+
+   procedure set_in_FOV(m : in out Map; pt : Point; is_in : Boolean) with Inline;
 
 end Libtcod.Maps.FOV;
