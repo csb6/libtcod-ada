@@ -13,7 +13,16 @@ procedure Main is
    mouse : aliased Libtcod.Input.Mouse;
    key : aliased Libtcod.Input.Key;
    event : Event_Type;
+   map : Libtcod.Maps.Map := Libtcod.Maps.make_map(100, 100);
+   path : Libtcod.Maps.Paths.Path := Libtcod.Maps.Paths.make_path(map, diagonal_cost => 1.0);
+   status : Boolean;
 begin
+   map.set_properties_all(walkable => True, transparent => False);
+   status := Libtcod.Maps.Paths.compute(path, 0, 0, 10, 99);
+   for point of path loop
+      IO.Put_Line(point.x'Image & " " & point.y'Image);
+   end loop;
+
    while not Libtcod.Console.is_window_closed loop
       event := check_for_event(Event_Key_Press, mouse, key);
       if event = Event_Key_Press then

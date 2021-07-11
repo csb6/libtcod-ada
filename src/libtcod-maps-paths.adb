@@ -43,7 +43,7 @@ package body Libtcod.Maps.Paths is
    -- walk --
    ----------
 
-   function walk(p : Path; x : aliased in out X_Pos; y : aliased in out Y_Pos;
+   function walk(p : Path; x : aliased out X_Pos; y : aliased out Y_Pos;
                  recalc_when_needed : Boolean := True) return Boolean is
      (Boolean(TCOD_path_walk(p.data, X_Ptr_To_Int_Ptr(x'Unchecked_Access),
                              Y_Ptr_To_Int_Ptr(y'Unchecked_Access),
@@ -54,7 +54,7 @@ package body Libtcod.Maps.Paths is
    ---------
 
    procedure get(p : Path; i : Index;
-                 x : aliased in out X_Pos; y : aliased in out Y_Pos) is
+                 x : aliased out X_Pos; y : aliased out Y_Pos) is
    begin
       TCOD_path_get(p.data, int(i), X_Ptr_To_Int_Ptr(x'Unchecked_Access),
                     Y_Ptr_To_Int_Ptr(y'Unchecked_Access));
@@ -100,5 +100,26 @@ package body Libtcod.Maps.Paths is
    begin
       TCOD_path_reverse(p.data);
    end reverse_in_place;
+
+
+   function Has_Element(pos : Cursor) return Boolean is
+     (pos.i < Index(TCOD_path_size(pos.data)));
+
+   overriding function First(it : Iterator) return Cursor is
+     (Cursor'(data => it.data, i => it.i));
+
+   overriding function Next(it : Iterator; pos : Cursor) return Cursor is
+     (Cursor'(data => pos.data, i => pos.i + 1));
+
+   function Iterate(p : Path) return Line_Iterators.Forward_Iterator'Class is
+     (Iterator'(Line_Iterators.Forward_Iterator
+                with data => p.data, i => Index'First));
+
+   function Element_Value(p : Path; pos : Cursor) return Point is
+      result : Point;
+   begin
+      get(p, pos.i, result.x, result.y);
+      return result;
+   end Element_Value;
 
 end Libtcod.Maps.Paths;
