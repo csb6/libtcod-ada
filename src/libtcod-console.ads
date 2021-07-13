@@ -8,7 +8,6 @@ package Libtcod.Console is
 
    type X_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
    type Y_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
-   type Unicode_Char is new Interfaces.C.int;
    type Fade is new Interfaces.C.int range 0 .. 255;
 
    Error : exception;
@@ -67,6 +66,8 @@ package Libtcod.Console is
 
    procedure flush;
 
+   procedure blit(s : in out Screen);
+
    function get_width(s : Screen) return Width with Inline;
    function get_height(s : Screen) return Height with Inline;
 
@@ -83,21 +84,21 @@ package Libtcod.Console is
    procedure clear(s : in out Screen) with Inline;
    procedure resize(s : in out Screen; w : Width; h : Height) with Inline;
 
-   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Unicode_Char)
+   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character)
      with Inline;
-   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Unicode_Char;
+   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character;
                       mode : Background_Mode) with Inline;
-   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Unicode_Char;
+   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character;
                       fg_color, bg_color : RGB_Color) with Inline;
 
-   function get_char(s : Screen; x : X_Pos; y : Y_Pos) return Unicode_Char with Inline;
+   function get_char(s : Screen; x : X_Pos; y : Y_Pos) return Wide_Character with Inline;
 
    procedure set_char_fg(s : in out Screen; x : X_Pos; y : Y_Pos; color : RGB_Color)
      with Inline;
    function get_char_fg(s : Screen; x : X_Pos; y : Y_Pos) return RGB_Color with Inline;
 
    procedure set_char_bg(s : in out Screen; x : X_Pos; y : Y_Pos; color : RGB_Color;
-                         mode : Background_Mode) with Inline;
+                         mode : Background_Mode := Background_Set) with Inline;
    function get_char_bg(s : Screen; x : X_Pos; y : Y_Pos) return RGB_Color with Inline;
 
    procedure set_bg_mode(s : in out Screen; mode : Background_Mode) with Inline;

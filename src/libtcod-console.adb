@@ -33,6 +33,7 @@ package body Libtcod.Console is
       if err /= error_h.TCOD_E_OK then
          raise Error with Strings.Value(error_h.TCOD_get_error);
       end if;
+
       return result : Root;
    end init_root;
 
@@ -93,6 +94,15 @@ package body Libtcod.Console is
          raise Error with Strings.Value(error_h.TCOD_get_error);
       end if;
    end;
+
+   procedure blit(s : in out Screen) is
+   begin
+      TCOD_console_blit(s.data, 0, 0,
+                        TCOD_console_get_width(s.data),
+                        TCOD_console_get_height(s.data),
+                        null,
+                        0, 0, 1.0, 1.0);
+   end blit;
 
    ---------------
    -- get_width --
@@ -185,22 +195,22 @@ package body Libtcod.Console is
    -- put_char --
    --------------
 
-   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Unicode_Char) is
+   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character) is
    begin
-      TCOD_console_set_char(s.data, int(x), int(y), int(ch));
+      TCOD_console_set_char(s.data, int(x), int(y), Wide_Character'Pos(ch));
    end put_char;
 
-   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Unicode_Char;
+   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character;
                       mode : Background_Mode) is
    begin
-      TCOD_console_put_char(s.data, int(x), int(y), int(ch),
+      TCOD_console_put_char(s.data, int(x), int(y), Wide_Character'Pos(ch),
                             Background_Mode_To_Bgflag(mode));
    end put_char;
 
-   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Unicode_Char;
+   procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character;
                       fg_color, bg_color : RGB_Color) is
    begin
-      TCOD_console_put_char_ex(s.data, int(x), int(y), int(ch),
+      TCOD_console_put_char_ex(s.data, int(x), int(y), Wide_Character'Pos(ch),
                                To_TCOD_ColorRGB(fg_color), To_TCOD_ColorRGB(bg_color));
    end put_char;
 
@@ -208,8 +218,8 @@ package body Libtcod.Console is
    -- get_char --
    --------------
 
-   function get_char(s : Screen; x : X_Pos; y : Y_Pos) return Unicode_Char is
-     (Unicode_Char(TCOD_console_get_char(s.data, int(x), int(y))));
+   function get_char(s : Screen; x : X_Pos; y : Y_Pos) return Wide_Character is
+     (Wide_Character'Val(TCOD_console_get_char(s.data, int(x), int(y))));
 
    -----------------
    -- set_char_fg --
@@ -232,7 +242,7 @@ package body Libtcod.Console is
    -----------------
 
    procedure set_char_bg(s : in out Screen; x : X_Pos; y : Y_Pos; color : RGB_Color;
-                         mode : Background_Mode) is
+                         mode : Background_Mode := Background_Set) is
    begin
       TCOD_console_set_char_background(s.data, int(x), int(y), To_TCOD_ColorRGB(color),
                                        Background_Mode_To_Bgflag(mode));

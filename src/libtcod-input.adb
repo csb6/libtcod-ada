@@ -32,6 +32,14 @@ package body Libtcod.Input is
    -- check_for_event --
    ---------------------
 
+   function check_for_event(kind : Event_Type;
+                            k : aliased out Key) return Event_Type is
+   begin
+      return TCOD_sys_check_for_event(int(kind),
+                                      Key_Ptr_To_TCOD_Key_Ptr(k'Unchecked_Access),
+                                      null);
+   end check_for_event;
+
    function check_for_event(kind : Event_Type; m : aliased out Mouse;
                             k : aliased out Key) return Event_Type is
    begin
