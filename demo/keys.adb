@@ -3,7 +3,7 @@ with Libtcod.Color, Libtcod.Console, Ada.Text_IO, Ada.Exceptions, Libtcod.Input,
      Libtcod.Maps.FOV, Libtcod.Maps.Paths, Libtcod.Clipboard, Libtcod.Maps.Lines;
 use type Libtcod.Color.RGB_Color, Libtcod.Input.Event_Type;
 
-procedure Main is
+procedure Keys is
    use Ada.Exceptions, Libtcod.Input;
    package IO renames Ada.Text_IO;
 
@@ -26,6 +26,7 @@ begin
 
    while not Libtcod.Console.is_window_closed loop
       event := check_for_event(Event_Key_Press, mouse, key);
+      screen.put_char(x => 4, y => 25, ch => '@');
       if event = Event_Key_Press then
          case get_key_type(key) is
             when Function_Key_Type => IO.Put_Line("Function Key");
@@ -43,4 +44,4 @@ begin
    end loop;
 exception
    when err : others => IO.Put_Line(IO.Standard_Error, Exception_Information(err));
-end Main;
+end Keys;
