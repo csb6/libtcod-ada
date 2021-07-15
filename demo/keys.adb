@@ -4,27 +4,26 @@ with Libtcod.Color, Libtcod.Console, Ada.Text_IO, Ada.Exceptions, Libtcod.Input,
 use type Libtcod.Color.RGB_Color, Libtcod.Input.Event_Type;
 
 procedure Keys is
-   use Ada.Exceptions, Libtcod.Input;
+   use Ada.Exceptions, Libtcod, Libtcod.Input;
    package IO renames Ada.Text_IO;
 
-   context : Libtcod.Console.Context :=
-     Libtcod.Console.make_context(w => 100, h => 100, title => "Test");
-   screen : Libtcod.Console.Screen := Libtcod.Console.make_screen(100, 100);
-   mouse : aliased Libtcod.Input.Mouse;
-   key : aliased Libtcod.Input.Key;
+   context : Console.Context := Console.make_context(w => 100, h => 100, title => "Test");
+   screen : Console.Screen := Console.make_screen(100, 100);
+   mouse : aliased Input.Mouse;
+   key : aliased Input.Key;
    event : Event_Type;
-   map : Libtcod.Maps.Map := Libtcod.Maps.make_map(100, 100);
-   path : Libtcod.Maps.Paths.Path := Libtcod.Maps.Paths.make_path(map, diagonal_cost => 1.0);
+   map : Maps.Map := Maps.make_map(100, 100);
+   path : Maps.Paths.Path := Maps.Paths.make_path(map, diagonal_cost => 1.0);
    status : Boolean;
-   point : Libtcod.Maps.Point;
+   point : Maps.Point;
 begin
    map.set_properties_all(walkable => True, transparent => False);
-   status := Libtcod.Maps.Paths.compute(path, 0, 0, 10, 99);
-   while Libtcod.Maps.Paths.walk(path, point.x, point.y) loop
+   status := Maps.Paths.compute(path, 0, 0, 10, 99);
+   while Maps.Paths.walk(path, point.x, point.y) loop
       IO.Put_Line(point.x'Image & " " & point.y'Image);
    end loop;
 
-   while not Libtcod.Console.is_window_closed loop
+   while not Console.is_window_closed loop
       event := check_for_event(Event_Key_Press, mouse, key);
       screen.put_char(x => 4, y => 25, ch => '@');
       if event = Event_Key_Press then
