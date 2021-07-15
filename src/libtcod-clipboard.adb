@@ -9,10 +9,10 @@ package body Libtcod.Clipboard is
    ---------
 
    procedure set(value : String) is
-      value_ptr : Strings.chars_ptr := Strings.New_String(value);
-      status : Extensions.bool := TCOD_sys_clipboard_set(value_ptr);
+      c_value : aliased char_array := To_C(value);
+      status : Extensions.bool
+        := TCOD_sys_clipboard_set(Strings.To_Chars_Ptr(c_value'Unchecked_Access));
    begin
-      Strings.Free(value_ptr);
       if not status then
          raise Constraint_Error with "Failed to copy to the clipboard";
       end if;

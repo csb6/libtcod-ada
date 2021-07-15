@@ -28,11 +28,12 @@ package body Libtcod.Console is
    function make_context(w : Width; h : Height; title : String;
                          resizable : Boolean := True; fullscreen : Boolean := False;
                          renderer : Renderer_Type := Renderer_SDL2) return Context is
-      title_ptr : Strings.chars_ptr := Strings.New_String(title);
+      c_title : aliased char_array := To_C(title);
       err : error_h.TCOD_Error;
       params : aliased TCOD_ContextParams := (columns => int(w), rows => int(h),
                                               renderer_type => Renderer_Type'Pos(renderer),
-                                              window_title => title_ptr,
+                                              window_title =>
+                                                Strings.To_Chars_Ptr(c_title'Unchecked_Access),
                                               vsync => 1, pixel_width => 0,
                                               pixel_height => 0, argc => 0,
                                               others => <>);
@@ -47,7 +48,6 @@ package body Libtcod.Console is
          end if;
          params.sdl_window_flags := int(sdl_flags);
          err := TCOD_context_new(params'Access, result.data'Address);
-         Strings.Free(title_ptr);
 
          if err /= error_h.TCOD_E_OK then
             raise Error with Strings.Value(error_h.TCOD_get_error);
@@ -81,10 +81,9 @@ package body Libtcod.Console is
 
 
    procedure set_title(title : String) is
-      title_ptr : Strings.chars_ptr := Strings.New_String(title);
+      c_title : aliased char_array := To_C(title);
    begin
-      TCOD_console_set_window_title(title_ptr);
-      Strings.Free(title_ptr);
+      TCOD_console_set_window_title(Strings.To_Chars_Ptr(c_title'Unchecked_Access));
    end;
 
    procedure set_fullscreen(val : Boolean) is
@@ -111,15 +110,6 @@ package body Libtcod.Console is
          raise Error with Strings.Value(error_h.TCOD_get_error);
       end if;
    end;
-
-   procedure blit(s : in out Screen) is
-   begin
-      TCOD_console_blit(s.data, 0, 0,
-                        TCOD_console_get_width(s.data),
-                        TCOD_console_get_height(s.data),
-                        null,
-                        0, 0, 1.0, 1.0);
-   end blit;
 
    ---------------
    -- get_width --
