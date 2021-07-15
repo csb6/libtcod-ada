@@ -47,7 +47,6 @@ private
    type Map is new Ada.Finalization.Limited_Controlled with record
       data : access fov_types_h.TCOD_Map;
    end record;
-   subtype Limited_Controlled is Ada.Finalization.Limited_Controlled;
 
    overriding procedure Finalize(m : in out Map);
 

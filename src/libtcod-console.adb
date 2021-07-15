@@ -1,10 +1,10 @@
 with Ada.Unchecked_Conversion, Interfaces.C.Strings, Interfaces.C.Extensions;
 with Libtcod.Color.Conversions;
-with color_h, error_h, console_init_h, console_types_h, console_etc_h;
+with color_h, error_h, console_init_h, console_types_h, console_etc_h, context_init_h;
 use Libtcod.Color.Conversions, color_h, console_init_h, console_etc_h, console_types_h;
 
 package body Libtcod.Console is
-   use Interfaces.C, Interfaces.C.Extensions, console_h;
+   use Interfaces.C, Interfaces.C.Extensions, console_h, context_h, context_init_h;
 
    function Background_Mode_To_Bgflag is new Ada.Unchecked_Conversion
      (Source => Background_Mode, Target => TCOD_bkgnd_flag_t);
@@ -14,28 +14,46 @@ package body Libtcod.Console is
      (Source => Alignment_Type, Target => TCOD_alignment_t);
    function To_Alignment_Type is new Ada.Unchecked_Conversion
      (Source => TCOD_alignment_t, Target => Alignment_Type);
-   function To_Renderer_Type is new Ada.Unchecked_Conversion
-     (Source => Renderer_Type, Target => console_types_h.TCOD_renderer_t);
+   subtype Limited_Controlled is Ada.Finalization.Limited_Controlled;
 
-   ---------------
-   -- init_root --
-   ---------------
+   SDL_Window_Resizable : constant := 16#00000020#;
+   SDL_Window_Fullscreen : constant := 16#00000001#;
 
-   function init_root(w : Width; h : Height; title : String;
-                      fullscreen : Boolean := False;
-                      renderer : Renderer_Type := Renderer_SDL2) return Root is
+   function "or"(a : int; b : unsigned) return int is (int(unsigned(a) or b));
+
+   ------------------
+   -- make_context --
+   ------------------
+
+   function make_context(w : Width; h : Height; title : String;
+                         resizable : Boolean := True; fullscreen : Boolean := False;
+                         renderer : Renderer_Type := Renderer_SDL2) return Context is
       title_ptr : Strings.chars_ptr := Strings.New_String(title);
       err : error_h.TCOD_Error;
+      params : aliased TCOD_ContextParams := (columns => int(w), rows => int(h),
+                                              renderer_type => Renderer_Type'Pos(renderer),
+                                              window_title => title_ptr,
+                                              vsync => 1, pixel_width => 0,
+                                              pixel_height => 0, argc => 0,
+                                              others => <>);
+      sdl_flags : unsigned := 0;
    begin
-      err := TCOD_console_init_root(int(w), int(h), title_ptr,
-                                    bool(fullscreen), To_Renderer_Type(renderer));
-      Strings.Free(title_ptr);
-      if err /= error_h.TCOD_E_OK then
-         raise Error with Strings.Value(error_h.TCOD_get_error);
-      end if;
+      return result : Context do
+         if resizable then
+            sdl_flags := sdl_flags or SDL_Window_Resizable;
+         end if;
+         if fullscreen then
+            sdl_flags := sdl_flags or SDL_Window_Fullscreen;
+         end if;
+         params.sdl_window_flags := int(sdl_flags);
+         err := TCOD_context_new(params'Access, result.data'Address);
+         Strings.Free(title_ptr);
 
-      return result : Root;
-   end init_root;
+         if err /= error_h.TCOD_E_OK then
+            raise Error with Strings.Value(error_h.TCOD_get_error);
+         end if;
+      end return;
+   end make_context;
 
    -----------------
    -- make_screen --
@@ -51,9 +69,9 @@ package body Libtcod.Console is
    -- Finalize --
    --------------
 
-   overriding procedure Finalize(self : in out Root) is
+   overriding procedure Finalize(self : in out Context) is
    begin
-      TCOD_quit;
+      TCOD_context_delete(self.data);
    end Finalize;
 
    overriding procedure Finalize(self : in out Screen) is
@@ -80,17 +98,16 @@ package body Libtcod.Console is
    -- is_window_closed --
    ----------------------
 
-   function is_window_closed return Boolean is
-     (Boolean(TCOD_console_is_window_closed));
+   function is_window_closed return Boolean is (Boolean(TCOD_console_is_window_closed));
 
-   -----------
-   -- flush --
-   -----------
+   -------------
+   -- present --
+   -------------
 
-   procedure flush is
-      e : error_h.TCOD_Error := TCOD_console_flush;
+   procedure present(cxt : in out Context'Class; s : Screen) is
+      err : error_h.TCOD_Error := TCOD_context_present(cxt.data, s.data, null);
    begin
-      if TCOD_console_flush /= error_h.TCOD_E_OK then
+      if err /= error_h.TCOD_E_OK then
          raise Error with Strings.Value(error_h.TCOD_get_error);
       end if;
    end;

@@ -3,10 +3,10 @@ with Ada.Unchecked_Conversion, Interfaces.C.Extensions;
 package body Libtcod.Maps.Paths is
    use path_h, Interfaces.C, Interfaces.C.Extensions;
 
+   subtype Limited_Controlled is Ada.Finalization.Limited_Controlled;
+
    type Int_Ptr is access all int;
-
    type X_Pos_Ptr is access all X_Pos;
-
    type Y_Pos_Ptr is access all Y_Pos;
 
    function X_Ptr_To_Int_Ptr is new Ada.Unchecked_Conversion

@@ -3,6 +3,8 @@ with fov_h, Interfaces.C.Strings, Interfaces.C.Extensions;
 package body Libtcod.Maps is
    use fov_h, Interfaces.C, Interfaces.C.Extensions;
 
+   subtype Limited_Controlled is Ada.Finalization.Limited_Controlled;
+
    function make_map(w : Width; h : Height) return Map is
    begin
       return result : Map :=

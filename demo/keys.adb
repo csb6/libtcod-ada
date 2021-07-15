@@ -7,8 +7,8 @@ procedure Keys is
    use Ada.Exceptions, Libtcod.Input;
    package IO renames Ada.Text_IO;
 
-   root : Libtcod.Console.Root :=
-     Libtcod.Console.init_root(w => 100, h => 100, title => "Test");
+   context : Libtcod.Console.Context :=
+     Libtcod.Console.make_context(w => 100, h => 100, title => "Test");
    screen : Libtcod.Console.Screen := Libtcod.Console.make_screen(100, 100);
    mouse : aliased Libtcod.Input.Mouse;
    key : aliased Libtcod.Input.Key;
@@ -40,7 +40,7 @@ begin
             when others => null;
          end case;
       end if;
-      Libtcod.Console.flush;
+      context.present(screen);
    end loop;
 exception
    when err : others => IO.Put_Line(IO.Standard_Error, Exception_Information(err));

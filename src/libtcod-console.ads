@@ -1,5 +1,5 @@
 with Libtcod.Color, Libtcod.Input, Interfaces.C;
-private with console_h, Ada.Finalization;
+private with console_h, context_h, Ada.Finalization;
 use Libtcod, Libtcod.Color;
 
 package Libtcod.Console is
@@ -45,29 +45,30 @@ package Libtcod.Console is
       Alignment_Center)
      with Convention => C;
 
-   -- Root (Manages global state)
-   type Root is tagged limited private;
+   -- Root (Manages rendering)
+   type Context is tagged limited private;
 
    -- Screen --
    type Screen is tagged limited private;
 
    -- Constructors --
-   function init_root(w : Width; h : Height; title : String;
-                      fullscreen : Boolean := False;
-                      renderer : Renderer_Type := Renderer_SDL2) return Root;
+   function make_context(w : Width; h : Height; title : String;
+                         resizable : Boolean := True; fullscreen : Boolean := False;
+                         renderer : Renderer_Type := Renderer_SDL2) return Context;
    function make_screen(w : Width; h : Height) return Screen;
 
    -- Operations --
+   --  Global Operations (affect current window)
    procedure set_title(title : String);
    procedure set_fullscreen(val : Boolean) with Inline;
    function is_fullscreen return Boolean with Inline;
 
    function is_window_closed return Boolean with Inline;
 
-   procedure flush;
+   --  Context Operations
+   procedure present(cxt : in out Context'Class; s : Screen);
 
-   procedure blit(s : in out Screen);
-
+   --  Screen Operations
    function get_width(s : Screen) return Width with Inline;
    function get_height(s : Screen) return Height with Inline;
 
@@ -114,14 +115,15 @@ package Libtcod.Console is
 
 private
 
-   type Root is new Ada.Finalization.Limited_Controlled with null record;
+   type Context is new Ada.Finalization.Limited_Controlled with record
+      data : aliased access context_h.TCOD_Context;
+   end record;
 
-   overriding procedure Finalize(self : in out Root);
+   overriding procedure Finalize(self : in out Context);
 
    type Screen is new Ada.Finalization.Limited_Controlled with record
       data : access console_h.TCOD_Console;
    end record;
-   subtype Limited_Controlled is Ada.Finalization.Limited_Controlled;
 
    overriding procedure Finalize(self : in out Screen);
 

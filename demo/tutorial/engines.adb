@@ -29,7 +29,7 @@ package body Engines is
 
       k : aliased Key;
       event_kind : Event_Type := Input.check_for_event(Event_Key_Press, k);
-      player_ref : Actor_Ref := get_actor(self, self.player);
+      player_ref : Actor_Ref := self.get_actor(self.player);
    begin
       if event_kind = Event_Key_Press then
          case get_key_type(k) is
