@@ -3,7 +3,6 @@ pragma Style_Checks (Off);
 
 with Interfaces.C; use Interfaces.C;
 with tree_h;
-with utypes_uuint8_t_h;
 with Interfaces.C.Extensions;
 with System;
 with mersenne_types_h;
@@ -54,7 +53,7 @@ package bsp_h is
       w : aliased int;  -- bsp.h:44
       h : aliased int;  -- bsp.h:44
       position : aliased int;  -- bsp.h:45
-      level : aliased utypes_uuint8_t_h.uint8_t;  -- bsp.h:46
+      level : aliased Extensions.Unsigned_8;  -- bsp.h:46
       horizontal : aliased Extensions.bool;  -- bsp.h:47
    end record
    with Convention => C_Pass_By_Copy;  -- bsp.h:48
