@@ -1,4 +1,4 @@
-with Libtcod, Libtcod.Maps, Libtcod.Console;
+with Actors, Libtcod, Libtcod.Maps, Libtcod.Console;
 
 package Game_Maps is
    use Libtcod;
@@ -9,7 +9,7 @@ package Game_Maps is
      with Pack;
 
    type Tile is record
-      flags : Tile_Flag_Set := (Can_Walk => True);
+      flags : Tile_Flag_Set := (Can_Walk => False);
    end record;
    
    function make_tile return Tile;
@@ -23,6 +23,9 @@ package Game_Maps is
    
    function is_wall(self : Game_Map;
                     x : Maps.X_Pos; y : Maps.Y_Pos) return Boolean;
+   
+   procedure dig(self : in out Game_Map; x1 : Maps.X_Pos; y1 : Maps.Y_Pos;
+                 x2 : Maps.X_Pos; y2 : Maps.Y_Pos);
    
 private
    

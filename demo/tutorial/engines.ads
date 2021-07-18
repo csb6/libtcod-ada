@@ -1,4 +1,4 @@
-with Libtcod, Libtcod.Console; use Libtcod;
+with Libtcod, Libtcod.Console, Libtcod.Maps; use Libtcod;
 private with Ada.Containers.Vectors, Actors, Game_Maps, Libtcod.Maps;
 
 package Engines is
@@ -13,11 +13,6 @@ package Engines is
    
 private
    use Actors, Game_Maps;
-   
-   package Actor_Vectors is new Ada.Containers.Vectors(Index_Type => Actor_Id,
-                                                       Element_Type => Actor);
-   subtype Actor_Vector is Actor_Vectors.Vector;
-   subtype Actor_Ref is Actor_Vectors.Reference_Type;
    
    type Engine(width : Maps.X_Pos; height : Maps.Y_Pos) is tagged record
       map : Game_Map(width, height);

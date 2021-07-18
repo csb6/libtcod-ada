@@ -8,8 +8,8 @@ package body Actors is
    
    procedure render(self : Actor; screen : in out Console.Screen) is
    begin
-      screen.put_char(Console.X_Pos(self.x), Console.Y_Pos(self.y), self.ch);
-      screen.set_char_fg(Console.X_Pos(self.x), Console.Y_Pos(self.y), self.color);
+      screen.put_char(Console.X_Pos(self.pos.x), Console.Y_Pos(self.pos.y), self.ch);
+      screen.set_char_fg(Console.X_Pos(self.pos.x), Console.Y_Pos(self.pos.y), self.color);
    end render;
    
 end Actors;

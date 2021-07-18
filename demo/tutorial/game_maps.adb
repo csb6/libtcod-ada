@@ -11,6 +11,20 @@ package body Game_Maps is
       self.tiles(y, x).flags(Can_Walk) := False;
    end set_wall;
 
+   ---------
+   -- dig --
+   ---------
+
+   procedure dig(self : in out Game_Map; x1 : Maps.X_Pos; y1 : Maps.Y_Pos;
+                 x2 : Maps.X_Pos; y2 : Maps.Y_Pos) is
+   begin
+      for y in Maps.Y_Pos'Min(y1, y2) .. Maps.Y_Pos'Max(y1, y2) loop
+         for x in Maps.X_Pos'Min(x1, x2) .. Maps.X_Pos'Max(x1, x2) loop
+            self.tiles(y, x).flags(Can_Walk) := True;
+         end loop;
+      end loop;
+   end dig;
+
    ---------------
    -- make_tile --
    ---------------
@@ -27,10 +41,7 @@ package body Game_Maps is
    function make_game_map(w : Width; h : Height) return Game_Map is
    begin
       return map : Game_Map := (width => Maps.X_Pos(w),
-                                height => Maps.Y_Pos(h), tiles => <>) do
-         set_wall(map, x => 30, y => 22);
-         set_wall(map, x => 50, y => 22);
-      end return;
+                                height => Maps.Y_Pos(h), tiles => <>);
    end make_game_map;
 
    ------------
