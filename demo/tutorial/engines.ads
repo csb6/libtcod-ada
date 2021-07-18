@@ -1,11 +1,12 @@
-with Libtcod, Libtcod.Console, Libtcod.Maps; use Libtcod;
+with Libtcod, Libtcod.Console, Libtcod.Maps;
 private with Ada.Containers.Vectors, Actors, Game_Maps, Libtcod.Maps;
 
 package Engines is
+   use Libtcod;
 
    type Engine(<>) is tagged private;
    
-   function make_engine(w : Libtcod.Width; h : Libtcod.Height) return Engine;
+   function make_engine(w : Width; h : Height) return Engine;
    
    procedure update(self : in out Engine);
    
@@ -17,7 +18,7 @@ private
    type Engine(width : Maps.X_Pos; height : Maps.Y_Pos) is tagged record
       map : Game_Map(width, height);
       actor_list : Actor_Vector;
-      player : Actor_Id;
+      player_id : Actor_Id;
    end record;
 
 end Engines;

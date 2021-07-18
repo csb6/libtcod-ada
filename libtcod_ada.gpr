@@ -37,7 +37,7 @@ project Libtcod_Ada is
    end Linker;
 
    package Compiler is
-      for Switches ("ada") use ("-gnat12");
+      for Switches ("ada") use ("-gnat12", "-gnata");
    end Compiler;
 
 end Libtcod_Ada;

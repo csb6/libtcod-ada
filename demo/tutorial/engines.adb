@@ -1,8 +1,17 @@
-with Libtcod.Input, Libtcod.Color, Libtcod.Maps.BSP, Ada.Numerics.Discrete_Random;
+with Libtcod.Input, Libtcod.Color, Libtcod.Maps.BSP, Ada.Numerics.Discrete_Random, Ada.Assertions;
 
 package body Engines is
 
-   type Random_Int is mod 2**32;
+   use Ada.Assertions;
+   use type Maps.X_Pos, Maps.Y_Pos;
+
+   function get_actor(self : in out Engine; id : Actor_Id) return Actor_Ref is
+     (self.actor_list.Reference(id)) with Inline;
+
+   function player(self : in out Engine) return Actor_Ref is (self.get_actor(self.player_id))
+     with Inline;
+
+   type Random_Int is new Natural;
    package Natural_Random is new Ada.Numerics.Discrete_Random(Random_Int);
    use Natural_Random;
    rand_nat_gen : Natural_Random.Generator;
@@ -19,11 +28,10 @@ package body Engines is
    procedure create_room(self : in out Engine; first : Boolean;
                          x1 : Maps.X_Pos; y1 : Maps.Y_Pos;
                          x2 : Maps.X_Pos; y2 : Maps.Y_Pos) is
-      use type Maps.X_Pos, Maps.Y_Pos;
    begin
       self.map.dig(x1, y1, x2, y2);
       if first then
-         self.actor_list(self.player).pos := (x => (x1+x2) / 2, y => (y1+y2) / 2);
+         self.player.pos := (x => (x1+x2) / 2, y => (y1+y2) / 2);
       elsif one_of_n_chance(n => 4) then
          self.actor_list.Append(Actors.make_actor((x1+x2) / 2, (y1+y2) / 2, '@',
                                 Color.yellow));
@@ -32,7 +40,6 @@ package body Engines is
 
    procedure setup_map(self : in out Engine) is
       use Maps, Maps.BSP;
-      use type Maps.X_Pos, Maps.Y_Pos;
       bsp_builder : BSP_Tree := make_BSP(0, 0, Width(self.width), Height(self.height));
       room_num : Natural := 0;
       last_x : Maps.X_Pos;
@@ -44,13 +51,13 @@ package body Engines is
          w : Width;
          h : Height;
       begin
-         if is_leaf(node) then
+         if node.is_leaf then
             w := Width(rand_range(Min_Room_Size, node.w-2));
             h := Height(rand_range(Min_Room_Size, node.h-2));
             x := X_Pos(rand_range(node.x+1, Width(node.x)+node.w-w-1));
             y := Y_Pos(rand_range(node.y+1, Height(node.y)+node.h-h-1));
 
-            create_room(self, room_num = 0, x, y, x+X_Pos(w)-1, y+Y_Pos(h)-1);
+            self.create_room(room_num = 0, x, y, x+X_Pos(w)-1, y+Y_Pos(h)-1);
             if room_num /= 0 then
                self.map.dig(last_x, last_y, x+X_Pos(w)/2, last_y);
                self.map.dig(x+X_Pos(w)/2, last_y, x+X_Pos(w)/2, y+Y_Pos(h)/2);
@@ -62,10 +69,13 @@ package body Engines is
          return True;
       end visit;
 
-      result : Boolean;
+      not_exited_early : Boolean;
    begin
-      split_recursive(bsp_builder, 8, Max_Room_Size, Max_Room_Size, 1.5, 1.5);
-      result := traverse_inverted_level_order(bsp_builder, visit'Access);
+      bsp_builder.split_recursive(recursion_level => 8,
+                                  min_w => Max_Room_Size, min_h => Max_Room_Size,
+                                  min_wh_ratio => 1.5, min_hw_ratio => 1.5);
+      not_exited_early := bsp_builder.traverse_inverted_level_order(visit'Access);
+      Assert(not_exited_early);
    end setup_map;
 
    -----------------
@@ -76,15 +86,12 @@ package body Engines is
    begin
       return self : Engine := (width => Maps.X_Pos(w), height => Maps.Y_Pos(h),
                                map => make_game_map(w, h),
-                               player => Actor_Id'First,
+                               player_id => Actor_Id'First,
                                others => <>) do
          self.actor_list.Append(make_actor(60, 13, '@', Color.yellow));
          setup_map(self);
       end return;
    end make_engine;
-
-   function get_actor(self : in out Engine; id : Actor_Id) return Actor_Ref is
-     (self.actor_list.Reference(id));
 
    ------------
    -- update --
@@ -92,11 +99,11 @@ package body Engines is
 
    procedure update (self : in out Engine) is
       use Input;
-      use type Input.Event_Type, Maps.X_Pos, Maps.Y_Pos;
+      use type Input.Event_Type;
 
       k : aliased Key;
       event_kind : Event_Type := Input.check_for_event(Event_Key_Press, k);
-      player_ref : Actor_Ref := self.get_actor(self.player);
+      player_ref : Actor_Ref := self.player;
    begin
       if event_kind = Event_Key_Press then
          case get_key_type(k) is
