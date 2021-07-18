@@ -1,7 +1,5 @@
 package Libtcod.Maps.FOV is
 
-   type Radius is range 0 .. Integer'Last;
-
    type Algorithm_Type is
      (
       -- Trace multiple Bresenham lines along the perimeter
@@ -33,10 +31,12 @@ package Libtcod.Maps.FOV is
      with Convention => C;
 
    procedure compute_FOV(m : in out Map; x : X_Pos; y : Y_Pos; max_radius : Radius;
-                         light_walls : Boolean; algo : Algorithm_Type);
+                         light_walls : Boolean := True; algo : Algorithm_Type := Fov_Basic)
+     with Inline;
 
    procedure compute_FOV(m : in out Map; pt : Point; max_radius : Radius;
-                         light_walls : Boolean; algo : Algorithm_Type) with Inline;
+                         light_walls : Boolean := True; algo : Algorithm_Type := Fov_Basic)
+     with Inline;
 
    function in_FOV(m : Map; x : X_Pos; y : Y_Pos) return Boolean with Inline;
 

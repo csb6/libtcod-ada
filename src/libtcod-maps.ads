@@ -12,6 +12,8 @@ package Libtcod.Maps is
       y : aliased Y_Pos;
    end record;
 
+   type Radius is range 0 .. Integer'Last;
+
 
    type Map is tagged limited private;
 

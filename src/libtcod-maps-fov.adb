@@ -12,7 +12,7 @@ package body Libtcod.Maps.FOV is
    -----------------
 
    procedure compute_FOV(m : in out Map; x : X_Pos; y : Y_Pos; max_radius : Radius;
-                         light_walls : Boolean; algo : Algorithm_Type) is
+                         light_walls : Boolean := True; algo : Algorithm_Type := Fov_Basic) is
       err : error_h.TCOD_Error :=
         TCOD_map_compute_fov(m.data, int(x), int(y), int(max_radius), bool(light_walls),
                              Algorithm_Type_To_TCOD_Algorithm(algo));
@@ -23,7 +23,7 @@ package body Libtcod.Maps.FOV is
    end compute_FOV;
 
    procedure compute_FOV(m : in out Map; pt : Point; max_radius : Radius;
-                         light_walls : Boolean; algo : Algorithm_Type) is
+                         light_walls : Boolean := True; algo : Algorithm_Type := Fov_Basic) is
    begin
       compute_FOV(m, pt.x, pt.y, max_radius, light_walls, algo);
    end compute_FOV;
