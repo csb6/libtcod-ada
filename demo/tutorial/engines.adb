@@ -87,6 +87,8 @@ package body Engines is
       return self : Engine := (width => Maps.X_Pos(w), height => Maps.Y_Pos(h),
                                map => make_game_map(w, h),
                                player_id => Actor_Id'First,
+                               compute_fov => True,
+                               fov_radius => 10,
                                others => <>) do
          self.actor_list.Append(make_actor(60, 13, '@', Color.yellow));
          setup_map(self);
@@ -97,7 +99,7 @@ package body Engines is
    -- update --
    ------------
 
-   procedure update (self : in out Engine) is
+   procedure update(self : in out Engine) is
       use Input;
       use type Input.Event_Type;
 
@@ -110,21 +112,28 @@ package body Engines is
             when Key_Up =>
                if not self.map.is_wall(player_ref.pos.x, player_ref.pos.y-1) then
                   player_ref.pos.y := player_ref.pos.y - 1;
+                  self.compute_fov := True;
                end if;
             when Key_Down =>
                if not self.map.is_wall(player_ref.pos.x, player_ref.pos.y+1) then
                   player_ref.pos.y := player_ref.pos.y + 1;
+                  self.compute_fov := True;
                end if;
             when Key_Left =>
                if not self.map.is_wall(player_ref.pos.x-1, player_ref.pos.y) then
                   player_ref.pos.x := player_ref.pos.x - 1;
+                  self.compute_fov := True;
                end if;
             when Key_Right =>
                if not self.map.is_wall(player_ref.pos.x+1, player_ref.pos.y) then
                   player_ref.pos.x := player_ref.pos.x + 1;
+                  self.compute_fov := True;
                end if;
             when others => null;
          end case;
+      end if;
+      if self.compute_fov then
+         self.map.compute_fov(self.player.pos.x, self.player.pos.y, self.fov_radius);
       end if;
    end update;
 
@@ -132,13 +141,15 @@ package body Engines is
    -- render --
    ------------
 
-   procedure render(self : Engine; screen : in out Console.Screen) is
+   procedure render(self : in out Engine; screen : in out Console.Screen) is
    begin
       screen.clear;
       self.map.render(screen);
 
       for each of self.actor_list loop
-         Actors.render(each, screen);
+         if self.map.in_fov(each.pos.x, each.pos.y) then
+            Actors.render(each, screen);
+         end if;
       end loop;
    end render;
 
