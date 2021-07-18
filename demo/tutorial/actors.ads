@@ -6,8 +6,7 @@ package Actors is
    type Actor_Id is range 0 .. 100;
 
    type Actor is record
-      x : Maps.X_Pos;
-      y : Maps.Y_Pos;
+      pos : Maps.Point;
       ch : Wide_Character;
       color : RGB_Color;
    end record;

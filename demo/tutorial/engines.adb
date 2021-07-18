@@ -34,20 +34,20 @@ package body Engines is
       if event_kind = Event_Key_Press then
          case get_key_type(k) is
             when Key_Up =>
-               if not self.map.is_wall(player_ref.x, player_ref.y-1) then
-                  player_ref.y := player_ref.y - 1;
+               if not self.map.is_wall(player_ref.pos.x, player_ref.pos.y-1) then
+                  player_ref.pos.y := player_ref.pos.y - 1;
                end if;
             when Key_Down =>
-               if not self.map.is_wall(player_ref.x, player_ref.y+1) then
-                  player_ref.y := player_ref.y + 1;
+               if not self.map.is_wall(player_ref.pos.x, player_ref.pos.y+1) then
+                  player_ref.pos.y := player_ref.pos.y + 1;
                end if;
             when Key_Left =>
-               if not self.map.is_wall(player_ref.x-1, player_ref.y) then
-                  player_ref.x := player_ref.x - 1;
+               if not self.map.is_wall(player_ref.pos.x-1, player_ref.pos.y) then
+                  player_ref.pos.x := player_ref.pos.x - 1;
                end if;
             when Key_Right =>
-               if not self.map.is_wall(player_ref.x+1, player_ref.y) then
-                  player_ref.x := player_ref.x + 1;
+               if not self.map.is_wall(player_ref.pos.x+1, player_ref.pos.y) then
+                  player_ref.pos.x := player_ref.pos.x + 1;
                end if;
             when others => null;
          end case;
@@ -58,7 +58,7 @@ package body Engines is
    -- render --
    ------------
 
-   procedure render (self : Engine; screen : in out Console.Screen) is
+   procedure render(self : Engine; screen : in out Console.Screen) is
    begin
       screen.clear;
       self.map.render(screen);
