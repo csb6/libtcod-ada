@@ -5,6 +5,20 @@ package body Libtcod.Maps is
 
    subtype Limited_Controlled is Ada.Finalization.Limited_Controlled;
 
+   procedure increment(x : in out X_Pos; d : X_Diff) is
+   begin
+      x := X_Pos(X_Diff(x) + d);
+   end increment;
+
+   function add(x : X_Pos; d : X_Diff) return X_Pos is (X_Pos(X_Diff(x) + d));
+
+   procedure increment(y : in out Y_Pos; d : Y_Diff) is
+   begin
+      y := Y_Pos(Y_Diff(y) + d);
+   end increment;
+
+   function add(y : Y_Pos; d : Y_Diff) return Y_Pos is (Y_Pos(Y_Diff(y) + d));
+
    function make_map(w : Width; h : Height) return Map is
    begin
       return result : Map :=
@@ -33,22 +47,22 @@ package body Libtcod.Maps is
    begin
       TCOD_map_set_properties(m.data, int(x), int(y), bool(transparent), bool(walkable));
    end set_properties;
-   
+
    procedure set_properties(m : in out Map; pt : Point;
                             transparent, walkable : Boolean) is
    begin
       set_properties(m, pt.x, pt.y, transparent, walkable);
    end set_properties;
-   
+
    function is_transparent(m : Map; x : X_Pos; y : Y_Pos) return Boolean is
      (Boolean(TCOD_map_is_transparent(m.data, int(x), int(y))));
-   
+
    function is_transparent(m : Map; pt : Point) return Boolean is
      (is_transparent(m, pt.x, pt.y));
 
    function is_walkable(m : Map; x : X_Pos; y : Y_Pos) return Boolean is
      (Boolean(TCOD_map_is_walkable(m.data, int(x), int(y))));
-   
+
    function is_walkable(m : Map; pt : Point) return Boolean is
      (is_walkable(m, pt.x, pt.y));
 

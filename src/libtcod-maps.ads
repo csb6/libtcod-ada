@@ -3,9 +3,16 @@ private with Ada.Finalization, fov_types_h;
 package Libtcod.Maps is
 
    Error : exception;
-   
+
    type X_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
    type Y_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
+   type X_Diff is new Interfaces.C.int;
+   type Y_Diff is new Interfaces.C.Int;
+
+   procedure increment(x : in out X_Pos; d : X_Diff);
+   function add(x : X_Pos; d : X_Diff) return X_Pos;
+   procedure increment(y : in out Y_Pos; d : Y_Diff);
+   function add(y : Y_Pos; d : Y_Diff) return Y_Pos;
 
    type Point is record
       x : aliased X_Pos;
@@ -30,22 +37,22 @@ package Libtcod.Maps is
 
    procedure set_properties(m : in out Map; x : X_Pos; y : Y_Pos;
                             transparent, walkable : Boolean) with Inline;
-   
+
    procedure set_properties(m : in out Map; pt : Point;
                             transparent, walkable : Boolean) with Inline;
-   
+
    function is_transparent(m : Map; x : X_Pos; y : Y_Pos) return Boolean
      with Inline;
-   
+
    function is_transparent(m : Map; pt : Point) return Boolean with Inline;
 
    function is_walkable(m : Map; x : X_Pos; y : Y_Pos) return Boolean
      with Inline;
-   
+
    function is_walkable(m : Map; pt : Point) return Boolean with Inline;
-   
+
 private
-   
+
    type Map is new Ada.Finalization.Limited_Controlled with record
       data : access fov_types_h.TCOD_Map;
    end record;

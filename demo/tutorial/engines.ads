@@ -4,6 +4,9 @@ private with Ada.Containers.Vectors, Actors, Game_Maps, Libtcod.Maps;
 package Engines is
    use Libtcod;
 
+   type Game_Status is
+     (Status_Idle, Status_New_Turn, Status_Victory, Status_Defeat);
+
    type Engine(<>) is tagged limited private;
 
    function make_engine(w : Width; h : Height) return Engine;
@@ -19,8 +22,8 @@ private
       map : Game_Map(width, height);
       actor_list : Actor_Vector;
       player_id : Actor_Id;
-      compute_fov : Boolean;
       fov_radius : Maps.Radius;
+      status : Game_Status;
    end record;
 
 end Engines;
