@@ -2,12 +2,12 @@ with "libtcod.gpr";
 
 project Libtcod_Ada is
 
-   type Platform is
+   type Platform_Type is
       ("macos", "windows", "linux");
-   Current_Platform : Platform := external ("Platform");
+   Platform : Platform_Type := external ("Platform");
    for Object_Dir use "obj";
 
-   case Current_Platform is
+   case Platform is
 
       when "macos" =>
          for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
@@ -24,7 +24,7 @@ project Libtcod_Ada is
 
    package Linker is
 
-      case Current_Platform is
+      case Platform is
 
          when "macos" =>
             for Switches ("ada") use ("-L/usr/local/lib", "-lsdl2", "-lz");
