@@ -2,9 +2,6 @@ private with bsp_h;
 
 package Libtcod.Maps.BSP is
 
-   Max_Room_Size : constant := 12;
-   Min_Room_Size : constant := 6;
-
    type BSP_Tree is tagged limited private;
 
    -- A reference to a node within a BSP_Tree; can't be constructed directly;

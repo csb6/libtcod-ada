@@ -7,6 +7,8 @@ package body Engines is
    use type Maps.X_Pos, Maps.Y_Pos;
 
    Max_Monsters_Per_Room : constant := 3;
+   Max_Room_Size : constant := 12;
+   Min_Room_Size : constant := 6;
 
    function get_actor(self : in out Engine; id : Actor_Id) return Actor_Ref is
      (self.actor_list.Reference(id));
