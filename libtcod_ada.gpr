@@ -40,5 +40,9 @@ project Libtcod_Ada is
       for Switches ("ada") use ("-gnat12", "-gnata");
    end Compiler;
 
+   package Builder is
+      for Switches ("ada") use ("-j0");
+   end Builder;
+
 end Libtcod_Ada;
 
