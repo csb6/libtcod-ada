@@ -10,9 +10,11 @@ package Libtcod.Maps is
    type Y_Diff is new Interfaces.C.Int;
 
    procedure increment(x : in out X_Pos; d : X_Diff);
-   function add(x : X_Pos; d : X_Diff) return X_Pos;
+   function "+"(x : X_Pos; d : X_Diff) return X_Pos;
+   function "-"(x : X_Pos; d : X_Pos) return X_Diff;
    procedure increment(y : in out Y_Pos; d : Y_Diff);
-   function add(y : Y_Pos; d : Y_Diff) return Y_Pos;
+   function "+"(y : Y_Pos; d : Y_Diff) return Y_Pos;
+   function "-"(x : Y_Pos; d : Y_Pos) return Y_Diff;
 
    type Point is record
       x : aliased X_Pos;

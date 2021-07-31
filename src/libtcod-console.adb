@@ -1,10 +1,13 @@
 with Ada.Unchecked_Conversion, Interfaces.C.Strings, Interfaces.C.Extensions;
 with Libtcod.Color.Conversions;
-with color_h, error_h, console_init_h, console_types_h, console_etc_h, context_init_h;
-use Libtcod.Color.Conversions, color_h, console_init_h, console_etc_h, console_types_h;
+with color_h, error_h, context_h, context_init_h, console_init_h, console_types_h, console_etc_h,
+     console_printing_h;
 
 package body Libtcod.Console is
-   use Interfaces.C, Interfaces.C.Extensions, console_h, context_h, context_init_h;
+
+   use Interfaces.C, Interfaces.C.Extensions, Libtcod.Color.Conversions;
+   use color_h, context_h, context_init_h, console_h, console_init_h, console_types_h, console_etc_h,
+       console_printing_h;
 
    function Background_Mode_To_Bgflag is new Ada.Unchecked_Conversion
      (Source => Background_Mode, Target => TCOD_bkgnd_flag_t);
@@ -220,6 +223,16 @@ package body Libtcod.Console is
       TCOD_console_put_char_ex(s.data, int(x), int(y), Wide_Character'Pos(ch),
                                To_TCOD_ColorRGB(fg_color), To_TCOD_ColorRGB(bg_color));
    end put_char;
+
+   -----------
+   -- print --
+   -----------
+
+   procedure print(s : in out Screen; x : X_Pos; y : Y_Pos; text : String) is
+      c_str : aliased char_array := To_C(text);
+   begin
+      TCOD_console_print(s.data, int(x), int(y), Strings.To_Chars_Ptr(c_str'Unchecked_Access));
+   end print;
 
    --------------
    -- get_char --

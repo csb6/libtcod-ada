@@ -39,7 +39,7 @@ package Libtcod.Console is
      with Convention => C;
 
    -- Justification options
-   type Alignment_Type is 
+   type Alignment_Type is
      (Alignment_Left,
       Alignment_Right,
       Alignment_Center)
@@ -91,6 +91,7 @@ package Libtcod.Console is
                       mode : Background_Mode) with Inline;
    procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character;
                       fg_color, bg_color : RGB_Color) with Inline;
+   procedure print(s : in out Screen; x : X_Pos; y : Y_Pos; text : String);
 
    function get_char(s : Screen; x : X_Pos; y : Y_Pos) return Wide_Character with Inline;
 

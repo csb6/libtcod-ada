@@ -3,6 +3,8 @@ private with mouse_types_h, console_types_h;
 
 package Libtcod.Input is
 
+   use type sys_h.TCOD_event_t;
+
    type Mouse is private;
 
    type Key is private;
