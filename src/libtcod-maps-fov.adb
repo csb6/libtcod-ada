@@ -22,20 +22,12 @@ package body Libtcod.Maps.FOV is
       end if;
    end compute_FOV;
 
-   procedure compute_FOV(m : in out Map; pt : Point; max_radius : Radius;
-                         light_walls : Boolean := True; algo : Algorithm_Type := Fov_Basic) is
-   begin
-      compute_FOV(m, pt.x, pt.y, max_radius, light_walls, algo);
-   end compute_FOV;
-
    ------------
    -- in_FOV --
    ------------
 
    function in_FOV(m : Map; x : X_Pos; y : Y_Pos) return Boolean is
      (Boolean(TCOD_map_is_in_fov(m.data, int(x), int(y))));
-
-   function in_FOV(m : Map; pt : Point) return Boolean is (in_FOV(m, pt.x, pt.y));
 
    ----------------
    -- set_in_FOV --
@@ -44,11 +36,6 @@ package body Libtcod.Maps.FOV is
    procedure set_in_FOV(m : in out Map; x : X_Pos; y : Y_Pos; is_in : Boolean) is
    begin
       TCOD_map_set_in_fov(m.data, int(x), int(y), bool(is_in));
-   end set_in_FOV;
-
-   procedure set_in_FOV(m : in out Map; pt : Point; is_in : Boolean) is
-   begin
-      set_in_FOV(m, pt.x, pt.y, is_in);
    end set_in_FOV;
 
 end Libtcod.Maps.FOV;

@@ -15,8 +15,8 @@ package body Components.AIs is
       use type Maps.X_Pos, Maps.Y_Pos, Actors.Actor, Actors.Actor_Vector;
       procedure move_to_target is
       begin
-         owner.pos.x := target_x;
-         owner.pos.y := target_y;
+         owner.x := target_x;
+         owner.y := target_y;
       end move_to_target;
    begin
       if engine.map.is_wall(target_x, target_y) then
@@ -24,7 +24,7 @@ package body Components.AIs is
       end if;
 
       for target of engine.actor_list loop
-         if target.pos.x = target_x and then target.pos.y = target_y and then target.is_destructible
+         if target.x = target_x and then target.y = target_y and then target.is_destructible
            and then target /= owner then
             if target.destructible.is_dead then
                IO.Put_Line("There is a " & target.get_name & " corpse here");
@@ -64,8 +64,8 @@ package body Components.AIs is
 
       if dx /= 0 or else dy /= 0 then
          engine.status := Engines.Status_New_Turn;
-         if self.move_or_attack(owner, owner.pos.x + dx, owner.pos.y + dy, engine) then
-            engine.map.compute_fov(owner.pos.x, owner.pos.y, engine.fov_radius);
+         if self.move_or_attack(owner, owner.x + dx, owner.y + dy, engine) then
+            engine.map.compute_fov(owner.x, owner.y, engine.fov_radius);
          end if;
       end if;
    end update;
@@ -86,21 +86,21 @@ package body Components.AIs is
          return;
       end if;
 
-      dx := target_x - owner.pos.x;
-      dy := target_y - owner.pos.y;
+      dx := target_x - owner.x;
+      dy := target_y - owner.y;
       step_x := (if dx > 0 then 1 else -1);
       step_y := (if dy > 0 then 1 else -1);
       distance := Float_Math.Sqrt(Float(Integer(dx**2) + Integer(dy**2)));
       if distance >= 2.0 then
          dx := Maps.X_Diff(Float'Rounding(Float(dx) / distance));
          dy := Maps.Y_Diff(Float'Rounding(Float(dy) / distance));
-         if engine.can_walk(owner.pos.x + dx, owner.pos.y + dy) then
-            owner.pos.x := owner.pos.x + dx;
-            owner.pos.y := owner.pos.y + dy;
-         elsif engine.can_walk(owner.pos.x + step_x, owner.pos.y) then
-           owner.pos.x := owner.pos.x + step_x;
-         elsif engine.can_walk(owner.pos.x, owner.pos.y + step_y) then
-            owner.pos.y := owner.pos.y + step_y;
+         if engine.can_walk(owner.x + dx, owner.y + dy) then
+            owner.x := owner.x + dx;
+            owner.y := owner.y + dy;
+         elsif engine.can_walk(owner.x + step_x, owner.y) then
+           owner.x := owner.x + step_x;
+         elsif engine.can_walk(owner.x, owner.y + step_y) then
+            owner.y := owner.y + step_y;
          end if;
       elsif owner.is_attacker then
          owner.attacker.attack(owner, engine.player, engine);
@@ -118,7 +118,7 @@ package body Components.AIs is
          return;
       end if;
 
-      if engine.map.in_fov(owner.pos.x, owner.pos.y) then
+      if engine.map.in_fov(owner.x, owner.y) then
          self.move_count := Turns_To_Track;
       elsif self.move_count = 0 then
          return;
@@ -126,7 +126,7 @@ package body Components.AIs is
          self.move_count := self.move_count - 1;
       end if;
 
-      self.move_or_attack(owner, engine.player.pos.x, engine.player.pos.y, engine);
+      self.move_or_attack(owner, engine.player.x, engine.player.y, engine);
    end update;
 
 end Components.AIs;

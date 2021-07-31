@@ -15,12 +15,13 @@ procedure Keys is
    map : Maps.Map := Maps.make_map(100, 100);
    path : Maps.Paths.Path := Maps.Paths.make_path(map, diagonal_cost => 1.0);
    status : Boolean;
-   point : Maps.Point;
+   x : aliased Maps.X_Pos;
+   y : aliased Maps.Y_Pos;
 begin
    map.set_properties_all(walkable => True, transparent => False);
    status := Maps.Paths.compute(path, 0, 0, 10, 99);
-   while Maps.Paths.walk(path, point.x, point.y) loop
-      IO.Put_Line(point.x'Image & " " & point.y'Image);
+   while Maps.Paths.walk(path, x, y) loop
+      IO.Put_Line(x'Image & " " & y'Image);
    end loop;
 
    while not Console.is_window_closed loop

@@ -51,7 +51,7 @@ package body Engines is
          return False;
       end if;
       for a of self.actor_list loop
-         if a.pos.x = x and then a.pos.y = y and then a.blocks then
+         if a.x = x and then a.y = y and then a.blocks then
             -- Actor is present, cannot walk here
             return False;
          end if;
@@ -89,7 +89,8 @@ package body Engines is
    begin
       self.map.dig(x1, y1, x2, y2);
       if first then
-         self.player.pos := (x => (x1+x2) / 2, y => (y1+y2) / 2);
+         self.player.x := (x1+x2) / 2;
+         self.player.y := (y1+y2) / 2;
       elsif one_of_n_chance(n => 4) then
          for i in 1 .. monster_count loop
             monster_x := Maps.X_Pos(rand_range(x1, x2));
@@ -145,7 +146,7 @@ package body Engines is
       not_exited_early := bsp_builder.traverse_inverted_level_order(visit'Access);
       Assert(not_exited_early);
       -- Calcluate player's initial FOV
-      self.map.compute_fov(self.player.pos.x, self.player.pos.y, self.fov_radius);
+      self.map.compute_fov(self.player.x, self.player.y, self.fov_radius);
    end setup_map;
 
    -----------------
@@ -206,7 +207,7 @@ package body Engines is
       self.map.render(screen);
 
       for each of reverse self.actor_list loop
-         if self.map.in_fov(each.pos.x, each.pos.y) then
+         if self.map.in_fov(each.x, each.y) then
             each.render(screen);
          end if;
       end loop;

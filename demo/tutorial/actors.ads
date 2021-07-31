@@ -30,7 +30,8 @@ package Actors is
 
    type Actor is tagged record
       name : Actor_Name;
-      pos : Maps.Point;
+      x : aliased Maps.X_Pos;
+      y : aliased Maps.Y_Pos;
       ch : Wide_Character;
       color : RGB_Color;
       blocks : Boolean;

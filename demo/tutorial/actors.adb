@@ -14,7 +14,7 @@ package body Actors is
       ai_comp : Player_AI;
    begin
       return result : Actor := (name => Actor_Names.To_Bounded_String(name),
-                                pos => (x, y), ch => ch, color => color, blocks => True,
+                                x => x, y => y, ch => ch, color => color, blocks => True,
                                 attacker_h     => To_Holder(attacker_comp),
                                 destructible_h => To_Holder(destructible_comp),
                                 ai_h           => To_Holder(ai_comp));
@@ -32,7 +32,7 @@ package body Actors is
       ai_comp : Monster_AI;
    begin
       return result : Actor := (name => Actor_Names.To_Bounded_String(name),
-                                pos => (x, y), ch => ch, color => color, blocks => True,
+                                x => x, y => y, ch => ch, color => color, blocks => True,
                                 attacker_h     => To_Holder(attacker_comp),
                                 destructible_h => To_Holder(destructible_comp),
                                 ai_h           => To_Holder(ai_comp));
@@ -42,8 +42,8 @@ package body Actors is
 
    procedure render(self : Actor; screen : in out Console.Screen) is
    begin
-      screen.put_char(Console.X_Pos(self.pos.x), Console.Y_Pos(self.pos.y), self.ch);
-      screen.set_char_fg(Console.X_Pos(self.pos.x), Console.Y_Pos(self.pos.y), self.color);
+      screen.put_char(Console.X_Pos(self.x), Console.Y_Pos(self.y), self.ch);
+      screen.set_char_fg(Console.X_Pos(self.x), Console.Y_Pos(self.y), self.color);
    end render;
 
    procedure update(self : in out Actor; engine : in out Engines.Engine) is

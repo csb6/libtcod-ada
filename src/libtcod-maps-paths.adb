@@ -38,10 +38,6 @@ package body Libtcod.Maps.Paths is
                     end_x : X_Pos; end_y : Y_Pos) return Boolean is
      (Boolean(TCOD_path_compute(p.data, int(start_x), int(start_y),
                                 int(end_x), int(end_y))));
-
-   function compute(p : in out Path; start_pt : Point; end_pt : Point) return Boolean is
-     (compute(p, start_pt.x, start_pt.y, end_pt.x, end_pt.y));
-
    ----------
    -- walk --
    ----------
@@ -51,10 +47,6 @@ package body Libtcod.Maps.Paths is
      (Boolean(TCOD_path_walk(p.data, X_Ptr_To_Int_Ptr(x'Unchecked_Access),
                              Y_Ptr_To_Int_Ptr(y'Unchecked_Access),
                              bool(recalc_when_needed))));
-
-   function walk(p : Path; pt : out Point;
-                 recalc_when_needed : Boolean := True) return Boolean is
-     (walk(p, pt.x, pt.y, recalc_when_needed));
 
    ---------
    -- get --
@@ -67,13 +59,6 @@ package body Libtcod.Maps.Paths is
                     Y_Ptr_To_Int_Ptr(y'Unchecked_Access));
    end get;
 
-   function get(p : Path; i : Index) return Point is
-      result : Point;
-   begin
-      get(p, i, result.x, result.y);
-      return result;
-   end get;
-
    ---------------
    -- get_start --
    ---------------
@@ -84,13 +69,6 @@ package body Libtcod.Maps.Paths is
                            Y_Ptr_To_Int_Ptr(y'Unchecked_Access));
    end get_start;
 
-   function get_start(p : Path) return Point is
-      result : Point;
-   begin
-      get_start(p, result.x, result.y);
-      return result;
-   end get_start;
-
    -------------
    -- get_end --
    -------------
@@ -99,13 +77,6 @@ package body Libtcod.Maps.Paths is
    begin
       TCOD_path_get_destination(p.data, X_Ptr_To_Int_Ptr(x'Unchecked_Access),
                                 Y_Ptr_To_Int_Ptr(y'Unchecked_Access));
-   end get_end;
-
-   function get_end(p : Path) return Point is
-      result : Point;
-   begin
-      get_end(p, result.x, result.y);
-      return result;
    end get_end;
 
    -----------
