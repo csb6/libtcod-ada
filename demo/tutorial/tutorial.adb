@@ -8,7 +8,7 @@ procedure Tutorial is
    screen : Console.Screen := Console.make_screen(map_width, map_height);
    engine : Engines.Engine := Engines.make_engine(map_width, map_height);
 begin
-   while not Console.is_window_closed loop
+   while not Console.is_window_closed and engine.status not in Engines.Endgame_Status loop
       engine.update;
       engine.render(screen);
       context.present(screen);
