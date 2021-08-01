@@ -12,8 +12,6 @@ package Game_Maps is
       flags : Tile_Flag_Set := (Explored => False);
    end record;
 
-   function make_tile return Tile;
-
 
    type Game_Map(width : Maps.X_Pos; height : Maps.Y_Pos) is tagged limited private;
 

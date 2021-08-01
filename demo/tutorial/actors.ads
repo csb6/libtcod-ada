@@ -15,16 +15,17 @@ package Actors is
    subtype Actor_Name is Actor_Names.Bounded_String;
 
    type Actor is tagged record
-      name : Actor_Name;
-      x : aliased Maps.X_Pos;
-      y : aliased Maps.Y_Pos;
-      ch : Wide_Character;
-      color : RGB_Color;
-      blocks : Boolean;
       -- Components
       attacker : access Attackers.Attacker;
       destructible : access Destructibles.Destructible'Class;
       ai : access AIs.AI'Class;
+      -- Fields
+      name : Actor_Name;
+      color : RGB_Color;
+      x : aliased Maps.X_Pos;
+      y : aliased Maps.Y_Pos;
+      ch : Wide_Character;
+      blocks : Boolean;
    end record;
 
    -- Properties

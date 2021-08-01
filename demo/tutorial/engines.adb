@@ -26,20 +26,18 @@ package body Engines is
    function k_of_n_chance(k, n : Random_Int) return Boolean is
      (Random(rand_nat_gen) mod n < k);
 
-   function rand_range_int(start_n, end_n : Random_Int) return Random_Int is
-     (Random(rand_nat_gen) mod (end_n - start_n) + start_n);
-
-   function rand_range(start_n, end_n : Maps.X_Pos) return Random_Int is
+   generic
+      type A is range <>;
+      type B is range <>;
+   function generic_rand_range(start_n : A; end_n : B) return Random_Int;
+   function generic_rand_range(start_n : A; end_n : B) return Random_Int is
      (Random(rand_nat_gen) mod (Random_Int(end_n) - Random_Int(start_n)) + Random_Int(start_n));
 
-   function rand_range(start_n : Maps.X_Pos; end_n : Width) return Random_Int is
-     (Random(rand_nat_gen) mod (Random_Int(end_n) - Random_Int(start_n)) + Random_Int(start_n));
-
-   function rand_range(start_n, end_n : Maps.Y_Pos) return Random_Int is
-     (Random(rand_nat_gen) mod (Random_Int(end_n) - Random_Int(start_n)) + Random_Int(start_n));
-
-   function rand_range(start_n : Maps.Y_Pos; end_n : Height) return Random_Int is
-     (Random(rand_nat_gen) mod (Random_Int(end_n) - Random_Int(start_n)) + Random_Int(start_n));
+   function rand_range is new generic_rand_range(Random_Int, Random_Int);
+   function rand_range is new generic_rand_range(Maps.X_Pos, Maps.X_Pos);
+   function rand_range is new generic_rand_range(Maps.X_Pos, Width);
+   function rand_range is new generic_rand_range(Maps.Y_Pos, Maps.Y_Pos);
+   function rand_range is new generic_rand_range(Maps.Y_Pos, Height);
 
    --------------
    -- can_walk --
@@ -79,7 +77,7 @@ package body Engines is
    procedure create_room(self : in out Engine; first : Boolean;
                          x1 : Maps.X_Pos; y1 : Maps.Y_Pos;
                          x2 : Maps.X_Pos; y2 : Maps.Y_Pos) is
-      monster_count : Random_Int := rand_range_int(0, Max_Monsters_Per_Room);
+      monster_count : Random_Int := rand_range(Random_Int'(0), Max_Monsters_Per_Room);
       monster_x : Maps.X_Pos;
       monster_y : Maps.Y_Pos;
    begin
