@@ -58,15 +58,6 @@ package body Game_Maps is
       end loop;
    end dig;
 
-   ---------------
-   -- make_tile --
-   ---------------
-
-   function make_tile return Tile is
-   begin
-      return result : Tile;
-   end make_tile;
-
    -------------------
    -- make_game_map --
    -------------------

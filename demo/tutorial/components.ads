@@ -1,3 +1,5 @@
+pragma Warnings (Off, "unit * is not referenced");
+pragma Warnings (Off, "no entities of * are referenced");
 limited with Actors, Engines;
 private with Ada.Text_IO;
 
@@ -12,4 +14,6 @@ private
 
    package IO renames Ada.Text_IO;
 
+   pragma Warnings (On, "unit * is not referenced");
+   pragma Warnings (On, "no entities of * are referenced");
 end Components;

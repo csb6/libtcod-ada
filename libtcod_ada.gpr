@@ -2,46 +2,43 @@ with "libtcod.gpr";
 
 project Libtcod_Ada is
 
-   type Platform_Type is
-      ("macos", "windows", "linux");
+   type Platform_Type is ("macos", "windows", "linux");
+   type Build_Mode_Type is ("optimize", "normal");
+
    Platform : Platform_Type := external ("Platform");
+   Build_Mode : Build_Mode_Type := external ("Build_Mode", "normal");
+
+   Linker_Flag_List := ("-lsdl2", "-lz");
+   Compiler_Flag_List := ("-gnat12", "-gnatwa", "-gnatwK", "-gnatwF");
+
    for Object_Dir use "obj";
-
-   case Platform is
-
-      when "macos" =>
-         for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
-         for Main use ("tutorial.adb", "keys.adb");
-
-      when "windows" =>
-         for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
-         for Main use ("tutorial.adb", "keys.adb");
-
-      when "linux" =>
-         for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
-         for Main use ("tutorial.adb", "keys.adb");
-   end case;
+   for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
+   for Main use ("tutorial.adb", "keys.adb");
 
    package Linker is
-
       case Platform is
-
          when "macos" =>
-            for Switches ("ada") use ("-L/usr/local/lib", "-lsdl2", "-lz");
+            for Switches ("ada") use ("-L/usr/local/lib") & Linker_Flag_List;
 
          when "windows" =>
+            for Switches ("ada") use Linker_Flag_List;
 
          when "linux" =>
-            for Switches ("ada") use ("-lsdl2", "-lz");
+            for Switches ("ada") use Linker_Flag_List;
       end case;
    end Linker;
 
    package Compiler is
-      for Switches ("ada") use ("-gnat12", "-gnata");
+      case Build_Mode is
+         when "normal" =>
+            for Switches ("ada") use Compiler_Flag_List & ("-gnata");
+         when "optimize" =>
+            for Switches ("ada") use Compiler_Flag_List & ("-flto", "-O3", "-gnatn", "-funroll-loops");
+      end case;
    end Compiler;
 
    package Builder is
-      for Switches ("ada") use ("-j0");
+      for Switches ("ada") use ("-j0", "-s");
    end Builder;
 
 end Libtcod_Ada;

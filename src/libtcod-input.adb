@@ -11,10 +11,12 @@ package body Libtcod.Input is
 
    function get_char(k : Key) return Character is (Character(k.text(0)));
 
+   pragma Warnings (Off, "redundant conversion, expression is *");
    function alt(k : Key) return Boolean is (Boolean(k.lalt or k.ralt));
    function ctrl(k : Key) return Boolean is (Boolean(k.lctrl or k.rctrl));
    function meta(k : Key) return Boolean is (Boolean(k.lmeta or k.rmeta));
    function shift(k : Key) return Boolean is (Boolean(k.shift));
+   pragma Warnings (On, "redundant conversion, expression is *");
 
    type Key_Ptr is access all Key;
    type TCOD_Key_Ptr is access all TCOD_key_t;

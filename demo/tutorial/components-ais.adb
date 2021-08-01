@@ -5,14 +5,14 @@ package body Components.AIs is
 
    package Float_Math renames Ada.Numerics.Elementary_Functions;
 
-   --------------------
-   -- move_or_attack --
-   --------------------
+   ---------------------------
+   -- player_move_or_attack --
+   ---------------------------
 
-   function move_or_attack(self : in out Player_AI; owner : in out Actors.Actor;
-                           target_x : Maps.X_Pos; target_y : Maps.Y_Pos;
-                           engine : in out Engines.Engine) return Boolean is
-      use type Maps.X_Pos, Maps.Y_Pos, Actors.Actor, Actors.Actor_Vector;
+   function player_move_or_attack(owner : in out Actors.Actor;
+                                  target_x : Maps.X_Pos; target_y : Maps.Y_Pos;
+                                  engine : in out Engines.Engine) return Boolean is
+      use type Maps.X_Pos, Maps.Y_Pos, Actors.Actor;
       procedure move_to_target is
       begin
          owner.x := target_x;
@@ -39,7 +39,7 @@ package body Components.AIs is
       -- Space is free to move to
       move_to_target;
       return True;
-   end move_or_attack;
+   end player_move_or_attack;
 
    ------------
    -- update --
@@ -64,7 +64,7 @@ package body Components.AIs is
 
       if dx /= 0 or else dy /= 0 then
          engine.status := Engines.Status_New_Turn;
-         if self.move_or_attack(owner, owner.x + dx, owner.y + dy, engine) then
+         if player_move_or_attack(owner, owner.x + dx, owner.y + dy, engine) then
             engine.map.compute_fov(owner.x, owner.y, engine.fov_radius);
          end if;
       end if;

@@ -1,13 +1,11 @@
 with Ada.Unchecked_Conversion, Interfaces.C.Strings, Interfaces.C.Extensions;
 with Libtcod.Color.Conversions;
-with color_h, error_h, context_h, context_init_h, console_init_h, console_types_h, console_etc_h,
-     console_printing_h;
+with error_h, context_init_h, console_init_h, console_printing_h;
 
 package body Libtcod.Console is
 
    use Interfaces.C, Interfaces.C.Extensions, Libtcod.Color.Conversions;
-   use color_h, context_h, context_init_h, console_h, console_init_h, console_types_h, console_etc_h,
-       console_printing_h;
+   use context_h, context_init_h, console_h, console_init_h, console_printing_h;
 
    function Background_Mode_To_Bgflag is new Ada.Unchecked_Conversion
      (Source => Background_Mode, Target => TCOD_bkgnd_flag_t);
@@ -21,8 +19,6 @@ package body Libtcod.Console is
 
    SDL_Window_Resizable : constant := 16#00000020#;
    SDL_Window_Fullscreen : constant := 16#00000001#;
-
-   function "or"(a : int; b : unsigned) return int is (int(unsigned(a) or b));
 
    ------------------
    -- make_context --

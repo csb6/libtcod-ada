@@ -1,4 +1,4 @@
-with Libtcod.Color, Libtcod.Input, Interfaces.C;
+with Libtcod.Color, Interfaces.C;
 private with console_h, context_h, Ada.Finalization;
 use Libtcod, Libtcod.Color;
 

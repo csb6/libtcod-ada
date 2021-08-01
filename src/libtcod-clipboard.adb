@@ -10,7 +10,7 @@ package body Libtcod.Clipboard is
 
    procedure set(value : String) is
       c_value : aliased char_array := To_C(value);
-      status : Extensions.bool
+      status : constant Extensions.bool
         := TCOD_sys_clipboard_set(Strings.To_Chars_Ptr(c_value'Unchecked_Access));
    begin
       if not status then

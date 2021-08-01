@@ -1,4 +1,4 @@
-with Ada.Numerics.Discrete_Random, Ada.Text_IO, Ada.Assertions;
+with Ada.Numerics.Discrete_Random, Ada.Assertions;
 with Libtcod.Maps.BSP;
 
 package body Engines is
@@ -102,7 +102,6 @@ package body Engines is
 
    procedure setup_map(self : in out Engine) is
       use Maps, Maps.BSP;
-      use type Maps.X_Pos, Maps.Y_Pos;
       bsp_builder : BSP_Tree := make_BSP(0, 0, Width(self.width), Height(self.height));
       room_num : Natural := 0;
       last_x : Maps.X_Pos;

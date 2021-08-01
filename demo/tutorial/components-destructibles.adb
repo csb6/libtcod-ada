@@ -6,7 +6,7 @@ package body Components.Destructibles is
    -- is_dead --
    -------------
 
-   function is_dead(self : Destructible) return Boolean is (self.hp <= 0);
+   function is_dead(self : Destructible) return Boolean is (self.hp = 0);
 
    -----------------
    -- take_damage --

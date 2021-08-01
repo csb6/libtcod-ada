@@ -1,4 +1,4 @@
-with Actors, Libtcod, Libtcod.Maps, Libtcod.Console;
+with Libtcod, Libtcod.Maps, Libtcod.Console;
 use Libtcod;
 
 package Game_Maps is

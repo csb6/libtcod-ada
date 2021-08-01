@@ -1,5 +1,5 @@
 package body Libtcod.Color is
-   use color_h, Interfaces.C;
+   use Interfaces.C;
 
    ---------------------
    -- make_RGB_color --

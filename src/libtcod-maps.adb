@@ -1,4 +1,4 @@
-with fov_h, Interfaces.C.Strings, Interfaces.C.Extensions;
+with fov_h, Interfaces.C.Extensions;
 
 package body Libtcod.Maps is
    use fov_h, Interfaces.C, Interfaces.C.Extensions;
