@@ -13,13 +13,19 @@ Ada features such as strong typing, controlled types, and exceptions are used to
 chances for error and to make the library more familiar to use. No explicit memory
 allocation/freeing is necessary; controlled types will handle cleanup automatically.
 
+A couple of demo programs are included within the `demo` directory.
+
 ## Current Features
 
 - Console functions (drawing to the screen, setting tiles/colors, etc.)
 - Input functions (reading from keyboard, handling input events)
 - Field of view
 - Pathfinding
-- Clipboard (works cross-platform)
+- Binary space partitioning (used for dungeon generation algorithms)
+- Line drawing
+- Clipboard
+
+All features should work on any supported platform.
 
 ## Building
 
@@ -35,25 +41,35 @@ so in most cases you will already have it once you install GNAT
 - SDL2
 - zlib (practically every Unix-like OS should already have this installed)
 
-Note that the libtcod library itself *does not* have to be installed. A copy of the libtcod
+Note that the libtcod library itself **does not** have to be installed. A copy of the libtcod
 source code is embedded in this repository. The build system that handles building
 the bindings will handle building libtcod as well and do all of the
 work of linking it into a static library for you to use.
 
-Make sure that the SDL2 and zlib's header and library files are reachable from your PATH
-so that they are accessible to the Ada compiler.
+If you have a version of Libtcod installed on your system, these bindings will
+not use it or interfere with it.
+
+Make sure that the SDL2 and zlib's header and library files are reachable
+from your PATH so that they are accessible to the Ada compiler.
 
 ### Build command
 
-gprbuild is the build tool on all platforms, but a flag indicating the current OS needs to
-be passed.
+gprbuild is the build tool on all platforms, but a flag indicating the current
+OS needs to be passed.
 
-After following the directions below, a static library will be found in the `lib/libtcod_ada`
-directory, while the example program `main` will located in the `obj` directory. You can then
-run `main` (from the root directory of this repository) like so:
+After following the directions below, a static library will be found in the
+`lib/libtcod_ada` directory, while the example programs `keys` and `tutorial`
+will located in the `obj` directory. You can then run them from the root
+directory of this repository like so:
 
 ```
-obj/main
+obj/keys
+```
+
+and
+
+```
+obj/tutorial
 ```
 
 ### Windows
