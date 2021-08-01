@@ -44,9 +44,8 @@ package Actors is
 
    -- Constructors
 
-   function make_player(x : Maps.X_Pos; y : Maps.Y_Pos; ch : Wide_Character;
-                        name : String; color : RGB_Color;
-                        defense_stat : Defense;
+   function make_player(x : Maps.X_Pos; y : Maps.Y_Pos;
+                        name : String; defense_stat : Defense;
                         power, hp, max_hp : Health) return Actor
      with Pre => name'Length <= Actor_Names.Max_Length;
 
@@ -55,6 +54,9 @@ package Actors is
                          defense_stat : Defense;
                          power, hp, max_hp : Health) return Actor
      with Pre => name'Length <= Actor_Names.Max_Length;
+
+   function make_orc(x : Maps.X_Pos; y : Maps.Y_Pos) return Actor;
+   function make_troll(x : Maps.X_Pos; y : Maps.Y_Pos) return Actor;
 
    -- Container
 

@@ -1,5 +1,5 @@
 with Ada.Numerics.Discrete_Random, Ada.Text_IO, Ada.Assertions;
-with Libtcod.Color, Libtcod.Maps.BSP;
+with Libtcod.Maps.BSP;
 
 package body Engines is
 
@@ -66,13 +66,9 @@ package body Engines is
    procedure add_monster(self : in out Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
    begin
       if k_of_n_chance(k => 80, n => 100) then
-         self.actor_list.Append(Actors.make_monster(x, y, 'o', "Orc", Color.desaturated_green,
-                                defense_stat => 0, power  => 3,
-                                hp           => 10, max_hp => 10));
+         self.actor_list.Append(Actors.make_orc(x, y));
       else
-         self.actor_list.Append(Actors.make_monster(x, y, 'T', "Troll", Color.darker_green,
-                                defense_stat => 1, power  => 4,
-                                hp           => 16, max_hp => 16));
+         self.actor_list.Append(Actors.make_troll(x, y));
       end if;
    end add_monster;
 
@@ -161,7 +157,7 @@ package body Engines is
                                status => Status_Idle,
                                fov_radius => 10,
                                others => <>) do
-         self.actor_list.Append(make_player(60, 13, '@', "Player", Color.yellow,
+         self.actor_list.Append(make_player(60, 13, "Player",
                                 defense_stat => 2, power  => 5,
                                 hp           => 30, max_hp => 30));
          setup_map(self);
