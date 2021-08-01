@@ -1,5 +1,5 @@
-with Libtcod.Input, Libtcod.Color, Libtcod.Maps.BSP, Ada.Numerics.Discrete_Random,
-     Ada.Assertions, Ada.Text_IO;
+with Ada.Numerics.Discrete_Random, Ada.Text_IO, Ada.Assertions;
+with Libtcod.Input, Libtcod.Color, Libtcod.Maps.BSP;
 
 package body Engines is
 

@@ -1,6 +1,8 @@
-with Actors, Engines;
+with Actors, Engines, Components.Destructibles;
 
 package body Components.Attackers is
+
+   use Destructibles;
 
    ------------
    -- attack --
@@ -9,7 +11,7 @@ package body Components.Attackers is
    procedure attack(self : in out Attacker; owner : in out Actors.Actor;
                     target : in out Actors.Actor; engine : in out Engines.Engine) is
       real_damage : Health;
-      target_destructible : Actors.Destructible_Ref := target.destructible;
+      target_destructible : access Destructible := target.destructible;
       use Actors;
    begin
       IO.Put(owner.get_name & " attacks " & target.get_name & " ");

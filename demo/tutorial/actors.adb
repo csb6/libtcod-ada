@@ -1,41 +1,46 @@
-with Engines;
+with Engines, System.Pool_Local;
 
 package body Actors is
+
+   -- Pool used to store/free components used for actors
+   component_pool : System.Pool_Local.Unbounded_Reclaim_Pool;
+
+   type Attacker_Ptr is access Attacker with Storage_Pool => component_pool;
+   type Destructible_Ptr is access Destructible'Class with Storage_Pool => component_pool;
+   type AI_Ptr is access AI'Class with Storage_Pool => component_pool;
 
    function make_player(x : Maps.X_Pos; y : Maps.Y_Pos; ch : Wide_Character;
                         name : String; color : RGB_Color;
                         defense_stat : Defense;
                         power, hp, max_hp : Health) return Actor is
-      use Attacker_Holders, Destructible_Holders, AI_Holders;
 
-      attacker_comp : Attackers.Attacker := (power => power);
-      destructible_comp : Player_Destructible := (max_hp => max_hp, hp => hp,
-                                                  defense_stat => defense_stat);
-      ai_comp : Player_AI;
+      attacker_comp : Attacker_Ptr := new Attacker'(power => power);
+      destructible_comp : Destructible_Ptr := new Player_Destructible'(max_hp => max_hp, hp => hp,
+                                                                       defense_stat => defense_stat);
+      ai_comp : AI_Ptr := new Player_AI;
    begin
       return result : Actor := (name => Actor_Names.To_Bounded_String(name),
                                 x => x, y => y, ch => ch, color => color, blocks => True,
-                                attacker_h     => To_Holder(attacker_comp),
-                                destructible_h => To_Holder(destructible_comp),
-                                ai_h           => To_Holder(ai_comp));
+                                attacker     => attacker_comp,
+                                destructible => destructible_comp,
+                                ai           => ai_comp);
    end make_player;
 
    function make_monster(x : Maps.X_Pos; y : Maps.Y_Pos; ch : Wide_Character;
                          name : String; color : RGB_Color;
                          defense_stat : Defense;
                          power, hp, max_hp : Health) return Actor is
-      use Attacker_Holders, Destructible_Holders, AI_Holders;
 
-      attacker_comp : Attackers.Attacker := (power => power);
-      destructible_comp : Monster_Destructible := (max_hp => max_hp, hp => hp,
-                                                   defense_stat => defense_stat);
-      ai_comp : Monster_AI;
+      attacker_comp : Attacker_Ptr := new Attacker'(power => power);
+      destructible_comp : Destructible_Ptr := new Monster_Destructible'(max_hp => max_hp, hp => hp,
+                                                                        defense_stat => defense_stat);
+      ai_comp : AI_Ptr := new Monster_AI;
    begin
       return result : Actor := (name => Actor_Names.To_Bounded_String(name),
                                 x => x, y => y, ch => ch, color => color, blocks => True,
-                                attacker_h     => To_Holder(attacker_comp),
-                                destructible_h => To_Holder(destructible_comp),
-                                ai_h           => To_Holder(ai_comp));
+                                attacker     => attacker_comp,
+                                destructible => destructible_comp,
+                                ai           => ai_comp);
    end make_monster;
 
    function get_name(self : Actor) return String is (Actor_Names.To_String(self.name));
