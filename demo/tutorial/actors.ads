@@ -1,6 +1,6 @@
 limited with Engines;
 with Ada.Containers.Vectors, Ada.Strings.Bounded;
-with Libtcod, Libtcod.Maps, Libtcod.Color, Libtcod.Console;
+with Libtcod.Maps, Libtcod.Color, Libtcod.Console;
 with Components, Components.Destructibles, Components.Attackers, Components.AIs;
 use Components, Components.Destructibles, Components.Attackers, Components.AIs;
 use Libtcod;

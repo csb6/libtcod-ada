@@ -1,5 +1,3 @@
-limited with Libtcod.Input;
-
 package Components.AIs is
 
    type AI is abstract tagged null record;

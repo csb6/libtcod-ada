@@ -1,4 +1,4 @@
-with Actors, Ada.Containers.Vectors, Game_Maps, Libtcod.Maps;
+with Actors, Game_Maps;
 with Libtcod, Libtcod.Console, Libtcod.Maps, Libtcod.Input;
 use Actors, Game_Maps, Libtcod;
 

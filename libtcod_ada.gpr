@@ -11,15 +11,15 @@ project Libtcod_Ada is
 
       when "macos" =>
          for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
-         for Main use ("keys.adb", "tutorial.adb");
+         for Main use ("tutorial.adb", "keys.adb");
 
       when "windows" =>
          for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
-         for Main use ("keys.adb", "tutorial.adb");
+         for Main use ("tutorial.adb", "keys.adb");
 
       when "linux" =>
          for Source_Dirs use ("src", "src/generated", "demo", "demo/tutorial");
-         for Main use ("keys.adb", "tutorial.adb");
+         for Main use ("tutorial.adb", "keys.adb");
    end case;
 
    package Linker is

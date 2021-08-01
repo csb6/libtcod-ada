@@ -1,19 +1,21 @@
-with Engines, System.Pool_Local;
+with System.Pool_Local;
 
 package body Actors is
 
    -- Pool used to store/free components used for actors
    component_pool : System.Pool_Local.Unbounded_Reclaim_Pool;
 
-   type Attacker_Ptr is access Attacker with Storage_Pool => component_pool;
-   type Destructible_Ptr is access Destructible'Class with Storage_Pool => component_pool;
-   type AI_Ptr is access AI'Class with Storage_Pool => component_pool;
+   type Attacker_Ptr is access Attacker
+     with Storage_Pool => component_pool;
+   type Destructible_Ptr is access Destructible'Class
+     with Storage_Pool => component_pool;
+   type AI_Ptr is access AI'Class
+     with Storage_Pool => component_pool;
 
    function make_player(x : Maps.X_Pos; y : Maps.Y_Pos; ch : Wide_Character;
                         name : String; color : RGB_Color;
                         defense_stat : Defense;
                         power, hp, max_hp : Health) return Actor is
-
       attacker_comp : Attacker_Ptr := new Attacker'(power => power);
       destructible_comp : Destructible_Ptr := new Player_Destructible'(max_hp => max_hp, hp => hp,
                                                                        defense_stat => defense_stat);
@@ -30,7 +32,6 @@ package body Actors is
                          name : String; color : RGB_Color;
                          defense_stat : Defense;
                          power, hp, max_hp : Health) return Actor is
-
       attacker_comp : Attacker_Ptr := new Attacker'(power => power);
       destructible_comp : Destructible_Ptr := new Monster_Destructible'(max_hp => max_hp, hp => hp,
                                                                         defense_stat => defense_stat);

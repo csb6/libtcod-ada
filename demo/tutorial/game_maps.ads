@@ -1,7 +1,7 @@
 with Actors, Libtcod, Libtcod.Maps, Libtcod.Console;
+use Libtcod;
 
 package Game_Maps is
-   use Libtcod;
 
    type Tile_Flag is (Explored);
 
