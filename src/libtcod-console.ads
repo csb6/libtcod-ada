@@ -84,6 +84,10 @@ package Libtcod.Console is
 
    procedure clear(s : in out Screen) with Inline;
    procedure resize(s : in out Screen; w : Width; h : Height) with Inline;
+   procedure blit(s : Screen; src_x : X_Pos; src_y : Y_Pos;
+                  w : Width; h : Height; dest : in out Screen;
+                  dest_x : X_Pos; dest_y : Y_Pos)
+     with Inline;
 
    procedure put_char(s : in out Screen; x : X_Pos; y : Y_Pos; ch : Wide_Character)
      with Inline;
@@ -108,6 +112,11 @@ package Libtcod.Console is
 
    procedure set_alignment(s : in out Screen; alignment : Alignment_Type) with Inline;
    function get_alignment(s : Screen) return Alignment_Type with Inline;
+
+   -- Shape drawing
+   procedure rect(s : in out Screen; x : X_Pos; y : Y_Pos; w : Width; h : Height;
+                  clear : Boolean := False; bg_flag : Background_Mode := Background_Set)
+     with Inline;
 
    -- Global color fade
    procedure set_fade(val : Fade; color : RGB_Color) with Inline;

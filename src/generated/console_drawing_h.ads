@@ -39,7 +39,7 @@ package console_drawing_h is
   -- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
   -- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   -- * POSSIBILITY OF SUCH DAMAGE.
-  --  
+  --
 
   --*
   -- *  Draw a rectangle onto a console.
@@ -51,7 +51,7 @@ package console_drawing_h is
   -- *  \param rh The height of the rectangle.
   -- *  \param clear If true the drawing region will be filled with spaces.
   -- *  \param flag The blending flag to use.
-  --  
+  --
 
    procedure TCOD_console_rect
      (con : access console_h.TCOD_Console;
@@ -61,8 +61,8 @@ package console_drawing_h is
       h : int;
       clear : Extensions.bool;
       flag : console_h.TCOD_bkgnd_flag_t)  -- console_drawing.h:50
-   with Import => True, 
-        Convention => C, 
+   with Import => True,
+        Convention => C,
         External_Name => "TCOD_console_rect";
 
   --*
@@ -76,7 +76,7 @@ package console_drawing_h is
   -- *
   -- *  This function makes assumptions about the fonts character encoding.
   -- *  It will fail if the font encoding is not `cp437`.
-  --  
+  --
 
    procedure TCOD_console_hline
      (con : access console_h.TCOD_Console;
@@ -84,8 +84,8 @@ package console_drawing_h is
       y : int;
       l : int;
       flag : console_h.TCOD_bkgnd_flag_t)  -- console_drawing.h:63
-   with Import => True, 
-        Convention => C, 
+   with Import => True,
+        Convention => C,
         External_Name => "TCOD_console_hline";
 
   --*
@@ -99,7 +99,7 @@ package console_drawing_h is
   -- *
   -- *  This function makes assumptions about the fonts character encoding.
   -- *  It will fail if the font encoding is not `cp437`.
-  --  
+  --
 
    procedure TCOD_console_vline
      (con : access console_h.TCOD_Console;
@@ -107,8 +107,8 @@ package console_drawing_h is
       y : int;
       l : int;
       flag : console_h.TCOD_bkgnd_flag_t)  -- console_drawing.h:76
-   with Import => True, 
-        Convention => C, 
+   with Import => True,
+        Convention => C,
         External_Name => "TCOD_console_vline";
 
   -- Next functions are provisional unless given an added version.
@@ -118,19 +118,19 @@ package console_drawing_h is
   -- *  If `ch` is 0 then the character code will not be updated.
   -- *
   -- *  If `fg`,`bg` is NULL then their respective colors will not be updated.
-  --  
+  --
 
-   procedure TCOD_console_put_rgb
-     (console : access console_h.TCOD_Console;
-      x : int;
-      y : int;
-      ch : int;
-      fg : access constant color_h.TCOD_color_t;
-      bg : access constant color_h.TCOD_color_t;
-      flag : console_h.TCOD_bkgnd_flag_t)  -- console_drawing.h:85
-   with Import => True, 
-        Convention => C, 
-        External_Name => "TCOD_console_put_rgb";
+--     procedure TCOD_console_put_rgb
+--       (console : access console_h.TCOD_Console;
+--        x : int;
+--        y : int;
+--        ch : int;
+--        fg : access constant color_h.TCOD_color_t;
+--        bg : access constant color_h.TCOD_color_t;
+--        flag : console_h.TCOD_bkgnd_flag_t)  -- console_drawing.h:85
+--     with Import => True,
+--          Convention => C,
+--          External_Name => "TCOD_console_put_rgb";
 
   --*
   -- *  Draw a rectangle on a `console` with a shape of `x`,`y`,`width`,`height`.
@@ -138,21 +138,21 @@ package console_drawing_h is
   -- *  If `ch` is 0 then the character code will not be updated.
   -- *
   -- *  If `fg`,`bg` is NULL then their respective colors will not be updated.
-  --  
+  --
 
-   procedure TCOD_console_draw_rect_rgb
-     (console : access console_h.TCOD_Console;
-      x : int;
-      y : int;
-      width : int;
-      height : int;
-      ch : int;
-      fg : access constant color_h.TCOD_color_t;
-      bg : access constant color_h.TCOD_color_t;
-      flag : console_h.TCOD_bkgnd_flag_t)  -- console_drawing.h:100
-   with Import => True, 
-        Convention => C, 
-        External_Name => "TCOD_console_draw_rect_rgb";
+--     procedure TCOD_console_draw_rect_rgb
+--       (console : access console_h.TCOD_Console;
+--        x : int;
+--        y : int;
+--        width : int;
+--        height : int;
+--        ch : int;
+--        fg : access constant color_h.TCOD_color_t;
+--        bg : access constant color_h.TCOD_color_t;
+--        flag : console_h.TCOD_bkgnd_flag_t)  -- console_drawing.h:100
+--     with Import => True,
+--          Convention => C,
+--          External_Name => "TCOD_console_draw_rect_rgb";
 
   --*
   --    Draw a decorated frame onto `console` with the shape of `x`, `y`, `width`,
@@ -167,7 +167,7 @@ package console_drawing_h is
   --    If `fg` or `bg` is NULL then their respective colors will not be updated.
   --    If `clear` is true then the inner area of the frame is filled with the
   --    inner decoraction, which is typically space.
-  --  
+  --
 
    function TCOD_console_draw_frame_rgb
      (con : access console_h.TCOD_Console;
@@ -180,8 +180,8 @@ package console_drawing_h is
       bg : access constant color_h.TCOD_ColorRGB;
       flag : console_h.TCOD_bkgnd_flag_t;
       clear : Extensions.bool) return error_h.TCOD_Error  -- console_drawing.h:129
-   with Import => True, 
-        Convention => C, 
+   with Import => True,
+        Convention => C,
         External_Name => "TCOD_console_draw_frame_rgb";
 
   -- extern "C"

@@ -1,11 +1,12 @@
 with Ada.Unchecked_Conversion, Interfaces.C.Strings, Interfaces.C.Extensions;
 with Libtcod.Color.Conversions;
-with error_h, context_init_h, console_init_h, console_printing_h;
+with error_h, context_init_h, console_init_h, console_printing_h, console_drawing_h;
 
 package body Libtcod.Console is
 
    use Interfaces.C, Interfaces.C.Extensions, Libtcod.Color.Conversions;
-   use context_h, context_init_h, console_h, console_init_h, console_printing_h;
+   use context_h, context_init_h, console_h, console_init_h, console_printing_h,
+       console_drawing_h;
 
    function Background_Mode_To_Bgflag is new Ada.Unchecked_Conversion
      (Source => Background_Mode, Target => TCOD_bkgnd_flag_t);
@@ -61,7 +62,11 @@ package body Libtcod.Console is
    function make_screen(w : Width; h : Height) return Screen is
    begin
       return result : Screen :=
-        Screen'(Limited_Controlled with TCOD_console_new(int(w), int(h)));
+        Screen'(Limited_Controlled with TCOD_console_new(int(w), int(h))) do
+         if result.data = null then
+            raise Program_Error with "TCOD console allocation failed";
+         end if;
+      end return;
    end make_screen;
 
    --------------
@@ -197,6 +202,18 @@ package body Libtcod.Console is
       TCOD_console_resize_u(s.data, int(w), int(h));
    end resize;
 
+   ----------
+   -- blit --
+   ----------
+
+   procedure blit(s : Screen; src_x : X_Pos; src_y : Y_Pos;
+                  w : Width; h : Height; dest : in out Screen;
+                  dest_x : X_Pos; dest_y : Y_Pos) is
+   begin
+      TCOD_console_blit(s.data, int(src_x), int(src_y), int(w), int(h),
+                        dest.data, int(dest_x), int(dest_y), 1.0, 1.0);
+   end blit;
+
    --------------
    -- put_char --
    --------------
@@ -302,6 +319,17 @@ package body Libtcod.Console is
 
    function get_alignment(s : Screen) return Alignment_Type is
      (To_Alignment_Type(TCOD_console_get_alignment(s.data)));
+
+   ----------
+   -- rect --
+   ----------
+
+   procedure rect(s : in out Screen; x : X_Pos; y : Y_Pos; w : Width; h : Height;
+                  clear : Boolean := False; bg_flag : Background_Mode := Background_Set) is
+   begin
+      TCOD_console_rect(s.data, int(x), int(y), int(w), int(h), bool(clear),
+                        Background_Mode_To_Bgflag(bg_flag));
+   end rect;
 
    --------------
    -- set_fade --
