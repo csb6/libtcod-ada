@@ -1,4 +1,4 @@
-with Actors, Game_Maps;
+with Actors, Game_Maps, GUIs;
 with Libtcod, Libtcod.Console, Libtcod.Maps, Libtcod.Input;
 use Actors, Game_Maps, Libtcod;
 
@@ -14,6 +14,7 @@ package Engines is
 
    type Engine(width : Maps.X_Pos; height : Maps.Y_Pos) is tagged limited record
       map : Game_Map(width, height);
+      gui : GUIs.GUI;
       actor_list : Actor_Vector;
       player_id : Actor_Id;
       fov_radius : Maps.Radius;

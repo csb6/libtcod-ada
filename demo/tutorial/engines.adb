@@ -102,7 +102,7 @@ package body Engines is
 
    procedure setup_map(self : in out Engine) is
       use Maps, Maps.BSP;
-      bsp_builder : BSP_Tree := make_BSP(0, 0, Width(self.width), Height(self.height));
+      bsp_builder : BSP_Tree := make_BSP(0, 0, Width(self.map.width), Height(self.map.height));
       room_num : Natural := 0;
       last_x : Maps.X_Pos;
       last_y : Maps.Y_Pos;
@@ -149,10 +149,11 @@ package body Engines is
    function make_engine(w : Libtcod.Width; h : Libtcod.Height) return Engine is
    begin
       return self : Engine := (width => Maps.X_Pos(w), height => Maps.Y_Pos(h),
-                               map => make_game_map(w, h),
+                               map => make_game_map(w, h-GUIs.Panel_Height),
                                player_id => Actor_Id'First,
                                status => Status_Idle,
                                fov_radius => 10,
+                               gui => GUIs.make_GUI(w),
                                others => <>) do
          self.actor_list.Append(make_player(60, 13, "Player",
                                 defense_stat => 2, power  => 5,
@@ -204,9 +205,7 @@ package body Engines is
             each.render(screen);
          end if;
       end loop;
-      screen.print(1, Console.Y_Pos(screen.get_height-2),
-                   "HP :" & self.player.destructible.hp'Image & " /"
-                   & self.player.destructible.max_hp'Image);
+      self.gui.render(screen, self);
    end render;
 
 end Engines;
