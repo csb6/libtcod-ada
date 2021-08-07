@@ -1,4 +1,5 @@
-with Actors, Engines, Libtcod.Maps, Libtcod.Input, Ada.Numerics.Elementary_Functions;
+with Libtcod.Maps, Libtcod.Input;
+with Actors, Engines, Ada.Numerics.Elementary_Functions;
 use Libtcod;
 
 package body Components.AIs is
@@ -27,7 +28,7 @@ package body Components.AIs is
          if target.x = target_x and then target.y = target_y and then target.is_destructible
            and then target /= owner then
             if target.destructible.is_dead then
-               IO.Put_Line("There is a " & target.get_name & " corpse here");
+               engine.gui.log("There is a " & target.get_name & " corpse here");
                move_to_target;
                return True;
             else

@@ -1,3 +1,5 @@
+limited with Actors, Engines;
+
 package Components.Destructibles is
 
    -- Base components

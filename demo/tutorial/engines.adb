@@ -1,5 +1,5 @@
 with Ada.Numerics.Discrete_Random, Ada.Assertions;
-with Libtcod.Maps.BSP;
+with Libtcod.Maps.BSP, Libtcod.Color;
 
 package body Engines is
 
@@ -158,6 +158,9 @@ package body Engines is
          self.actor_list.Append(make_player(60, 13, "Player",
                                 defense_stat => 2, power  => 5,
                                 hp           => 30, max_hp => 30));
+         self.gui.log("Welcome stranger!" & ASCII.LF
+                      & "Prepare to perish in the Tombs of the" & ASCII.LF
+                      & "Ancient Kings", Libtcod.Color.red);
          setup_map(self);
       end return;
    end make_engine;

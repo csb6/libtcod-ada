@@ -50,7 +50,7 @@ package body Components.Destructibles is
    procedure die(self : in out Monster_Destructible; owner : in out Actors.Actor;
                  engine : in out Engines.Engine) is
    begin
-      IO.Put_Line(owner.get_name & " is dead");
+      engine.gui.log(owner.get_name & " is dead");
       die(Destructible(self), owner, engine);
    end die;
 
@@ -62,8 +62,7 @@ package body Components.Destructibles is
    procedure die(self : in out Player_Destructible; owner : in out Actors.Actor;
                  engine : in out Engines.Engine) is
    begin
-      IO.New_Line;
-      IO.Put_Line("You died");
+      engine.gui.log("You died", Color.red);
       die(Destructible(self), owner, engine);
       engine.status := Engines.Status_Defeat;
    end die;
