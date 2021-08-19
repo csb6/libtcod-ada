@@ -8,7 +8,6 @@ package Libtcod.Console is
 
    type X_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
    type Y_Pos is new Interfaces.C.int range 0 .. Interfaces.C.int'Last;
-   type Fade is new Interfaces.C.int range 0 .. 255;
 
    Error : exception;
 
@@ -117,11 +116,6 @@ package Libtcod.Console is
    procedure rect(s : in out Screen; x : X_Pos; y : Y_Pos; w : Width; h : Height;
                   clear : Boolean := False; bg_flag : Background_Mode := Background_Set)
      with Inline;
-
-   -- Global color fade
-   procedure set_fade(val : Fade; color : RGB_Color) with Inline;
-   function get_fade return Fade with Inline;
-   function get_fading_color return RGB_Color with Inline;
 
 private
 

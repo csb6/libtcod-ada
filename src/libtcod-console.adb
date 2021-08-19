@@ -331,26 +331,4 @@ package body Libtcod.Console is
                         Background_Mode_To_Bgflag(bg_flag));
    end rect;
 
-   --------------
-   -- set_fade --
-   --------------
-
-   procedure set_fade(val : Fade; color : RGB_Color) is
-   begin
-      TCOD_console_set_fade(unsigned_char(val), To_TCOD_ColorRGB(color));
-   end set_fade;
-
-   --------------
-   -- get_fade --
-   --------------
-
-   function get_fade return Fade is (Fade(TCOD_console_get_fade));
-
-   ----------------------
-   -- get_fading_color --
-   ----------------------
-
-   function get_fading_color return RGB_Color is
-     (To_RGB_Color(TCOD_console_get_fading_color));
-
 end Libtcod.Console;
