@@ -1,4 +1,4 @@
-with "libtcod.gpr";
+with "third_party/libtcod.gpr";
 
 project Libtcod_Ada is
 
