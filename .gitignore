@@ -4,3 +4,4 @@ obj/*
 lib/libtcod/*
 libtcod/.*
 libtcod/appveyor.yml
+*.DS_Store
