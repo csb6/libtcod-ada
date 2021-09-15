@@ -77,7 +77,7 @@ obj/tutorial
 In the root directory of this repository, run the following command:
 
 ```
-gprbuild -Plibtcod_ada.gpr -XPlatform="windows"
+gprbuild -XPlatform="windows"
 ```
 
 ### macOS
@@ -85,7 +85,7 @@ gprbuild -Plibtcod_ada.gpr -XPlatform="windows"
 In the root directory of this repository, run the following command:
 
 ```
-gprbuild -Plibtcod_ada.gpr -XPlatform="macos"
+gprbuild -XPlatform="macos"
 ```
 
 ### Linux
@@ -93,7 +93,7 @@ gprbuild -Plibtcod_ada.gpr -XPlatform="macos"
 In the root directory of this repository, run the following command:
 
 ```
-gprbuild -Plibtcod_ada.gpr -XPlatform="linux"
+gprbuild -XPlatform="linux"
 ```
 
 ## License
