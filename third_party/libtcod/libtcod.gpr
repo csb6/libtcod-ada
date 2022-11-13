@@ -1,0 +1,16 @@
+library project Libtcod is
+
+   for Languages use ("C");
+   for Source_Dirs use ("src/libtcod", "src/vendor",
+                        "src/vendor/utf8proc");
+   for Excluded_Source_Files use ("utf8proc_data.c");
+   for Object_Dir use "../../obj/libtcod";
+   for Library_Dir use "../../lib/libtcod";
+   for Library_Kind use "static";
+   for Library_Name use "tcod";
+
+   package Compiler is
+       for Default_Switches("C") use ("-I/usr/local/include");
+   end Compiler;
+
+end Libtcod;

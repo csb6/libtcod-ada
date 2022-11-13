@@ -6,3 +6,5 @@ libtcod/.*
 libtcod/appveyor.yml
 *.DS_Store
 .vscode/*
+alire/*
+config/*

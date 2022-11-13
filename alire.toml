@@ -1,0 +1,17 @@
+name = "libtcod_ada"
+description = "Bindings for the Libtcod rougelike library"
+version = "0.1.0-dev"
+
+authors = ["Cole Blakley"]
+maintainers = ["Cole Blakley <cblakley15@gmail.com>"]
+maintainers-logins = ["csb6"]
+
+executables = ["keys", "tutorial"]
+
+[gpr-externals]
+Platform = ["windows", "linux", "macos"]
+
+[gpr-set-externals.'case(os)']
+windows = { Platform = "windows" }
+macos = { Platform = "macos" }
+linux = { Platform = "linux" }

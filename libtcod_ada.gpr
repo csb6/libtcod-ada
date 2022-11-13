@@ -1,9 +1,11 @@
-with "third_party/libtcod.gpr";
+with "third_party/libtcod/libtcod.gpr";
 
 project Libtcod_Ada is
 
    type Platform_Type is ("macos", "windows", "linux");
    type Build_Mode_Type is ("optimize", "normal");
+
+   for Languages use ("Ada");
 
    Platform : Platform_Type := external ("Platform");
    Build_Mode : Build_Mode_Type := external ("Build_Mode", "normal");
