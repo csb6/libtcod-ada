@@ -2,7 +2,7 @@
 
 This is an Ada binding for [libtcod 1.18.1](https://github.com/libtcod/libtcod). Libtcod
 is a library used in many rougelike games. It includes lots of useful functionality,
-such as field of view calculation, pathfinding, graphics, and more.
+such as field of view calculation, pathfinding, and graphics.
 
 This is a thick binding to the library, meaning that the API is Ada-like and not a minimal
 wrapper around the C functions (for example, most uses of pointers are hidden on the Ada side).
@@ -33,18 +33,16 @@ All features should work on any supported platform.
 
 Building this library requires a few dependencies to be installed on your system:
 
-- a GNAT compiler that supports Ada 2012. The compiler that comes with the GNAT
-Community Edition from AdaCore will work fine, as will a build of GCC that includes the Ada
-frontend, such as the one from getadanow.com.
-- gprbuild, a build tool. This should be installed as part of your Ada compiler's toolchain,
-so in most cases you will already have it once you install GNAT
+- The [Alire](https://alire.ada.dev) package manager/build tool
+- a GNAT compiler toolchain that supports Ada 2012. This should be easily
+installable from Alire.
 - SDL2
 - zlib (practically every Unix-like OS should already have this installed)
 
 Note that the libtcod library itself **does not** have to be installed. A copy of the libtcod
 source code is embedded in this repository. The build system that handles building
-the bindings will handle building libtcod as well and do all of the
-work of linking it into a static library for you to use.
+the bindings will handle building a copy libtcod as well and do all of the
+work of linking it into a single static library.
 
 If you have a version of Libtcod installed on your system, these bindings will
 not use it or interfere with it.
@@ -54,11 +52,14 @@ from your PATH so that they are accessible to the Ada compiler.
 
 ### Build command
 
-gprbuild is the build tool on all platforms, but a flag indicating the current
-OS needs to be passed.
+To build, enter the root directory of the repository and run:
 
-After following the directions below, a static library will be found in the
-`lib/libtcod_ada` directory, while the example programs `keys` and `tutorial`
+```
+alr build
+```
+
+After building, a static library will be found in the `lib/libtcod_ada` 
+directory, while the example programs `keys` and `tutorial`
 will located in the `obj` directory. You can then run them from the root
 directory of this repository like so:
 
@@ -70,30 +71,6 @@ and
 
 ```
 obj/tutorial
-```
-
-### Windows
-
-In the root directory of this repository, run the following command:
-
-```
-gprbuild -XPlatform="windows"
-```
-
-### macOS
-
-In the root directory of this repository, run the following command:
-
-```
-gprbuild -XPlatform="macos"
-```
-
-### Linux
-
-In the root directory of this repository, run the following command:
-
-```
-gprbuild -XPlatform="linux"
 ```
 
 ## License
