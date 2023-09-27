@@ -9,7 +9,7 @@ package Engines is
    subtype Endgame_Status is Game_Status range Status_Victory .. Status_Defeat;
 
    subtype Valid_Key_Type is Input.Key_Type
-     with Static_Predicate => Valid_Key_Type in Input.Arrow_Key_Type;
+     with Static_Predicate => Valid_Key_Type in Input.Arrow_Key_Type | Input.Key_Char;
 
    type Engine(map_width : Maps.X_Pos; map_height : Maps.Y_Pos) is tagged limited record
       map : Game_Map(map_width, map_height);
@@ -20,6 +20,7 @@ package Engines is
       fov_radius : Maps.Radius;
       status : Game_Status;
       last_key_type : Valid_Key_Type;
+      last_char : Character;
    end record;
 
    function make_engine(map_width : Width; map_height : Height;

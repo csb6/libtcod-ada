@@ -208,6 +208,7 @@ package body Engines is
       end if;
 
       self.last_key_type := last_key_type;
+      self.last_char := get_char(k);
 
       self.status := Status_Idle;
       for each of self.actor_list loop
