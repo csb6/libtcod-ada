@@ -20,7 +20,7 @@ project Libtcod_Ada is
    package Linker is
       case Platform is
          when "macos" =>
-            for Switches ("ada") use ("-L/usr/local/lib") & Linker_Flag_List;
+            for Switches ("ada") use ("-L/usr/local/lib", "-ld_classic") & Linker_Flag_List;
 
          when "windows" =>
             for Switches ("ada") use Linker_Flag_List;

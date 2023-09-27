@@ -11,7 +11,7 @@ package body Libtcod.Maps.BSP is
    begin
       return self : BSP_Tree :=
         (data => (tree => (others => null),
-                  horizontal => Extensions.False,
+                  horizontal => False,
                   x => int(x), y => int(y), w => int(w), h => int(h),
                   level => 0, others => 0));
    end make_BSP;
