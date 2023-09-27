@@ -30,8 +30,7 @@ package body GUIs is
                             log => <>);
    end make_GUI;
 
-   procedure render(self : in out GUI; main_screen : in out Console.Screen;
-                    engine : in out Engines.Engine) is
+   procedure render(self : in out GUI; engine : in out Engines.Engine) is
       y : Console.Y_Pos := 1;
    begin
       self.screen.set_default_bg(Color.black);
@@ -47,8 +46,8 @@ package body GUIs is
          y := y + 1;
       end loop;
 
-      self.screen.blit(0, 0, main_screen.get_width, Panel_Height, main_screen,
-                       0, Console.Y_Pos(main_screen.get_height-Panel_Height));
+      self.screen.blit(0, 0, engine.main_screen.get_width, Panel_Height, engine.main_screen'Access,
+                       0, Console.Y_Pos(engine.main_screen.get_height-Panel_Height));
    end render;
 
    procedure log(self : in out GUI; text : String; color : RGB_Color := Libtcod.Color.light_grey) is

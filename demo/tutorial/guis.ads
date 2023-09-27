@@ -13,8 +13,7 @@ package GUIs is
 
    type GUI is tagged limited private;
 
-   procedure render(self : in out GUI; main_screen : in out Console.Screen;
-                    engine : in out Engines.Engine);
+   procedure render(self : in out GUI; engine : in out Engines.Engine);
 
    procedure log(self : in out GUI; text : String; color : RGB_Color := Libtcod.Color.light_grey);
 

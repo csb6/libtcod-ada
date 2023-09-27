@@ -1,9 +1,10 @@
-with Libtcod.Maps, Libtcod.Input;
-with Actors, Engines, Ada.Numerics.Elementary_Functions;
-use Libtcod;
+with Ada.Numerics.Elementary_Functions;
+with Libtcod.Maps, Libtcod.Input, Libtcod.Console, Libtcod.Color; use Libtcod;
+with Actors, Engines, Components.Containers;
 
 package body Components.AIs is
 
+   use type Maps.X_Pos, Maps.Y_Pos, Maps.X_Diff, Maps.Y_Diff, Actors.Actor;
    package Float_Math renames Ada.Numerics.Elementary_Functions;
 
    ---------------------------
@@ -13,7 +14,6 @@ package body Components.AIs is
    function player_move_or_attack(owner : in out Actors.Actor;
                                   target_x : Maps.X_Pos; target_y : Maps.Y_Pos;
                                   engine : in out Engines.Engine) return Boolean is
-      use type Maps.X_Pos, Maps.Y_Pos, Actors.Actor;
       procedure move_to_target is
       begin
          owner.x := target_x;
@@ -25,15 +25,20 @@ package body Components.AIs is
       end if;
 
       for target of engine.actor_list loop
-         if target.x = target_x and then target.y = target_y and then target.is_destructible
-           and then target /= owner then
-            if target.destructible.is_dead then
-               engine.gui.log("There is a " & target.get_name & " corpse here");
+         if target.x = target_x and then target.y = target_y and then target /= owner then
+            if target.is_destructible then
+               if target.destructible.is_dead then
+                  engine.gui.log("There is a " & target.get_name & " corpse here.");
+                  move_to_target;
+                  return True;
+               else
+                  owner.attacker.attack(owner, target, engine);
+                  return False;
+               end if;
+            elsif target.is_pickable then
+               engine.gui.log("There is a " & target.get_name & " here.");
                move_to_target;
                return True;
-            else
-               owner.attacker.attack(owner, target, engine);
-               return False;
             end if;
          end if;
       end loop;
@@ -71,14 +76,13 @@ package body Components.AIs is
       end if;
    end update;
 
-   --------------------
-   -- move_or_attack --
-   --------------------
+   ----------------------------
+   -- monster_move_or_attack --
+   ----------------------------
 
-   procedure move_or_attack(self : in out Monster_AI; owner : in out Actors.Actor;
-                           target_x : Maps.X_Pos; target_y : Maps.Y_Pos;
-                           engine : in out Engines.Engine) is
-      use type Maps.X_Pos, Maps.Y_Pos, Maps.X_Diff, Maps.Y_Diff;
+   procedure monster_move_or_attack(owner : in out Actors.Actor;
+                                    target_x : Maps.X_Pos; target_y : Maps.Y_Pos;
+                                    engine : in out Engines.Engine) is
       dx, step_x : Maps.X_Diff;
       dy, step_y : Maps.Y_Diff;
       distance : Float;
@@ -106,7 +110,7 @@ package body Components.AIs is
       elsif owner.is_attacker then
          owner.attacker.attack(owner, engine.player, engine);
       end if;
-   end move_or_attack;
+   end monster_move_or_attack;
 
    ------------
    -- update --
@@ -127,7 +131,7 @@ package body Components.AIs is
          self.move_count := self.move_count - 1;
       end if;
 
-      self.move_or_attack(owner, engine.player.x, engine.player.y, engine);
+      monster_move_or_attack(owner, engine.player.x, engine.player.y, engine);
    end update;
 
 end Components.AIs;

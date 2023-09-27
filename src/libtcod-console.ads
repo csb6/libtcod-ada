@@ -84,7 +84,7 @@ package Libtcod.Console is
    procedure clear(s : in out Screen) with Inline;
    procedure resize(s : in out Screen; w : Width; h : Height) with Inline;
    procedure blit(s : Screen; src_x : X_Pos; src_y : Y_Pos;
-                  w : Width; h : Height; dest : in out Screen;
+                  w : Width; h : Height; dest : access Screen;
                   dest_x : X_Pos; dest_y : Y_Pos)
      with Inline;
 

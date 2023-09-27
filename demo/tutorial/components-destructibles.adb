@@ -30,6 +30,19 @@ package body Components.Destructibles is
       return real_damage;
    end take_damage;
 
+   ----------
+   -- heal --
+   ----------
+   function heal(self : in out Destructible; amount : Health) return Health is
+      old_hp : Health := self.hp;
+   begin
+      self.hp := self.hp + amount;
+      if self.hp > self.max_hp then
+         self.hp := self.max_hp;
+      end if;
+      return self.hp - old_hp;
+   end heal;
+
    ---------
    -- die --
    ---------
@@ -42,10 +55,6 @@ package body Components.Destructibles is
       owner.blocks := False;
    end die;
 
-   ---------
-   -- die --
-   ---------
-
    overriding
    procedure die(self : in out Monster_Destructible; owner : in out Actors.Actor;
                  engine : in out Engines.Engine) is
@@ -53,10 +62,6 @@ package body Components.Destructibles is
       engine.gui.log(owner.get_name & " is dead");
       die(Destructible(self), owner, engine);
    end die;
-
-   ---------
-   -- die --
-   ---------
 
    overriding
    procedure die(self : in out Player_Destructible; owner : in out Actors.Actor;

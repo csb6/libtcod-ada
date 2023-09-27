@@ -13,15 +13,18 @@ package Components.Destructibles is
                         damage : Health; engine : in out Engines.Engine) return Health;
    procedure die(self : in out Destructible; owner : in out Actors.Actor;
                  engine : in out Engines.Engine);
+   function heal(self : in out Destructible; amount : Health) return Health;
 
 
    type Monster_Destructible is new Destructible with null record;
-   overriding procedure die(self : in out Monster_Destructible; owner : in out Actors.Actor;
-                            engine : in out Engines.Engine);
+   overriding
+   procedure die(self : in out Monster_Destructible; owner : in out Actors.Actor;
+                 engine : in out Engines.Engine);
 
 
    type Player_Destructible is new Destructible with null record;
-   overriding procedure die(self : in out Player_Destructible; owner : in out Actors.Actor;
-                            engine : in out Engines.Engine);
+   overriding
+   procedure die(self : in out Player_Destructible; owner : in out Actors.Actor;
+                 engine : in out Engines.Engine);
 
 end Components.Destructibles;

@@ -7,6 +7,7 @@ package body Engines is
    use type Maps.X_Pos, Maps.Y_Pos;
 
    Max_Monsters_Per_Room : constant := 3;
+   Max_Items_Per_Room : constant := 2;
    Max_Room_Size : constant := 12;
    Min_Room_Size : constant := 6;
 
@@ -70,6 +71,15 @@ package body Engines is
       end if;
    end add_monster;
 
+   --------------
+   -- add_item --
+   --------------
+
+   procedure add_item(self : in out Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
+   begin
+      self.actor_list.Append(Actors.make_item(x, y));
+   end add_item;
+
    -----------------
    -- create_room --
    -----------------
@@ -78,8 +88,9 @@ package body Engines is
                          x1 : Maps.X_Pos; y1 : Maps.Y_Pos;
                          x2 : Maps.X_Pos; y2 : Maps.Y_Pos) is
       monster_count : Random_Int := rand_range(Random_Int'(0), Max_Monsters_Per_Room);
-      monster_x : Maps.X_Pos;
-      monster_y : Maps.Y_Pos;
+      item_count : Random_Int := rand_range(Random_Int'(0), Max_Items_Per_Room);
+      target_x : Maps.X_Pos;
+      target_y : Maps.Y_Pos;
    begin
       self.map.dig(x1, y1, x2, y2);
       if first then
@@ -87,13 +98,21 @@ package body Engines is
          self.player.y := (y1+y2) / 2;
       elsif one_of_n_chance(n => 4) then
          for i in 1 .. monster_count loop
-            monster_x := Maps.X_Pos(rand_range(x1, x2));
-            monster_y := Maps.Y_Pos(rand_range(y1, y2));
-            if self.can_walk(monster_x, monster_y) then
-               self.add_monster(monster_x, monster_y);
+            target_x := Maps.X_Pos(rand_range(x1, x2));
+            target_y := Maps.Y_Pos(rand_range(y1, y2));
+            if self.can_walk(target_x, target_y) then
+               self.add_monster(target_x, target_y);
             end if;
          end loop;
       end if;
+
+      for i in 1 .. item_count loop
+         target_x := Maps.X_Pos(rand_range(x1, x2));
+         target_y := Maps.Y_Pos(rand_range(y1, y2));
+         if self.can_walk(target_x, target_y) then
+            self.add_item(target_x, target_y);
+         end if;
+      end loop;
    end create_room;
 
    ---------------
@@ -146,14 +165,16 @@ package body Engines is
    -- make_engine --
    -----------------
 
-   function make_engine(w : Libtcod.Width; h : Libtcod.Height) return Engine is
+   function make_engine(map_width : Width; map_height : Height;
+                        screen_width : Width; screen_height : Height) return Engine is
    begin
-      return self : Engine := (width => Maps.X_Pos(w), height => Maps.Y_Pos(h),
-                               map => make_game_map(w, h-GUIs.Panel_Height),
+      return self : Engine := (map_width => Maps.X_Pos(map_width), map_height => Maps.Y_Pos(map_height),
+                               main_screen => Console.make_screen(screen_width, screen_height),
+                               map => make_game_map(map_width, map_height-GUIs.Panel_Height),
                                player_id => Actor_Id'First,
                                status => Status_Idle,
                                fov_radius => 10,
-                               gui => GUIs.make_GUI(w),
+                               gui => GUIs.make_GUI(map_width),
                                others => <>) do
          self.actor_list.Append(make_player(60, 13, "Player",
                                 defense_stat => 2, power  => 5,
@@ -198,17 +219,17 @@ package body Engines is
    -- render --
    ------------
 
-   procedure render(self : in out Engine; screen : in out Console.Screen) is
+   procedure render(self : in out Engine) is
    begin
-      screen.clear;
-      self.map.render(screen);
+      self.main_screen.clear;
+      self.map.render(self.main_screen);
 
       for each of reverse self.actor_list loop
          if self.map.in_fov(each.x, each.y) then
-            each.render(screen);
+            each.render(self.main_screen);
          end if;
       end loop;
-      self.gui.render(screen, self);
+      self.gui.render(self);
    end render;
 
 end Engines;
