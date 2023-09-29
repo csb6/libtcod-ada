@@ -24,7 +24,7 @@ package body Engines is
         return self : Engine := (map_width => Maps.X_Pos(w), map_height => Maps.Y_Pos(h),
                                  map => Maps.create(w, h),
                                  actor_list => <>, running => <>) do
-            self.actor_list.Append(Actors.Actor'(0, 0, '@', Libtcod.Color.white));
+            self.actor_list.Append(Actors.create(0, 0, '@', Libtcod.Color.white));
             generate_terrain(self);
         end return;
     end create;
@@ -108,7 +108,7 @@ package body Engines is
 
                     -- 25% chance of spawning a monster in the room
                     if Rand(0, 3) = 0 then
-                        self.actor_list.Append(Actors.Actor'(center_x, center_y, '@', Libtcod.Color.yellow));
+                        self.actor_list.Append(Actors.create(center_x, center_y, '@', Libtcod.Color.yellow));
                     end if;
                 end if;
                 last_x := center_x;
