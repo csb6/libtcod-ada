@@ -19,12 +19,12 @@ package Maps is
     -- Constructors
     function create(w : Width; h : Height) return Map;
 
+    -- Properties
+    function is_walkable(self : Map; x : X_Pos; y : Y_Pos) return Boolean;
+
     -- Actions
     procedure render(self : in out Map; screen : in out Libtcod.Console.Screen);
-
-    function is_wall(self : Map; x : X_Pos; y : Y_Pos) return Boolean;
-
-    procedure set_wall(self : in out Map; x : X_Pos; y : Y_Pos);
+    procedure dig(self : in out Map; x1 : X_Pos; y1 : Y_Pos; x2 : X_Pos; y2 : Y_Pos);
 
 private
 
