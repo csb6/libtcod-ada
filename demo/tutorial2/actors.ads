@@ -3,6 +3,7 @@ with Libtcod.Color, Libtcod.Console;
 with Maps;
 
 package Actors is
+    pragma Suppress (Tampering_Check); -- To enable Actor_Set to be appended to from within callbacks
 
     -- Types
     type Actor is record
