@@ -73,7 +73,7 @@ package Libtcod.Input is
      with Static_Predicate => Whitespace_Key_Type in Key_Tab | Key_Enter | Key_Space;
 
    function get_key_type(k : Key) return Key_Type with Inline;
-   -- Note: get_char assumes that the current Key's Key_Type is Key_Text
+   -- Note: get_char assumes that the current Key's Key_Type is Key_Text or Key_Char
    function get_char(k : Key) return Character with Inline;
    function alt(k : Key) return Boolean with Inline;
    function ctrl(k : Key) return Boolean with Inline;

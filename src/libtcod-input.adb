@@ -9,7 +9,7 @@ package body Libtcod.Input is
 
    function get_key_type(k : Key) return Key_Type is (TCOD_Keycode_To_Key_Type(k.vk));
 
-   function get_char(k : Key) return Character is (Character(k.text(0)));
+   function get_char(k : Key) return Character is (Character(k.c));
 
    pragma Warnings (Off, "redundant conversion, expression is *");
    function alt(k : Key) return Boolean is (Boolean(k.lalt or k.ralt));
