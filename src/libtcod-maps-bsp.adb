@@ -16,15 +16,8 @@ package body Libtcod.Maps.BSP is
                   level => 0, others => 0));
    end make_BSP;
 
-   -------------
-   -- is_leaf --
-   -------------
-
-   function is_leaf(self : in out BSP_Tree) return Boolean is
-     (Boolean(TCOD_bsp_is_leaf(self.data'Access)));
-   function is_leaf(self : in out BSP_Node) return Boolean is
-     (Boolean(TCOD_bsp_is_leaf(self.data)));
-
+   function is_leaf(self : in out BSP_Tree) return Boolean is (Boolean(TCOD_bsp_is_leaf(self.data'Access)));
+   function is_leaf(self : BSP_Node) return Boolean is (Boolean(TCOD_bsp_is_leaf(self.data)));
 
    function w(self : BSP_Tree) return Width is (Width(self.data.w));
    function w(self : BSP_Node) return Width is (Width(self.data.w));

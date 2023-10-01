@@ -13,7 +13,7 @@ package Libtcod.Maps.BSP is
    -- Properties
 
    function is_leaf(self : in out BSP_Tree) return Boolean with Inline;
-   function is_leaf(self : in out BSP_Node) return Boolean with Inline;
+   function is_leaf(self : BSP_Node) return Boolean with Inline;
 
    function w(self : BSP_Tree) return Width with Inline;
    function w(self : BSP_Node) return Width with Inline;
