@@ -76,6 +76,8 @@ package body Engines is
     procedure generate_terrain(self : in out Engine) is
         player : Actors.Actor renames self.actor_list(Player_Id);
         room_num : Natural := 0;
+        last_x : Maps.X_Pos;
+        last_y : Maps.Y_Pos;
 
         function visit(node : in out Libtcod.Maps.BSP.BSP_Node) return Boolean is
             use type Maps.Width, Maps.Height, Maps.X_Pos, Maps.Y_Pos;
@@ -84,8 +86,8 @@ package body Engines is
 
             w : Maps.Width;
             h : Maps.Height;
-            x, center_x, last_x : Maps.X_Pos;
-            y, center_y, last_y : Maps.Y_Pos;
+            x, center_x : Maps.X_Pos;
+            y, center_y : Maps.Y_Pos;
         begin
             if node.is_leaf then
                 w := Maps.Width(Rand(First => Min_Room_Size, Last => Natural(node.w) - 2));
