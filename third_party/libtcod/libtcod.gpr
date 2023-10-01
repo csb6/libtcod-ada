@@ -1,3 +1,5 @@
+with "config/libtcod_ada_config.gpr";
+
 library project Libtcod is
 
    for Languages use ("C");
@@ -10,7 +12,11 @@ library project Libtcod is
    for Library_Name use "tcod";
 
    package Compiler is
-       for Default_Switches("C") use ("-I/usr/local/include");
+        case Libtcod_Ada_Config.Alire_Host_OS is
+            when "macos" =>
+                for Default_Switches("C") use ("-I/usr/local/include");
+            when others => null;
+        end case;
    end Compiler;
 
 end Libtcod;

@@ -8,10 +8,6 @@ maintainers-logins = ["csb6"]
 
 executables = ["keys", "tutorial"]
 
-[gpr-externals]
-Platform = ["windows", "linux", "macos"]
-
-[gpr-set-externals.'case(os)']
-windows = { Platform = "windows" }
-macos = { Platform = "macos" }
-linux = { Platform = "linux" }
+[build-switches]
+"*".style_checks = "No"
+release.optimization = ["-O3", "-flto", "-gnatp"]
