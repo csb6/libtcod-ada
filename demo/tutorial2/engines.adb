@@ -30,44 +30,53 @@ package body Engines is
     end create;
 
     procedure update(self : in out Engine) is
-        use type Libtcod.Input.Event_Type;
+        use type Libtcod.Input.Event_Type, Maps.X_Pos, Maps.Y_Pos;
 
         key : aliased Libtcod.Input.Key;
         event_kind : Libtcod.Input.Event_Type := Libtcod.Input.check_for_event(Libtcod.Input.Event_Key_Press, key);
         player : Actors.Actor renames self.actor_list(Player_Id);
-        player_x : Integer := Integer(player.x);
-        player_y : Integer := Integer(player.y);
+        player_x : Maps.X_Pos := player.x;
+        player_y : Maps.Y_Pos := player.y;
+
+        procedure update_player_pos is
+        begin
+            if Maps.is_walkable(self.map, player_x, player_y) then
+                player.x := player_x;
+                player.y := player_y;
+            end if;
+        end update_player_pos;
     begin
         if event_kind /= Libtcod.Input.Event_Key_Press then
             return;
         end if;
 
         case Libtcod.Input.get_key_type(key) is
-            when Libtcod.Input.Key_Up => player_y := player_y - 1;
-            when Libtcod.Input.Key_Down => player_y := player_y + 1;
-            when Libtcod.Input.Key_Left => player_x := player_x - 1;
-            when Libtcod.Input.Key_Right => player_x := player_x + 1;
+            when Libtcod.Input.Key_Up =>
+                player_y := player_y - Maps.Y_Pos(1);
+                update_player_pos;
+            when Libtcod.Input.Key_Down =>
+                player_y := player_y + Maps.Y_Pos(1);
+                update_player_pos;
+            when Libtcod.Input.Key_Left =>
+                player_x := player_x - Maps.X_Pos(1);
+                update_player_pos;
+            when Libtcod.Input.Key_Right =>
+                player_x := player_x + Maps.X_Pos(1);
+                update_player_pos;
             when Libtcod.Input.Key_Char =>
-                if (Libtcod.Input.meta(key) or else Libtcod.Input.ctrl(key))
-                   and then Libtcod.Input.get_char(key) = 'q' then
+                if (Libtcod.Input.meta(key) or else Libtcod.Input.ctrl(key)) and then Libtcod.Input.get_char(key) = 'q' then
                     self.running := False;
                 end if;
             when others =>
                 -- Ignore all other keypresses
                 null;
         end case;
-
-        if Maps.is_walkable(self.map, Maps.X_Pos(player_x), Maps.Y_Pos(player_y)) then
-            player.x := Maps.X_Pos(player_x);
-            player.y := Maps.Y_Pos(player_y);
-        end if;
     end update;
 
     procedure render(self : in out Engine; screen : in out Libtcod.Console.Screen) is
     begin
         screen.clear;
         Maps.render(self.map, screen);
-
         for actor of reverse self.actor_list loop
             Actors.render(actor, screen);
         end loop;
