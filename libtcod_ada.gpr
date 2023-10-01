@@ -18,14 +18,13 @@ project Libtcod_Ada is
    for Main use ("tutorial.adb", "keys.adb");
 
    package Compiler is
-      for Default_Switches ("ada") use Libtcod_Ada_Config.Ada_Compiler_Switches;
+      for Default_Switches ("ada") use Libtcod_Ada_Config.Ada_Compiler_Switches & ("-Wuninitialized");
    end Compiler;
 
    package Linker is
       case Libtcod_Ada_Config.Alire_Host_OS is
          when "macos" =>
             for Default_Switches ("ada") use ("-L/usr/local/lib", "-ld_classic") & Linker_Flag_List;
-
          when others =>
             for Default_Switches ("ada") use Linker_Flag_List;
       end case;
