@@ -47,12 +47,11 @@ package body Engines is
             when Libtcod.Input.Key_Down => player_y := player_y + 1;
             when Libtcod.Input.Key_Left => player_x := player_x - 1;
             when Libtcod.Input.Key_Right => player_x := player_x + 1;
-            when Libtcod.Input.Key_Text =>
-                case Libtcod.Input.get_char(key) is
-                    when 'q' =>
-                        self.running := False;
-                    when others => null;
-                end case;
+            when Libtcod.Input.Key_Char =>
+                if (Libtcod.Input.meta(key) or else Libtcod.Input.ctrl(key))
+                   and then Libtcod.Input.get_char(key) = 'q' then
+                    self.running := False;
+                end if;
             when others =>
                 -- Ignore all other keypresses
                 null;
