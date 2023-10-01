@@ -5,6 +5,7 @@ package body Engines is
 
     Max_Room_Size : constant := 12;
     Min_Room_Size : constant := 6;
+    FOV_Radius : constant := 10;
 
     Player_Id : constant Actors.Actor_Id := Actors.Player_Id;
 
@@ -26,6 +27,7 @@ package body Engines is
                                  actor_list => <>, running => <>) do
             self.actor_list.Append(Actors.create(0, 0, '@', Libtcod.Color.white));
             generate_terrain(self);
+            Maps.compute_fov(self.map, self.actor_list(Player_Id).x, self.actor_list(Player_Id).y, FOV_Radius);
         end return;
     end create;
 
@@ -43,6 +45,7 @@ package body Engines is
             if Maps.is_walkable(self.map, player_x, player_y) then
                 player.x := player_x;
                 player.y := player_y;
+                Maps.compute_fov(self.map, player.x, player.y, FOV_Radius);
             end if;
         end update_player_pos;
     begin
@@ -78,7 +81,9 @@ package body Engines is
         screen.clear;
         Maps.render(self.map, screen);
         for actor of reverse self.actor_list loop
-            Actors.render(actor, screen);
+            if Maps.in_fov(self.map, actor.x, actor.y) then
+                Actors.render(actor, screen);
+            end if;
         end loop;
     end render;
 

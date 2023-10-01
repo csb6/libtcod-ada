@@ -9,6 +9,7 @@ package Maps is
     subtype Y_Diff is Libtcod.Maps.Y_Diff;
     subtype Width is Libtcod.Width;
     subtype Height is Libtcod.Height;
+    subtype Radius is Libtcod.Maps.Radius;
 
     --  type Tile is record
     --      can_walk : Boolean := True;
@@ -21,16 +22,22 @@ package Maps is
 
     -- Properties
     function is_walkable(self : Map; x : X_Pos; y : Y_Pos) return Boolean;
+    function is_explored(self : Map; x : X_Pos; y : Y_Pos) return Boolean;
+    function in_fov(self : in out Map; x : X_Pos; y : Y_Pos) return Boolean;
 
     -- Actions
     procedure render(self : in out Map; screen : in out Libtcod.Console.Screen);
     procedure dig(self : in out Map; x1 : X_Pos; y1 : Y_Pos; x2 : X_Pos; y2 : Y_Pos);
+    procedure compute_fov(self : in out Map; pov_x : X_Pos; pov_y : Y_Pos; radius : Maps.Radius);
 
 private
 
     --  type Tile_Grid is array(Y_Pos range <>, X_Pos range <>) of Tile;
+    type Boolean_Grid is array(Y_Pos range <>, X_Pos range <>) of Boolean
+        with Default_Component_Value => False;
 
     type Map(width : X_Pos; height : Y_Pos) is limited record
+        explored : Boolean_Grid(Y_Pos'First..height, X_Pos'First..width);
         terrain_map : Libtcod.Maps.Map;
     end record;
 

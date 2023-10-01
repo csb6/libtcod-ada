@@ -1,4 +1,4 @@
-with Libtcod.Color;
+with Libtcod.Color, Libtcod.Maps.FOV;
 
 package body Maps is
 
@@ -7,23 +7,44 @@ package body Maps is
 
     dark_wall : constant Libtcod.Color.RGB_Color := Libtcod.Color.make_RGB_color(0, 0, 100);
     dark_ground : constant Libtcod.Color.RGB_Color := Libtcod.Color.make_RGB_color(50, 50, 150);
+    light_wall : constant Libtcod.Color.RGB_Color := Libtcod.Color.make_RGB_color(130,110,50);
+    light_ground : constant Libtcod.Color.RGB_Color := Libtcod.Color.make_RGB_color(200,180,50);
 
     -- Subprogram definitions
 
     function create(w : Width; h : Height) return Map is
     begin
-        return self : Map := (width => X_Pos(w), height => Y_Pos(h), terrain_map => Libtcod.Maps.make_map(w, h)) do
+        return self : Map := (width => X_Pos(w), height => Y_Pos(h), terrain_map => Libtcod.Maps.make_map(w, h), explored => <>) do
             self.terrain_map.set_properties_all(transparent => False, walkable => False);
         end return;
     end create;
 
     function is_walkable(self : Map; x : X_Pos; y : Y_Pos) return Boolean is (self.terrain_map.is_walkable(x, y));
 
+    function is_explored(self : Map; x : X_Pos; y : Y_Pos) return Boolean is (self.explored(y, x));
+
+    function in_fov(self : in out Map; x : X_Pos; y : Y_Pos) return Boolean is
+    begin
+        if Libtcod.Maps.FOV.in_FOV(self.terrain_map, x, y) then
+            self.explored(y, x) := True;
+            return True;
+        end if;
+        return False;
+    end in_fov;
+
     procedure render(self : in out Map; screen : in out Libtcod.Console.Screen) is
+        bg_color : Libtcod.Color.RGB_Color;
     begin
         for y in Y_Pos'First .. self.height loop
             for x in X_Pos'First .. self.width loop
-                screen.set_char_bg(Console_X(x), Console_Y(y), (if is_walkable(self, x, y) then dark_wall else dark_ground));
+                if in_fov(self, x, y) then
+                    bg_color := (if is_walkable(self, x, y) then light_ground else light_wall);
+                elsif is_explored (self, x, y) then
+                    bg_color := (if is_walkable(self, x, y) then dark_ground else dark_wall);
+                else
+                    bg_color := dark_wall;
+                end if;
+                screen.set_char_bg(Console_X(x), Console_Y(y), bg_color);
             end loop;
         end loop;
     end render;
@@ -32,9 +53,14 @@ package body Maps is
     begin
         for y in Y_Pos'Min(y1, y2) .. Y_Pos'Max(y1, y2) loop
             for x in X_Pos'Min(x1, x2) .. X_Pos'Max(x1, x2) loop
-                self.terrain_map.set_properties(x, y, transparent => False, walkable => True);
+                self.terrain_map.set_properties(x, y, transparent => True, walkable => True);
             end loop;
         end loop;
     end dig;
+
+    procedure compute_fov(self : in out Map; pov_x : X_Pos; pov_y : Y_Pos; radius : Maps.Radius) is
+    begin
+        Libtcod.Maps.FOV.compute_FOV(self.terrain_map, pov_x, pov_y, max_radius => radius);
+    end compute_fov;
 
 end Maps;
