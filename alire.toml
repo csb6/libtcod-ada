@@ -10,4 +10,3 @@ executables = ["keys", "tutorial"]
 
 [build-switches]
 "*".style_checks = "No"
-release.optimization = ["-O3", "-flto", "-gnatp"]

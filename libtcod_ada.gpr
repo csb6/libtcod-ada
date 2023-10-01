@@ -6,11 +6,12 @@ project Libtcod_Ada is
    for Languages use ("Ada");
 
    Linker_Flag_List := ("-lsdl2", "-lz");
+   Compiler_Flag_List := ("-Wuninitialized");
    case Libtcod_Ada_Config.Build_Profile is
       when "release" =>
          Linker_Flag_List := Linker_Flag_List & ("-flto");
-      when others =>
-         Linker_Flag_List := Linker_Flag_List;
+         Compiler_Flag_List := Compiler_Flag_List & ("-flto");
+      when others => null;
    end case;
 
    for Object_Dir use "obj";
@@ -18,7 +19,7 @@ project Libtcod_Ada is
    for Main use ("tutorial.adb", "keys.adb");
 
    package Compiler is
-      for Default_Switches ("ada") use Libtcod_Ada_Config.Ada_Compiler_Switches & ("-Wuninitialized");
+      for Default_Switches ("ada") use Libtcod_Ada_Config.Ada_Compiler_Switches & Compiler_Flag_List;
    end Compiler;
 
    package Linker is
