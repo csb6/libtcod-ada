@@ -39,7 +39,7 @@ package body Maps is
             for x in X_Pos'First .. self.width loop
                 if in_fov(self, x, y) then
                     bg_color := (if is_walkable(self, x, y) then light_ground else light_wall);
-                elsif is_explored (self, x, y) then
+                elsif is_explored(self, x, y) then
                     bg_color := (if is_walkable(self, x, y) then dark_ground else dark_wall);
                 else
                     bg_color := dark_wall;

@@ -8,7 +8,7 @@ package Actors is
     -- Types
     package Actor_Names is new Ada.Strings.Bounded.Generic_Bounded_Length(Max => 10);
     subtype Actor_Name is Actor_Names.Bounded_String;
-
+    type Actor_Id is range 0 .. 100;
     type Actor is record
         x : Maps.X_Pos;
         y : Maps.Y_Pos;
@@ -16,8 +16,6 @@ package Actors is
         color : Libtcod.Color.RGB_Color;
         name : Actor_Name;
     end record;
-
-    type Actor_Id is range 0 .. 100;
 
     Player_Id : constant Actor_Id := Actor_Id'First;
     Invalid_Actor_Id : constant Actor_Id := Actor_Id'Last;

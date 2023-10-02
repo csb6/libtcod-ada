@@ -5,16 +5,15 @@ package body Engines is
 
     use type Actors.Actor_Id, Maps.X_Pos, Maps.Y_Pos, Maps.Width, Maps.Height, Ada.Containers.Count_Type;
 
+    Player_Id : Actors.Actor_Id renames Actors.Player_Id;
+
+    -- Level generation constants
     Max_Room_Size : constant := 12;
     Min_Room_Size : constant := 6;
     Max_Room_Monsters : constant := 3;
 
+    -- FOV constants
     FOV_Radius : constant := 10;
-
-    Player_Id : constant Actors.Actor_Id := Actors.Player_Id;
-
-    package Int_Randoms is new Ada.Numerics.Discrete_Random(Result_Subtype => Natural);
-    Int_Random_Gen : Int_Randoms.Generator;
 
     -- Subprogram declarations
 
@@ -24,6 +23,8 @@ package body Engines is
 
     -- Subprogram definitions
 
+    package Int_Randoms is new Ada.Numerics.Discrete_Random(Result_Subtype => Natural);
+    Int_Random_Gen : Int_Randoms.Generator;
     function Rand(First, Last : Natural) return Natural is (Int_Randoms.Random(Int_Random_Gen, first, last));
 
     function create(w : Maps.Width; h : Maps.Height) return Engine is
@@ -142,7 +143,7 @@ package body Engines is
                     player.x := center_x;
                     player.y := center_y;
                 else
-                    -- Dig a corridor connecting to the previous room
+                    -- Dig corridors connecting to the previous room
                     Maps.dig(self.map, last_x, last_y, center_x, last_y);
                     Maps.dig(self.map, center_x, last_y, center_x, center_y);
 

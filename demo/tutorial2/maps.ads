@@ -11,10 +11,6 @@ package Maps is
     subtype Height is Libtcod.Height;
     subtype Radius is Libtcod.Maps.Radius;
 
-    --  type Tile is record
-    --      can_walk : Boolean := True;
-    --  end record;
-
     type Map(width : X_Pos; height : Y_Pos) is limited private;
 
     -- Constructors
@@ -32,7 +28,6 @@ package Maps is
 
 private
 
-    --  type Tile_Grid is array(Y_Pos range <>, X_Pos range <>) of Tile;
     type Boolean_Grid is array(Y_Pos range <>, X_Pos range <>) of Boolean
         with Default_Component_Value => False;
 
