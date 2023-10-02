@@ -9,7 +9,7 @@ procedure Tutorial is
     screen : Libtcod.Console.Screen := Libtcod.Console.make_screen(screen_width, screen_height);
     engine : Engines.Engine := Engines.create(screen_width, screen_height);
 begin
-    while engine.is_running loop
+    while not engine.game_over loop
         engine.update;
         engine.render(screen);
         context.present(screen);
