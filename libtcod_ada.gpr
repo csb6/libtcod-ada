@@ -6,7 +6,7 @@ project Libtcod_Ada is
    for Languages use ("Ada");
 
    Linker_Flag_List := ("-lsdl2", "-lz");
-   Compiler_Flag_List := ("-Wuninitialized");
+   Compiler_Flag_List := ("-Wuninitialized", "-gnatwK");
    case Libtcod_Ada_Config.Build_Profile is
       when "release" =>
          Linker_Flag_List := Linker_Flag_List & ("-flto");
