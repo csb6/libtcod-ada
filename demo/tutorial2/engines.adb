@@ -1,9 +1,10 @@
 with Ada.Assertions, Ada.Numerics.Discrete_Random, Ada.Containers; use Ada.Assertions;
-with Libtcod.Input, Libtcod.Color, Libtcod.Maps.BSP;
+with Libtcod.Color, Libtcod.Maps.BSP;
+with Components.AIs, Components.Destructibles, Components.Attackers; use Components;
 
 package body Engines is
 
-    use type Actors.Actor_Id, Maps.X_Pos, Maps.Y_Pos, Maps.Width, Maps.Height, Ada.Containers.Count_Type;
+    use type Actors.Actor_Id, Maps.X_Pos, Maps.Y_Pos, Maps.Width, Maps.Height, Libtcod.Console.Y_Pos, Ada.Containers.Count_Type;
 
     Player_Id : Actors.Actor_Id renames Actors.Player_Id;
 
@@ -12,13 +13,10 @@ package body Engines is
     Min_Room_Size : constant := 6;
     Max_Room_Monsters : constant := 3;
 
-    -- FOV constants
-    FOV_Radius : constant := 10;
-
     -- Subprogram declarations
 
     procedure generate_level(self : in out Engine);
-    function get_actor_at_pos(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Actors.Actor_Id;
+    procedure add_player(self : in out Engine);
     procedure add_monster(self : in out Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
 
     -- Subprogram definitions
@@ -31,76 +29,26 @@ package body Engines is
     begin
         return self : Engine := (map_width => Maps.X_Pos(w), map_height => Maps.Y_Pos(h),
                                  map => Maps.create(w, h),
-                                 actor_list => <>, status => <>) do
-            self.actor_list.Append(Actors.create(0, 0, '@', Actors.create_name("Player"), Libtcod.Color.white));
+                                 actor_list => <>, status => <>, last_living_actor_id => <>) do
+            add_player(self);
             generate_level(self);
-            Maps.compute_fov(self.map, self.actor_list(Player_Id).x, self.actor_list(Player_Id).y, FOV_Radius);
+            Maps.compute_fov(self.map, self.actor_list(Player_Id).x, self.actor_list(Player_Id).y);
         end return;
     end create;
 
     procedure update(self : in out Engine) is
-        use type Libtcod.Input.Event_Type;
-
-        key : aliased Libtcod.Input.Key;
-        event_kind : Libtcod.Input.Event_Type := Libtcod.Input.check_for_event(Libtcod.Input.Event_Key_Press, key);
-        player : Actors.Actor renames self.actor_list(Player_Id);
-        player_x : Maps.X_Pos := player.x;
-        player_y : Maps.Y_Pos := player.y;
-
-        procedure update_player_state is
-            target_id : Actors.Actor_Id;
-        begin
-            self.status := New_Turn;
-            if Maps.is_walkable(self.map, player_x, player_y) then
-                -- No map obstructions found here
-                target_id := get_actor_at_pos(self, player_x, player_y);
-                if target_id = Actors.Invalid_Actor_Id then
-                    -- Move
-                    player.x := player_x;
-                    player.y := player_y;
-                    Maps.compute_fov(self.map, player.x, player.y, FOV_Radius);
-                else
-                    -- Attack the actor present here
-                    Actors.attack(player, self.actor_list(target_id));
-                end if;
-            end if;
-        end update_player_state;
     begin
         self.status := Idle;
-        if event_kind /= Libtcod.Input.Event_Key_Press then
-            return;
-        end if;
-
-        case Libtcod.Input.get_key_type(key) is
-            when Libtcod.Input.Key_Up =>
-                player_y := player_y - Maps.Y_Pos(1);
-                update_player_state;
-            when Libtcod.Input.Key_Down =>
-                player_y := player_y + Maps.Y_Pos(1);
-                update_player_state;
-            when Libtcod.Input.Key_Left =>
-                player_x := player_x - Maps.X_Pos(1);
-                update_player_state;
-            when Libtcod.Input.Key_Right =>
-                player_x := player_x + Maps.X_Pos(1);
-                update_player_state;
-            when Libtcod.Input.Key_Char =>
-                if (Libtcod.Input.meta(key) or else Libtcod.Input.ctrl(key)) and then Libtcod.Input.get_char(key) = 'q' then
-                    self.status := Defeat;
-                end if;
-            when others =>
-                -- Ignore all other keypresses
-                null;
-        end case;
-
+        Actors.update(self.actor_list(Player_Id), self);
         if self.status = New_Turn then
-            for actor_id in Actors.Actor_Id'Succ(Player_Id) .. Actors.Actor_Id(self.actor_list.Length - 1) loop
-                Actors.update(self.actor_list(actor_id));
+            for actor_id in reverse Actors.Actor_Id'Succ(Player_Id) .. Actors.Actor_Id(self.actor_list.Length - 1) loop
+                Actors.update(self.actor_list(actor_id), self);
             end loop;
         end if;
     end update;
 
     procedure render(self : in out Engine; screen : in out Libtcod.Console.Screen) is
+        player : Actors.Actor renames self.actor_list(Player_Id);
     begin
         screen.clear;
         Maps.render(self.map, screen);
@@ -109,6 +57,7 @@ package body Engines is
                 Actors.render(actor, screen);
             end if;
         end loop;
+        screen.print(1, Libtcod.Console.Y_Pos(screen.get_height) - 2, "HP:" & player.destructible.hp'Image & " /" & player.destructible.max_hp'Image);
     end render;
 
     procedure generate_level(self : in out Engine) is
@@ -189,15 +138,75 @@ package body Engines is
         return Actors.Invalid_Actor_Id;
     end get_actor_at_pos;
 
+    function is_walkable(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Boolean is
+        actor_id : Actors.Actor_Id;
+    begin
+        if Maps.is_wall(self.map, x, y) then
+            return False;
+        else
+            actor_id := get_actor_at_pos(self, x, y);
+            return actor_id = Actors.Invalid_Actor_Id
+                or else not self.actor_list(actor_id).blocks;
+        end if;
+    end is_walkable;
+
+    procedure move_to_back(self : in out Engine; id : Actors.Actor_Id) is
+    begin
+        self.actor_list.Swap(id, self.last_living_actor_id);
+        self.last_living_actor_id := self.last_living_actor_id - 1;
+    end move_to_back;
+
+    type AI_Ptr is access AIs.AI;
+    type Destructible_Ptr is access Destructibles.Destructible;
+
+    function new_destructible(kind : Destructibles.Kind_Type; max_hp, defense : Health) return Destructible_Ptr is
+        (new Destructibles.Destructible'(kind => kind, max_hp => max_hp, hp => max_hp, defense => defense));
+
+    -- Player components
+    Player_AI : aliased AIs.AI := (kind => AIs.Kind_Player);
+    Player_Destructible : Destructible_Ptr := new_destructible(
+            Destructibles.Kind_Player,
+            max_hp => 30, defense => 2);
+    Player_Attacker : aliased Attackers.Attacker := (damage => 5);
+
+    -- Common monster components
+    Orc_Attacker : aliased Attackers.Attacker := (damage => 3);
+    Troll_Attacker : aliased Attackers.Attacker := (damage => 4);
+
+    procedure add_player(self : in out Engine) is
+    begin
+        self.actor_list.Append(Actors.create(Player_Id, 0, 0, '@', Actors.create_name("Player"), Libtcod.Color.white));
+        self.actor_list(Player_Id).ai := Player_AI'Access;
+        self.actor_list(Player_Id).destructible := Player_Destructible;
+        self.actor_list(Player_Id).attacker := Player_Attacker'Access;
+    end add_player;
+
     procedure add_monster(self : in out Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
+        destructible : Destructible_Ptr;
+        ai : AI_Ptr;
+        monster : Actors.Actor;
+        id : Actors.Actor_Id := Actors.Actor_Id(self.actor_list.Length);
     begin
         if Rand(0, 9) < 8 then
             -- Create an orc
-            self.actor_list.Append(Actors.create(x, y, 'o', Actors.create_name("Orc"), Libtcod.Color.desaturated_green));
+            monster := Actors.create(id, x, y, 'o', Actors.create_name("Orc"), Libtcod.Color.desaturated_green);
+            monster.attacker := Orc_Attacker'Access;
+            destructible := new_destructible(
+                kind => Destructibles.Kind_Monster,
+                max_hp => 10, defense => 0);
         else
             -- Create a troll
-            self.actor_list.Append(Actors.create(x, y, 'T', Actors.create_name("Troll"), Libtcod.Color.darker_green));
+            monster := Actors.create(id, x, y, 'T', Actors.create_name("Troll"), Libtcod.Color.darker_green);
+            monster.attacker := Troll_Attacker'Access;
+            destructible := new_destructible(
+                kind => Destructibles.Kind_Monster,
+                max_hp => 16, defense => 1);
         end if;
+        monster.destructible := destructible;
+        ai := new AIs.AI'(AIs.Kind_Monster, move_count => <>);
+        monster.ai := ai;
+        self.actor_list.Append(monster);
+        self.last_living_actor_id := self.last_living_actor_id + 1;
     end add_monster;
 
 end Engines;

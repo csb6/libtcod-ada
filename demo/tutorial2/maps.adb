@@ -10,6 +10,9 @@ package body Maps is
     light_wall : constant Libtcod.Color.RGB_Color := Libtcod.Color.make_RGB_color(130,110,50);
     light_ground : constant Libtcod.Color.RGB_Color := Libtcod.Color.make_RGB_color(200,180,50);
 
+    -- FOV constants
+    FOV_Radius : constant := 10;
+
     -- Subprogram definitions
 
     function create(w : Width; h : Height) return Map is
@@ -19,7 +22,7 @@ package body Maps is
         end return;
     end create;
 
-    function is_walkable(self : Map; x : X_Pos; y : Y_Pos) return Boolean is (self.terrain_map.is_walkable(x, y));
+    function is_wall(self : Map; x : X_Pos; y : Y_Pos) return Boolean is (not self.terrain_map.is_walkable(x, y));
 
     function is_explored(self : Map; x : X_Pos; y : Y_Pos) return Boolean is (self.explored(y, x));
 
@@ -38,9 +41,9 @@ package body Maps is
         for y in Y_Pos'First .. self.height loop
             for x in X_Pos'First .. self.width loop
                 if in_fov(self, x, y) then
-                    bg_color := (if is_walkable(self, x, y) then light_ground else light_wall);
+                    bg_color := (if is_wall(self, x, y) then light_wall else light_ground);
                 elsif is_explored(self, x, y) then
-                    bg_color := (if is_walkable(self, x, y) then dark_ground else dark_wall);
+                    bg_color := (if is_wall(self, x, y) then dark_wall else dark_ground);
                 else
                     bg_color := dark_wall;
                 end if;
@@ -58,9 +61,9 @@ package body Maps is
         end loop;
     end dig;
 
-    procedure compute_fov(self : in out Map; pov_x : X_Pos; pov_y : Y_Pos; radius : Maps.Radius) is
+    procedure compute_fov(self : in out Map; pov_x : X_Pos; pov_y : Y_Pos) is
     begin
-        Libtcod.Maps.FOV.compute_FOV(self.terrain_map, pov_x, pov_y, max_radius => radius);
+        Libtcod.Maps.FOV.compute_FOV(self.terrain_map, pov_x, pov_y, max_radius => FOV_Radius);
     end compute_fov;
 
 end Maps;

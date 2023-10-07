@@ -17,14 +17,14 @@ package Maps is
     function create(w : Width; h : Height) return Map;
 
     -- Properties
-    function is_walkable(self : Map; x : X_Pos; y : Y_Pos) return Boolean;
+    function is_wall(self : Map; x : X_Pos; y : Y_Pos) return Boolean;
     function is_explored(self : Map; x : X_Pos; y : Y_Pos) return Boolean;
     function in_fov(self : in out Map; x : X_Pos; y : Y_Pos) return Boolean;
 
     -- Actions
     procedure render(self : in out Map; screen : in out Libtcod.Console.Screen);
     procedure dig(self : in out Map; x1 : X_Pos; y1 : Y_Pos; x2 : X_Pos; y2 : Y_Pos);
-    procedure compute_fov(self : in out Map; pov_x : X_Pos; pov_y : Y_Pos; radius : Maps.Radius);
+    procedure compute_fov(self : in out Map; pov_x : X_Pos; pov_y : Y_Pos);
 
 private
 
