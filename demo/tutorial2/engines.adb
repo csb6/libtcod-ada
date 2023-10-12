@@ -4,7 +4,7 @@ with Components.AIs, Components.Destructibles, Components.Attackers; use Compone
 
 package body Engines is
 
-    use type Actors.Actor_Id, Maps.X_Pos, Maps.Y_Pos, Maps.Width, Maps.Height, Libtcod.Console.Y_Pos, Ada.Containers.Count_Type;
+    use type Actors.Actor_Id, Maps.X_Pos, Maps.Y_Pos, Console_Y, Ada.Containers.Count_Type;
 
     Player_Id : Actors.Actor_Id renames Actors.Player_Id;
 
@@ -25,10 +25,12 @@ package body Engines is
     Int_Random_Gen : Int_Randoms.Generator;
     function Rand(First, Last : Natural) return Natural is (Int_Randoms.Random(Int_Random_Gen, first, last));
 
-    function create(w : Maps.Width; h : Maps.Height) return Engine is
+    function create(screen_width : Console_X; screen_height : Console_Y) return Engine is
+        map_width : constant Maps.X_Pos := Maps.X_Pos(screen_width);
+        map_height : constant Maps.Y_Pos := Maps.Y_Pos(screen_height);
     begin
-        return self : Engine := (map_width => Maps.X_Pos(w), map_height => Maps.Y_Pos(h),
-                                 map => Maps.create(w, h),
+        return self : Engine := (map_width, map_height,
+                                 map => Maps.create(map_width, map_height),
                                  actor_list => <>, status => <>, last_living_actor_id => <>) do
             add_player(self);
             generate_level(self);
@@ -57,7 +59,7 @@ package body Engines is
                 Actors.render(actor, screen);
             end if;
         end loop;
-        screen.print(1, Libtcod.Console.Y_Pos(screen.get_height) - 2, "HP:" & player.destructible.hp'Image & " /" & player.destructible.max_hp'Image);
+        screen.print(1, screen.get_height - 2, "HP:" & player.destructible.hp'Image & " /" & player.destructible.max_hp'Image);
     end render;
 
     procedure generate_level(self : in out Engine) is
@@ -67,24 +69,19 @@ package body Engines is
         last_y : Maps.Y_Pos;
 
         function visit(node : in out Libtcod.Maps.BSP.BSP_Node) return Boolean is
-            function "+"(x : Maps.X_Pos; w : Maps.Width) return Integer is (Integer(x) + Integer(w));
-            function "+"(y : Maps.Y_Pos; h : Maps.Height) return Integer is (Integer(y) + Integer(h));
-
-            w : Maps.Width;
-            h : Maps.Height;
-            start_x, end_x, center_x, monster_x : Maps.X_Pos;
-            start_y, end_y, center_y, monster_y : Maps.Y_Pos;
+            start_x, end_x, center_x, monster_x, w : Maps.X_Pos;
+            start_y, end_y, center_y, monster_y, h : Maps.Y_Pos;
             monster_count : Natural;
         begin
             if node.is_leaf then
-                w := Maps.Width(Rand(First => Min_Room_Size, Last => Natural(node.w) - 2));
-                h := Maps.Height(Rand(First => Min_Room_Size, Last => Natural(node.h) - 2));
-                start_x := Maps.X_Pos(Rand(First => Natural(node.x) + 1, Last => node.x + (node.w - w) - 1));
-                start_y := Maps.Y_Pos(Rand(First => Natural(node.y) + 1, Last => node.y + (node.h - h) - 1));
-                center_x := start_x + Maps.X_Pos(w / 2);
-                center_y := start_y + Maps.Y_Pos(h / 2);
-                end_x := start_x + Maps.X_Pos(w - 1);
-                end_y := start_y + Maps.Y_Pos(h - 1);
+                w := Maps.X_Pos(Rand(First => Min_Room_Size, Last => Natural(node.w) - 2));
+                h := Maps.Y_Pos(Rand(First => Min_Room_Size, Last => Natural(node.h) - 2));
+                start_x := Maps.X_Pos(Rand(First => Natural(node.x) + 1, Last => Natural(node.x + Maps.X_Pos'(node.w - w)) - 1));
+                start_y := Maps.Y_Pos(Rand(First => Natural(node.y) + 1, Last => Natural(node.y + Maps.Y_Pos'(node.h - h)) - 1));
+                center_x := start_x + (w / 2);
+                center_y := start_y + (h / 2);
+                end_x := start_x + w - 1;
+                end_y := start_y + h - 1;
 
                 Maps.dig(self.map, start_x, start_y, end_x, end_y);
                 if room_num = 0 then
@@ -114,7 +111,7 @@ package body Engines is
 
         bsp : Libtcod.Maps.BSP.BSP_Tree := Libtcod.Maps.BSP.make_BSP(
                 Maps.X_Pos'First, Maps.Y_Pos'First,
-                Maps.Width(self.map_width), Maps.Height(self.map_height));
+                self.map_width, self.map_height);
         success : Boolean;
     begin
         bsp.split_recursive(

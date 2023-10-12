@@ -21,11 +21,11 @@ package Libtcod.Maps is
 
    type Map is tagged limited private;
 
-   function make_map(w : Width; h : Height) return Map;
+   function make_map(width : X_Pos; height : Y_Pos) return Map;
 
-   function get_width(m : Map) return Width with Inline;
+   function get_width(m : Map) return X_Pos with Inline;
 
-   function get_height(m : Map) return Height with Inline;
+   function get_height(m : Map) return Y_Pos with Inline;
 
    function get_cell_count(m : Map) return Natural with Inline;
 

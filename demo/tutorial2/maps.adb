@@ -2,6 +2,8 @@ with Libtcod.Color, Libtcod.Maps.FOV;
 
 package body Maps is
 
+    use type Libtcod.Maps.X_Pos, Libtcod.Maps.Y_Pos;
+
     subtype Console_X is Libtcod.Console.X_Pos;
     subtype Console_Y is Libtcod.Console.Y_Pos;
 
@@ -15,9 +17,9 @@ package body Maps is
 
     -- Subprogram definitions
 
-    function create(w : Width; h : Height) return Map is
+    function create(width : X_Pos; height : Y_Pos) return Map is
     begin
-        return self : Map := (width => X_Pos(w), height => Y_Pos(h), terrain_map => Libtcod.Maps.make_map(w, h), explored => <>) do
+        return self : Map := (width, height, terrain_map => Libtcod.Maps.make_map(width, height), explored => <>) do
             self.terrain_map.set_properties_all(transparent => False, walkable => False);
         end return;
     end create;

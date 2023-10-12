@@ -51,10 +51,10 @@ package Libtcod.Console is
    type Screen is tagged limited private;
 
    -- Constructors --
-   function make_context(w : Width; h : Height; title : String;
+   function make_context(width : X_Pos; height : Y_Pos; title : String;
                          resizable : Boolean := True; fullscreen : Boolean := False;
                          renderer : Renderer_Type := Renderer_SDL2) return Context;
-   function make_screen(w : Width; h : Height) return Screen;
+   function make_screen(width : X_Pos; height : Y_Pos) return Screen;
 
    -- Operations --
    --  Global Operations (affect current window)
@@ -68,8 +68,8 @@ package Libtcod.Console is
    procedure present(cxt : in out Context'Class; s : Screen);
 
    --  Screen Operations
-   function get_width(s : Screen) return Width with Inline;
-   function get_height(s : Screen) return Height with Inline;
+   function get_width(s : Screen) return X_Pos with Inline;
+   function get_height(s : Screen) return Y_Pos with Inline;
 
    function has_key_color(s : Screen) return Boolean with Inline;
    procedure set_key_color(s : in out Screen; key_color : RGB_Color) with Inline;
@@ -82,9 +82,9 @@ package Libtcod.Console is
    function get_default_bg(s : Screen) return RGB_Color with Inline;
 
    procedure clear(s : in out Screen) with Inline;
-   procedure resize(s : in out Screen; w : Width; h : Height) with Inline;
+   procedure resize(s : in out Screen; width : X_Pos; height : Y_Pos) with Inline;
    procedure blit(s : Screen; src_x : X_Pos; src_y : Y_Pos;
-                  w : Width; h : Height; dest : in out Screen;
+                  width : X_Pos; height : Y_Pos; dest : in out Screen;
                   dest_x : X_Pos; dest_y : Y_Pos)
      with Inline;
 
@@ -113,7 +113,7 @@ package Libtcod.Console is
    function get_alignment(s : Screen) return Alignment_Type with Inline;
 
    -- Shape drawing
-   procedure rect(s : in out Screen; x : X_Pos; y : Y_Pos; w : Width; h : Height;
+   procedure rect(s : in out Screen; x : X_Pos; y : Y_Pos; width : X_Pos; height : Y_Pos;
                   clear : Boolean := False; bg_flag : Background_Mode := Background_Set)
      with Inline;
 

@@ -4,6 +4,9 @@ with Maps, Actors;
 package Engines is
 
     -- Types
+    subtype Console_X is Libtcod.Console.X_Pos;
+    subtype Console_Y is Libtcod.Console.Y_Pos;
+
     type Game_Status is (Idle, New_Turn, Victory, Defeat);
     type Engine(map_width : Maps.X_Pos; map_height : Maps.Y_Pos) is tagged limited record
         map : Maps.Map(map_width, map_height);
@@ -13,7 +16,7 @@ package Engines is
     end record;
 
     -- Constructors
-    function create(w : Maps.Width; h : Maps.Height) return Engine;
+    function create(screen_width : Console_X; screen_height : Console_Y) return Engine;
 
     -- Properties
     function game_over(self : Engine) return Boolean is (self.status = Victory or else self.status = Defeat);

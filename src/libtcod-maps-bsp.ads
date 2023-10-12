@@ -8,18 +8,18 @@ package Libtcod.Maps.BSP is
    -- used in callbacks
    type BSP_Node is tagged limited private;
 
-   function make_BSP(x : X_Pos; y : Y_Pos; w : Width; h : Height) return BSP_Tree;
+   function make_BSP(x : X_Pos; y : Y_Pos; width : X_Pos; height : Y_Pos) return BSP_Tree;
 
    -- Properties
 
    function is_leaf(self : in out BSP_Tree) return Boolean with Inline;
    function is_leaf(self : BSP_Node) return Boolean with Inline;
 
-   function w(self : BSP_Tree) return Width with Inline;
-   function w(self : BSP_Node) return Width with Inline;
+   function w(self : BSP_Tree) return X_Pos with Inline;
+   function w(self : BSP_Node) return X_Pos with Inline;
 
-   function h(self : BSP_Tree) return Height with Inline;
-   function h(self : BSP_Node) return Height with Inline;
+   function h(self : BSP_Tree) return Y_Pos with Inline;
+   function h(self : BSP_Node) return Y_Pos with Inline;
 
    function x(self : BSP_Tree) return X_Pos with Inline;
    function x(self : BSP_Node) return X_Pos with Inline;
@@ -30,7 +30,7 @@ package Libtcod.Maps.BSP is
    -- Operations
 
    procedure split_recursive(self : in out BSP_Tree; recursion_level : Natural;
-                             min_w : Width; min_h : Height;
+                             min_w : X_Pos; min_h : Y_Pos;
                              min_wh_ratio, min_hw_ratio : Float);
 
    function traverse_inverted_level_order(self : in out BSP_Tree;

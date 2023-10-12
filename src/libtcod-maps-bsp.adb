@@ -7,23 +7,23 @@ package body Libtcod.Maps.BSP is
    -- make_BSP --
    --------------
 
-   function make_BSP(x : X_Pos; y : Y_Pos; w : Width; h : Height) return BSP_Tree is
+   function make_BSP(x : X_Pos; y : Y_Pos; width : X_Pos; height : Y_Pos) return BSP_Tree is
    begin
       return self : BSP_Tree :=
         (data => (tree => (others => null),
                   horizontal => False,
-                  x => int(x), y => int(y), w => int(w), h => int(h),
+                  x => int(x), y => int(y), w => int(width), h => int(height),
                   level => 0, others => 0));
    end make_BSP;
 
    function is_leaf(self : in out BSP_Tree) return Boolean is (Boolean(TCOD_bsp_is_leaf(self.data'Access)));
    function is_leaf(self : BSP_Node) return Boolean is (Boolean(TCOD_bsp_is_leaf(self.data)));
 
-   function w(self : BSP_Tree) return Width is (Width(self.data.w));
-   function w(self : BSP_Node) return Width is (Width(self.data.w));
+   function w(self : BSP_Tree) return X_Pos is (X_Pos(self.data.w));
+   function w(self : BSP_Node) return X_Pos is (X_Pos(self.data.w));
 
-   function h(self : BSP_Tree) return Height is (Height(self.data.h));
-   function h(self : BSP_Node) return Height is (Height(self.data.h));
+   function h(self : BSP_Tree) return Y_Pos is (Y_Pos(self.data.h));
+   function h(self : BSP_Node) return Y_Pos is (Y_Pos(self.data.h));
 
    function x(self : BSP_Tree) return X_Pos is (X_Pos(self.data.x));
    function x(self : BSP_Node) return X_Pos is (X_Pos(self.data.x));
@@ -36,7 +36,7 @@ package body Libtcod.Maps.BSP is
    ---------------------
 
    procedure split_recursive(self : in out BSP_Tree; recursion_level : Natural;
-                             min_w : Width; min_h : Height;
+                             min_w : X_Pos; min_h : Y_Pos;
                              min_wh_ratio, min_hw_ratio : Float) is
    begin
       TCOD_bsp_split_recursive(self.data'Access, null, int(recursion_level),

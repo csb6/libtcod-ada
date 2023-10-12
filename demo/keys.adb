@@ -5,7 +5,7 @@ procedure Keys is
    use Ada.Exceptions, Libtcod, Libtcod.Input;
    package IO renames Ada.Text_IO;
 
-   context : Console.Context := Console.make_context(w => 100, h => 100, title => "Test");
+   context : Console.Context := Console.make_context(width => 100, height => 100, title => "Test");
    screen : Console.Screen := Console.make_screen(100, 100);
    mouse : aliased Input.Mouse;
    key : aliased Input.Key;

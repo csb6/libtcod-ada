@@ -7,14 +7,12 @@ package Maps is
     subtype Y_Pos is Libtcod.Maps.Y_Pos;
     subtype X_Diff is Libtcod.Maps.X_Diff;
     subtype Y_Diff is Libtcod.Maps.Y_Diff;
-    subtype Width is Libtcod.Width;
-    subtype Height is Libtcod.Height;
     subtype Radius is Libtcod.Maps.Radius;
 
     type Map(width : X_Pos; height : Y_Pos) is limited private;
 
     -- Constructors
-    function create(w : Width; h : Height) return Map;
+    function create(width : X_Pos; height : Y_Pos) return Map;
 
     -- Properties
     function is_wall(self : Map; x : X_Pos; y : Y_Pos) return Boolean;

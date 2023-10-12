@@ -23,10 +23,10 @@ package body Libtcod.Maps is
 
    function "-"(x : Y_Pos; d : Y_Pos) return Y_Diff is (Y_Diff(x) - Y_Diff(d));
 
-   function make_map(w : Width; h : Height) return Map is
+   function make_map(width : X_Pos; height : Y_Pos) return Map is
    begin
       return result : Map :=
-        Map'(Limited_Controlled with TCOD_map_new(int(w), int(h)));
+        Map'(Limited_Controlled with TCOD_map_new(int(width), int(height)));
    end make_map;
 
    overriding procedure Finalize(m : in out Map) is
@@ -34,9 +34,9 @@ package body Libtcod.Maps is
       TCOD_map_delete(m.data);
    end Finalize;
 
-   function get_width(m : Map) return Width is (Width(TCOD_map_get_width(m.data)));
+   function get_width(m : Map) return X_Pos is (X_Pos(TCOD_map_get_width(m.data)));
 
-   function get_height(m : Map) return Height is (Height(TCOD_map_get_height(m.data)));
+   function get_height(m : Map) return Y_Pos is (Y_Pos(TCOD_map_get_height(m.data)));
 
    function get_cell_count(m : Map) return Natural is
      (Natural(TCOD_map_get_nb_cells(m.data)));

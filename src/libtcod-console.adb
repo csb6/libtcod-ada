@@ -25,12 +25,12 @@ package body Libtcod.Console is
    -- make_context --
    ------------------
 
-   function make_context(w : Width; h : Height; title : String;
+   function make_context(width : X_Pos; height : Y_Pos; title : String;
                          resizable : Boolean := True; fullscreen : Boolean := False;
                          renderer : Renderer_Type := Renderer_SDL2) return Context is
       c_title : aliased char_array := To_C(title);
       err : error_h.TCOD_Error;
-      params : aliased TCOD_ContextParams := (columns => int(w), rows => int(h),
+      params : aliased TCOD_ContextParams := (columns => int(width), rows => int(height),
                                               renderer_type => Renderer_Type'Pos(renderer),
                                               window_title =>
                                                 Strings.To_Chars_Ptr(c_title'Unchecked_Access),
@@ -59,10 +59,10 @@ package body Libtcod.Console is
    -- make_screen --
    -----------------
 
-   function make_screen(w : Width; h : Height) return Screen is
+   function make_screen(width : X_Pos; height : Y_Pos) return Screen is
    begin
       return result : Screen :=
-        Screen'(Limited_Controlled with TCOD_console_new(int(w), int(h))) do
+        Screen'(Limited_Controlled with TCOD_console_new(int(width), int(height))) do
          if result.data = null then
             raise Program_Error with "TCOD console allocation failed";
          end if;
@@ -119,15 +119,15 @@ package body Libtcod.Console is
    -- get_width --
    ---------------
 
-   function get_width(s : Screen) return Width is
-     (Width(TCOD_console_get_width(s.data)));
+   function get_width(s : Screen) return X_Pos is
+     (X_Pos(TCOD_console_get_width(s.data)));
 
    ----------------
    -- get_height --
    ----------------
 
-   function get_height(s : Screen) return Height is
-     (Height(TCOD_console_get_height(s.data)));
+   function get_height(s : Screen) return Y_Pos is
+     (Y_Pos(TCOD_console_get_height(s.data)));
 
    -------------------
    -- has_key_color --
@@ -197,9 +197,9 @@ package body Libtcod.Console is
    -- resize --
    ------------
 
-   procedure resize(s : in out Screen; w : Width; h : Height) is
+   procedure resize(s : in out Screen; width : X_Pos; height : Y_Pos) is
    begin
-      TCOD_console_resize_u(s.data, int(w), int(h));
+      TCOD_console_resize_u(s.data, int(width), int(height));
    end resize;
 
    ----------
@@ -207,10 +207,10 @@ package body Libtcod.Console is
    ----------
 
    procedure blit(s : Screen; src_x : X_Pos; src_y : Y_Pos;
-                  w : Width; h : Height; dest : in out Screen;
+                  width : X_Pos; height : Y_Pos; dest : in out Screen;
                   dest_x : X_Pos; dest_y : Y_Pos) is
    begin
-      TCOD_console_blit(s.data, int(src_x), int(src_y), int(w), int(h),
+      TCOD_console_blit(s.data, int(src_x), int(src_y), int(width), int(height),
                         dest.data, int(dest_x), int(dest_y), 1.0, 1.0);
    end blit;
 
@@ -324,10 +324,10 @@ package body Libtcod.Console is
    -- rect --
    ----------
 
-   procedure rect(s : in out Screen; x : X_Pos; y : Y_Pos; w : Width; h : Height;
+   procedure rect(s : in out Screen; x : X_Pos; y : Y_Pos; width : X_Pos; height : Y_Pos;
                   clear : Boolean := False; bg_flag : Background_Mode := Background_Set) is
    begin
-      TCOD_console_rect(s.data, int(x), int(y), int(w), int(h), bool(clear),
+      TCOD_console_rect(s.data, int(x), int(y), int(width), int(height), bool(clear),
                         Background_Mode_To_Bgflag(bg_flag));
    end rect;
 
