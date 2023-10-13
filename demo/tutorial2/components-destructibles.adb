@@ -1,4 +1,3 @@
-with Ada.Text_IO;
 with Libtcod.Color;
 with Actors, Engines;
 
@@ -28,10 +27,10 @@ package body Components.Destructibles is
         owner.blocks := False;
         case owner.destructible.kind is
             when Kind_Player =>
-                Ada.Text_IO.Put_Line("You died!");
+                engine.gui.log("You died!", Libtcod.Color.red);
                 engine.status := Engines.Defeat;
             when Kind_Monster =>
-                Ada.Text_IO.Put_Line(owner.name & " died!");
+                engine.gui.log(owner.name & " died!", Libtcod.Color.red);
         end case;
         owner.name := owner.name & Actors.create_name(" Corpse");
         -- Ensure corpses render below living actors

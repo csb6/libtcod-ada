@@ -27,10 +27,11 @@ package body Engines is
 
     function create(screen_width : Console_X; screen_height : Console_Y) return Engine is
         map_width : constant Maps.X_Pos := Maps.X_Pos(screen_width);
-        map_height : constant Maps.Y_Pos := Maps.Y_Pos(screen_height);
+        map_height : constant Maps.Y_Pos := Maps.Y_Pos(screen_height - GUIs.Panel_Height);
     begin
         return self : Engine := (map_width, map_height,
                                  map => Maps.create(map_width, map_height),
+                                 gui => GUIs.create(screen_width),
                                  actor_list => <>, status => <>, last_living_actor_id => <>) do
             add_player(self);
             generate_level(self);
@@ -49,17 +50,22 @@ package body Engines is
         end if;
     end update;
 
-    procedure render(self : in out Engine; screen : in out Libtcod.Console.Screen) is
+    procedure render(self : in out Engine; main_screen : in out Libtcod.Console.Screen) is
         player : Actors.Actor renames self.actor_list(Player_Id);
     begin
-        screen.clear;
-        Maps.render(self.map, screen);
+        main_screen.clear;
+        Maps.render(self.map, main_screen);
+
         for actor of reverse self.actor_list loop
             if Maps.in_fov(self.map, actor.x, actor.y) then
-                Actors.render(actor, screen);
+                Actors.render(actor, main_screen);
             end if;
         end loop;
-        screen.print(1, screen.get_height - 2, "HP:" & player.destructible.hp'Image & " /" & player.destructible.max_hp'Image);
+
+        self.gui.clear;
+        self.gui.render_health_bar(x => 1, y => 1, value => player.destructible.hp, max_value => player.destructible.max_hp);
+        self.gui.render_log(x => GUIs.Log_X, y => 1);
+        self.gui.blit(main_screen);
     end render;
 
     procedure generate_level(self : in out Engine) is
@@ -134,18 +140,6 @@ package body Engines is
         end loop;
         return Actors.Invalid_Actor_Id;
     end get_actor_at_pos;
-
-    function is_walkable(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Boolean is
-        actor_id : Actors.Actor_Id;
-    begin
-        if Maps.is_wall(self.map, x, y) then
-            return False;
-        else
-            actor_id := get_actor_at_pos(self, x, y);
-            return actor_id = Actors.Invalid_Actor_Id
-                or else not self.actor_list(actor_id).blocks;
-        end if;
-    end is_walkable;
 
     procedure move_to_back(self : in out Engine; id : Actors.Actor_Id) is
     begin

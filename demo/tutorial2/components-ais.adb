@@ -1,5 +1,5 @@
-with Libtcod.Input;
-with Actors, Maps, Engines, Components.Destructibles;
+with Libtcod.Input, Libtcod.Color;
+with Actors, Maps, Engines, Components.Destructibles, GUIs;
 
 package body Components.AIs is
 
@@ -109,23 +109,34 @@ package body Components.AIs is
     end update_monster;
 
     function perform_action(actor : in out Actors.Actor; target_x : Maps.X_Pos; target_y : Maps.Y_Pos; engine : in out Engines.Engine) return Action_Kind is
+        use Actors.Name_Operators;
+        use type Actors.Actor_Id;
         target_id : Actors.Actor_Id;
     begin
         if Maps.is_wall(engine.map, target_x, target_y) then
             return Action_None;
         end if;
 
-        if engine.is_walkable(target_x, target_y) then
-            -- Move
+        target_id := engine.get_actor_at_pos(target_x, target_y);
+        if target_id = Actors.Invalid_Actor_Id then
+            -- Move to empty tile
             actor.x := target_x;
             actor.y := target_y;
             return Action_Move;
-        else
-            -- Melee the target
-            target_id := engine.get_actor_at_pos(target_x, target_y);
+        elsif not engine.actor_list(target_id).blocks then
+            -- Move to tile containing non-blocking actor(s)
+            actor.x := target_x;
+            actor.y := target_y;
+            if actor.id = Actors.Player_Id then
+                engine.gui.log("There is a " & engine.actor_list(target_id).name & " here.", Libtcod.Color.light_grey);
+            end if;
+            return Action_Move;
+        elsif engine.actor_list(target_id).ai.kind /= actor.ai.kind then
+            -- Melee the target if it is not like us
             Actors.attack(actor, engine.actor_list(target_id), engine);
             return Action_Melee;
         end if;
+        return Action_None;
     end perform_action;
 
 end Components.AIs;
