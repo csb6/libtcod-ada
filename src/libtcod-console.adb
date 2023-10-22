@@ -255,6 +255,19 @@ package body Libtcod.Console is
      (Wide_Character'Val(TCOD_console_get_char(s.data, int(x), int(y))));
 
    -----------------
+   -- print_frame --
+   -----------------
+
+   procedure print_frame(s : in out Screen; x : Y_Pos; y : Y_Pos; w : X_Pos; h : Y_Pos; text : String;
+                         empty : Boolean := False; mode : Background_Mode := Background_Set) is
+      c_str : aliased char_array := To_C(text);
+      flag : TCOD_bkgnd_flag_t := Background_Mode_To_Bgflag(mode);
+   begin
+      TCOD_console_print_frame(s.data, int(x), int(y), int(w), int(h), bool(empty),
+                               flag, Strings.To_Chars_Ptr(c_str'Unchecked_Access));
+   end print_frame;
+
+   -----------------
    -- set_char_fg --
    -----------------
 

@@ -96,6 +96,9 @@ package Libtcod.Console is
                       fg_color, bg_color : RGB_Color) with Inline;
    procedure print(s : in out Screen; x : X_Pos; y : Y_Pos; text : String);
 
+   procedure print_frame(s : in out Screen; x : Y_Pos; y : Y_Pos; w : X_Pos; h : Y_Pos; text : String;
+                         empty : Boolean := False; mode : Background_Mode := Background_Set) with Inline;
+
    function get_char(s : Screen; x : X_Pos; y : Y_Pos) return Wide_Character with Inline;
 
    procedure set_char_fg(s : in out Screen; x : X_Pos; y : Y_Pos; color : RGB_Color)
