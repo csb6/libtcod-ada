@@ -33,8 +33,6 @@ package body Components.Destructibles is
                 engine.gui.log(owner.name & " died!", Libtcod.Color.red);
         end case;
         owner.name := owner.name & Actors.create_name(" Corpse");
-        -- Ensure corpses render below living actors
-        engine.move_to_back(owner.id);
     end die;
 
 end Components.Destructibles;

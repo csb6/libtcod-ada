@@ -1,6 +1,5 @@
 with Ada.Assertions, Ada.Numerics.Discrete_Random, Ada.Containers; use Ada.Assertions;
-with Libtcod.Color, Libtcod.Maps.BSP;
-with Components.AIs, Components.Destructibles, Components.Attackers; use Components;
+with Libtcod.Maps.BSP;
 
 package body Engines is
 
@@ -16,8 +15,6 @@ package body Engines is
     -- Subprogram declarations
 
     procedure generate_level(self : in out Engine);
-    procedure add_player(self : in out Engine);
-    procedure add_monster(self : in out Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
 
     -- Subprogram definitions
 
@@ -32,8 +29,8 @@ package body Engines is
         return self : Engine := (map_width, map_height,
                                  map => Maps.create(map_width, map_height),
                                  gui => GUIs.create(screen_width),
-                                 actor_list => <>, status => <>, last_living_actor_id => <>) do
-            add_player(self);
+                                 actor_list => <>, status => <>) do
+            Actors.add_player(self);
             generate_level(self);
             Maps.compute_fov(self.map, self.actor_list(Player_Id).x, self.actor_list(Player_Id).y);
         end return;
@@ -41,12 +38,14 @@ package body Engines is
 
     procedure update(self : in out Engine) is
     begin
-        self.status := Idle;
         Actors.update(self.actor_list(Player_Id), self);
         if self.status = New_Turn then
-            for actor_id in reverse Actors.Actor_Id'Succ(Player_Id) .. Actors.Actor_Id(self.actor_list.Length - 1) loop
+            for actor_id in Actors.Actor_Id'Succ(Player_Id) .. Actors.Actor_Id(self.actor_list.Length - 1) loop
                 Actors.update(self.actor_list(actor_id), self);
             end loop;
+            if not self.game_over then
+                self.status := Idle;
+            end if;
         end if;
     end update;
 
@@ -56,8 +55,17 @@ package body Engines is
         main_screen.clear;
         Maps.render(self.map, main_screen);
 
-        for actor of reverse self.actor_list loop
-            if Maps.in_fov(self.map, actor.x, actor.y) then
+        -- First, render all non-blocking actors (e.g. items, corpses)
+        for actor of self.actor_list loop
+            if not actor.blocks and then Maps.in_fov(self.map, actor.x, actor.y) then
+                Actors.render(actor, main_screen);
+            end if;
+        end loop;
+
+        -- Then, render all blocking actors. This ensures they are not covered up by
+        -- non-blocking actors.
+        for actor of self.actor_list loop
+            if actor.blocks and then Maps.in_fov(self.map, actor.x, actor.y) then
                 Actors.render(actor, main_screen);
             end if;
         end loop;
@@ -75,8 +83,8 @@ package body Engines is
         last_y : Maps.Y_Pos;
 
         function visit(node : in out Libtcod.Maps.BSP.BSP_Node) return Boolean is
-            start_x, end_x, center_x, monster_x, w : Maps.X_Pos;
-            start_y, end_y, center_y, monster_y, h : Maps.Y_Pos;
+            start_x, end_x, center_x, place_x, w : Maps.X_Pos;
+            start_y, end_y, center_y, place_y, h : Maps.Y_Pos;
             monster_count : Natural;
         begin
             if node.is_leaf then
@@ -99,12 +107,17 @@ package body Engines is
                     Maps.dig(self.map, last_x, last_y, center_x, last_y);
                     Maps.dig(self.map, center_x, last_y, center_x, center_y);
 
+                    -- Add monsters (if any)
                     monster_count := Rand(0, Max_Room_Monsters);
                     for i in 1 .. monster_count loop
-                        monster_x := Maps.X_Pos(Rand(Natural(start_x), Natural(end_x)));
-                        monster_y := Maps.Y_Pos(Rand(Natural(start_y), Natural(end_y)));
-                        if get_actor_at_pos(self, monster_x, monster_y) = Actors.Invalid_Actor_Id then
-                            add_monster(self, monster_x, monster_y);
+                        place_x := Maps.X_Pos(Rand(Natural(start_x), Natural(end_x)));
+                        place_y := Maps.Y_Pos(Rand(Natural(start_y), Natural(end_y)));
+                        if get_actor_at_pos(self, place_x, place_y) = Actors.Invalid_Actor_Id then
+                            if Rand(0, 9) < 8 then
+                                Actors.add_orc(self, place_x, place_y);
+                            else
+                                Actors.add_troll(self, place_x, place_y);
+                            end if;
                         end if;
                     end loop;
                 end if;
@@ -131,73 +144,20 @@ package body Engines is
 
     function get_actor_at_pos(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Actors.Actor_Id is
         id : Actors.Actor_Id := Actors.Actor_Id'First;
+        nonblocking_id : Actors.Actor_Id := Actors.Invalid_Actor_Id;
     begin
         for actor of self.actor_list loop
             if actor.x = x and then actor.y = y then
-                return id;
+                if actor.blocks then
+                    return id;
+                else
+                    nonblocking_id := id;
+                end if;
             end if;
             id := id + 1;
         end loop;
-        return Actors.Invalid_Actor_Id;
+        return nonblocking_id;
     end get_actor_at_pos;
 
-    procedure move_to_back(self : in out Engine; id : Actors.Actor_Id) is
-    begin
-        self.actor_list.Swap(id, self.last_living_actor_id);
-        self.last_living_actor_id := self.last_living_actor_id - 1;
-    end move_to_back;
-
-    type AI_Ptr is access AIs.AI;
-    type Destructible_Ptr is access Destructibles.Destructible;
-
-    function new_destructible(kind : Destructibles.Kind_Type; max_hp, defense : Health) return Destructible_Ptr is
-        (new Destructibles.Destructible'(kind => kind, max_hp => max_hp, hp => max_hp, defense => defense));
-
-    -- Player components
-    Player_AI : aliased AIs.AI := (kind => AIs.Kind_Player);
-    Player_Destructible : Destructible_Ptr := new_destructible(
-            Destructibles.Kind_Player,
-            max_hp => 30, defense => 2);
-    Player_Attacker : aliased Attackers.Attacker := (damage => 5);
-
-    -- Common monster components
-    Orc_Attacker : aliased Attackers.Attacker := (damage => 3);
-    Troll_Attacker : aliased Attackers.Attacker := (damage => 4);
-
-    procedure add_player(self : in out Engine) is
-    begin
-        self.actor_list.Append(Actors.create(Player_Id, 0, 0, '@', Actors.create_name("Player"), Libtcod.Color.white));
-        self.actor_list(Player_Id).ai := Player_AI'Access;
-        self.actor_list(Player_Id).destructible := Player_Destructible;
-        self.actor_list(Player_Id).attacker := Player_Attacker'Access;
-    end add_player;
-
-    procedure add_monster(self : in out Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
-        destructible : Destructible_Ptr;
-        ai : AI_Ptr;
-        monster : Actors.Actor;
-        id : Actors.Actor_Id := Actors.Actor_Id(self.actor_list.Length);
-    begin
-        if Rand(0, 9) < 8 then
-            -- Create an orc
-            monster := Actors.create(id, x, y, 'o', Actors.create_name("Orc"), Libtcod.Color.desaturated_green);
-            monster.attacker := Orc_Attacker'Access;
-            destructible := new_destructible(
-                kind => Destructibles.Kind_Monster,
-                max_hp => 10, defense => 0);
-        else
-            -- Create a troll
-            monster := Actors.create(id, x, y, 'T', Actors.create_name("Troll"), Libtcod.Color.darker_green);
-            monster.attacker := Troll_Attacker'Access;
-            destructible := new_destructible(
-                kind => Destructibles.Kind_Monster,
-                max_hp => 16, defense => 1);
-        end if;
-        monster.destructible := destructible;
-        ai := new AIs.AI'(AIs.Kind_Monster, move_count => <>);
-        monster.ai := ai;
-        self.actor_list.Append(monster);
-        self.last_living_actor_id := self.last_living_actor_id + 1;
-    end add_monster;
 
 end Engines;

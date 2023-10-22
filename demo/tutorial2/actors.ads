@@ -49,4 +49,8 @@ package Actors is
     procedure attack(self : in out Actor; target : in out Actor; engine : in out Engines.Engine);
     procedure render(self : Actor; screen : in out Libtcod.Console.Screen);
 
+    procedure add_player(self : in out Engines.Engine);
+    procedure add_orc(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
+    procedure add_troll(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
+
 end Actors;

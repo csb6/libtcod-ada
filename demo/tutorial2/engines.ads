@@ -13,7 +13,6 @@ package Engines is
         gui : GUIs.GUI;
         actor_list : Actors.Actor_Set;
         status : Game_Status := Idle;
-        last_living_actor_id : Actors.Actor_Id := Actors.Actor_Id'First;
     end record;
 
     -- Constructors
@@ -22,7 +21,6 @@ package Engines is
     -- Properties
     function game_over(self : Engine) return Boolean is (self.status = Victory or else self.status = Defeat);
     function get_actor_at_pos(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Actors.Actor_Id;
-    procedure move_to_back(self : in out Engine; id : Actors.Actor_Id);
 
     -- Actions
     procedure update(self : in out Engine);
