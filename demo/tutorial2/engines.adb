@@ -11,6 +11,7 @@ package body Engines is
     Max_Room_Size : constant := 12;
     Min_Room_Size : constant := 6;
     Max_Room_Monsters : constant := 3;
+    Max_Room_Items : constant := 2;
 
     -- Subprogram declarations
 
@@ -73,7 +74,11 @@ package body Engines is
         self.gui.clear;
         self.gui.render_health_bar(x => 1, y => 1, value => player.destructible.hp, max_value => player.destructible.max_hp);
         self.gui.render_log(x => GUIs.Log_X, y => 1);
-        self.gui.blit(main_screen);
+        self.gui.blit_panel(main_screen);
+        if self.status = Inventory_Menu then
+            self.gui.render_inventory(player.inventory.all, self);
+            self.gui.blit_inventory(main_screen);
+        end if;
     end render;
 
     procedure generate_level(self : in out Engine) is
@@ -85,7 +90,7 @@ package body Engines is
         function visit(node : in out Libtcod.Maps.BSP.BSP_Node) return Boolean is
             start_x, end_x, center_x, place_x, w : Maps.X_Pos;
             start_y, end_y, center_y, place_y, h : Maps.Y_Pos;
-            monster_count : Natural;
+            monster_count, item_count : Natural;
         begin
             if node.is_leaf then
                 w := Maps.X_Pos(Rand(First => Min_Room_Size, Last => Natural(node.w) - 2));
@@ -121,6 +126,17 @@ package body Engines is
                         end if;
                     end loop;
                 end if;
+
+                -- Add items (if any)
+                item_count := Rand(0, Max_Room_Items);
+                for i in 1 .. item_count loop
+                    place_x := Maps.X_Pos(Rand(Natural(start_x), Natural(end_x)));
+                    place_y := Maps.Y_Pos(Rand(Natural(start_y), Natural(end_y)));
+                    if get_actor_at_pos(self, place_x, place_y) = Actors.Invalid_Actor_Id then
+                        Actors.add_item(self, place_x, place_y);
+                    end if;
+                end loop;
+
                 last_x := center_x;
                 last_y := center_y;
                 room_num := room_num + 1;
@@ -159,5 +175,16 @@ package body Engines is
         return nonblocking_id;
     end get_actor_at_pos;
 
+    function get_pickable_at_pos(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Actors.Actor_Id is
+        id : Actors.Actor_Id := Actors.Actor_Id'First;
+    begin
+        for actor of self.actor_list loop
+            if actor.x = x and then actor.y = y and then actor.pickable /= null then
+                return id;
+            end if;
+            id := id + 1;
+        end loop;
+        return Actors.Invalid_Actor_Id;
+    end get_pickable_at_pos;
 
 end Engines;

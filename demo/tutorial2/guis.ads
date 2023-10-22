@@ -1,6 +1,7 @@
 with Ada.Containers.Bounded_Vectors, Ada.Strings.Unbounded;
 with Libtcod.Console, Libtcod.Color;
-with Components;
+limited with Engines;
+with Components, Components.Inventories;
 
 package GUIs is
 
@@ -24,7 +25,7 @@ package GUIs is
     package Message_Logs is new Ada.Containers.Bounded_Vectors(Index_Type => Natural, Element_Type => Message);
 
     type GUI is tagged limited record
-        screen : Libtcod.Console.Screen;
+        bottom_panel, inventory : Libtcod.Console.Screen;
         msg_log : Message_Logs.Vector(Capacity => Log_Height);
     end record;
 
@@ -37,7 +38,9 @@ package GUIs is
     procedure log(self : in out GUI; text : String; color : Libtcod.Color.RGB_Color := Libtcod.Color.white);
     procedure render_health_bar(self : in out GUI; x : Console_X; y : Console_Y; value, max_value : Components.Health);
     procedure render_log(self : in out GUI; x : Console_X; y : Console_Y);
+    procedure render_inventory(self : in out GUI; inventory : Components.Inventories.Inventory; engine : Engines.Engine);
     procedure clear(self : in out GUI);
-    procedure blit(self : GUI; main_screen : in out Libtcod.Console.Screen);
+    procedure blit_panel(self : GUI; main_screen : in out Libtcod.Console.Screen);
+    procedure blit_inventory(self : GUI; main_screen : in out Libtcod.Console.Screen);
 
 end GUIs;

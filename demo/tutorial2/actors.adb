@@ -8,6 +8,9 @@ package body Actors is
     subtype Console_X is Libtcod.Console.X_Pos;
     subtype Console_Y is Libtcod.Console.Y_Pos;
 
+    -- Player constants
+    Max_Player_Inventory_Size : constant := 26;
+
     type AI_Ptr is access AIs.AI;
     type Destructible_Ptr is access Destructibles.Destructible;
 
@@ -20,15 +23,20 @@ package body Actors is
             Destructibles.Kind_Player,
             max_hp => 30, defense => 2);
     Player_Attacker : aliased Attackers.Attacker := (damage => 5);
+    Player_Inventory : aliased Inventories.Inventory(Capacity => Max_Player_Inventory_Size);
 
     -- Common monster components
     Orc_Attacker : aliased Attackers.Attacker := (damage => 3);
     Troll_Attacker : aliased Attackers.Attacker := (damage => 4);
 
+    -- Common item components
+    Health_Potion_Pickable : aliased Pickables.Pickable := (kind => Pickables.Kind_Health, hp => 4);
+
     function create(id : Actor_Id; x : Maps.X_Pos; y : Maps.Y_Pos; ch : Wide_Character;
                     name : Actor_Name; color : Libtcod.Color.RGB_Color) return Actor is
     begin
-        return self : Actor := (id, x, y, ch, color, name, blocks => True, attacker => <>, destructible => <>, ai => <>);
+        return self : Actor := (id, x, y, ch, color, name, blocks => True, attacker => <>,
+            destructible => <>, ai => <>, pickable => <>, inventory => <>);
     end create;
 
     procedure update(self : in out Actor; engine : in out Engines.Engine) is
@@ -53,6 +61,7 @@ package body Actors is
         self.actor_list(Player_Id).ai := Player_AI'Access;
         self.actor_list(Player_Id).destructible := Player_Destructible;
         self.actor_list(Player_Id).attacker := Player_Attacker'Access;
+        self.actor_list(Player_Id).inventory := Player_Inventory'Access;
     end add_player;
 
     procedure add_orc(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
@@ -84,5 +93,15 @@ package body Actors is
         monster.ai := ai;
         self.actor_list.Append(monster);
     end add_troll;
+
+    procedure add_item(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
+        potion : Actors.Actor;
+        id : Actors.Actor_Id := Actors.Actor_Id(self.actor_list.Length + 1);
+    begin
+        potion := Actors.create(id, x, y, '!', Actors.create_name("Health potion"), Libtcod.Color.violet);
+        potion.blocks := False;
+        potion.pickable := Health_Potion_Pickable'Access;
+        self.actor_list.Append(potion);
+    end add_item;
 
 end Actors;

@@ -18,6 +18,7 @@ package Components.Destructibles is
     -- Actions
 
     function take_damage(owner : in out Actors.Actor; damage : Health; engine : in out Engines.Engine) return Health;
+    function heal(owner : in out Actors.Actor; amount : Health) return Health;
     procedure die(owner : in out Actors.Actor; engine : in out Engines.Engine);
 
 end Components.Destructibles;

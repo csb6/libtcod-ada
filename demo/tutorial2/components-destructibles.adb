@@ -20,6 +20,16 @@ package body Components.Destructibles is
         return damage_taken;
     end take_damage;
 
+    function heal(owner : in out Actors.Actor; amount : Health) return Health is
+        actual_healed : Health := amount;
+    begin
+        if owner.destructible.hp + actual_healed > owner.destructible.max_hp then
+            actual_healed := owner.destructible.max_hp - owner.destructible.hp;
+        end if;
+        owner.destructible.hp := owner.destructible.hp + actual_healed;
+        return actual_healed;
+    end heal;
+
     procedure die(owner : in out Actors.Actor; engine : in out Engines.Engine) is
     begin
         owner.ch := '%';
