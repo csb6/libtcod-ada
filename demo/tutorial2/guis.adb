@@ -34,6 +34,8 @@ package body GUIs is
     begin
         self.bottom_panel.set_default_bg(Libtcod.Color.black);
         self.bottom_panel.clear;
+        self.inventory.set_default_bg(Libtcod.Color.black);
+        self.inventory.clear;
     end clear;
 
     procedure blit_panel(self : GUI; main_screen : in out Libtcod.Console.Screen) is
