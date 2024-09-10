@@ -1,5 +1,6 @@
 with Ada.Assertions, Ada.Numerics.Discrete_Random, Ada.Containers; use Ada.Assertions;
 with Libtcod.Maps.BSP;
+with Components.Destructibles; use Components;
 
 package body Engines is
 
@@ -133,7 +134,11 @@ package body Engines is
                     place_x := Maps.X_Pos(Rand(Natural(start_x), Natural(end_x)));
                     place_y := Maps.Y_Pos(Rand(Natural(start_y), Natural(end_y)));
                     if get_actor_at_pos(self, place_x, place_y) = Actors.Invalid_Actor_Id then
-                        Actors.add_item(self, place_x, place_y);
+                        if Rand(0, 9) < 9 then
+                            Actors.add_potion(self, place_x, place_y);
+                        else
+                            Actors.add_bolt(self, place_x, place_y);
+                        end if;
                     end if;
                 end loop;
 
@@ -186,5 +191,22 @@ package body Engines is
         end loop;
         return Actors.Invalid_Actor_Id;
     end get_pickable_at_pos;
+
+    function get_closest_destructible_actor(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos; max_distance : Natural) return Actors.Actor_Id is
+        closest_distance : Natural := max_distance;
+        distance : Natural;
+        closest_actor : Actors.Actor_Id := Actors.Invalid_Actor_Id;
+    begin
+        for actor of self.actor_list loop
+            if actor.destructible /= null and then not Destructibles.is_dead(actor.destructible.all) then
+                distance := Maps.distance(x, y, actor.x, actor.y);
+                if distance /= 0 and then distance <= closest_distance then
+                    closest_actor := actor.id;
+                    closest_distance := distance;
+                end if;
+            end if;
+        end loop;
+        return closest_actor;
+    end get_closest_destructible_actor;
 
 end Engines;

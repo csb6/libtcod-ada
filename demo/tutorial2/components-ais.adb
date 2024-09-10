@@ -20,10 +20,6 @@ package body Components.AIs is
 
     procedure update(owner : in out Actors.Actor; engine : in out Engines.Engine) is
     begin
-        if owner.ai = null then
-            return;
-        end if;
-
         case owner.ai.kind is
             when Kind_Player => update_player(owner, engine);
             when Kind_Monster => update_monster(owner, engine);
@@ -49,14 +45,12 @@ package body Components.AIs is
         procedure pickup_item is
             target_id : Actors.Actor_Id := engine.get_pickable_at_pos(target_x, target_y);
         begin
-            if target_id /= Actors.Invalid_Actor_Id then
-                if Pickables.pick(engine.actor_list(target_id), picker => player) then
-                    engine.gui.log("You pick up the " & engine.actor_list(target_id).name, Libtcod.Color.light_grey);
-                else
-                    engine.gui.log("Your inventory is full", Libtcod.Color.light_grey);
-                end if;
-            else
+            if target_id = Actors.Invalid_Actor_Id then
                 engine.gui.log("Nothing to pick up here", Libtcod.Color.light_grey);
+            elsif Pickables.pick(engine.actor_list(target_id), picker => player) then
+                engine.gui.log("You pick up the " & engine.actor_list(target_id).name, Libtcod.Color.light_grey);
+            else
+                engine.gui.log("Your inventory is full", Libtcod.Color.light_grey);
             end if;
             engine.status := Engines.New_Turn;
         end pickup_item;
@@ -73,9 +67,7 @@ package body Components.AIs is
                 return;
             end if;
             item_index := player.inventory(index);
-            if not Pickables.consume(engine.actor_list(item_index), target => player) then
-                engine.gui.log("You cannot use that now", Libtcod.Color.yellow);
-            end if;
+            Pickables.consume(engine.actor_list(item_index), wearer => player, engine => engine);
         end use_inventory_item;
 
         key : aliased Libtcod.Input.Key;

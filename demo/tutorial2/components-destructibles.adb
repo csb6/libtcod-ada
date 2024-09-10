@@ -6,16 +6,18 @@ package body Components.Destructibles is
     use Actors.Name_Operators;
 
     function take_damage(owner : in out Actors.Actor; damage : Health; engine : in out Engines.Engine) return Health is
-        damage_taken : Health := 0;
+        damage_taken : Health;
     begin
-        if damage > owner.destructible.defense then
-            damage_taken := damage - owner.destructible.defense;
-            if damage_taken >= owner.destructible.hp then
-                owner.destructible.hp := 0;
-                die(owner, engine);
-            else
-                owner.destructible.hp := owner.destructible.hp - damage_taken;
-            end if;
+        if damage <= owner.destructible.defense then
+            return 0;
+        end if;
+
+        damage_taken := damage - owner.destructible.defense;
+        if damage_taken >= owner.destructible.hp then
+            owner.destructible.hp := 0;
+            die(owner, engine);
+        else
+            owner.destructible.hp := owner.destructible.hp - damage_taken;
         end if;
         return damage_taken;
     end take_damage;

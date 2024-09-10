@@ -23,6 +23,7 @@ package Maps is
     procedure render(self : in out Map; screen : in out Libtcod.Console.Screen);
     procedure dig(self : in out Map; x1 : X_Pos; y1 : Y_Pos; x2 : X_Pos; y2 : Y_Pos);
     procedure compute_fov(self : in out Map; pov_x : X_Pos; pov_y : Y_Pos);
+    function distance(x1 : X_Pos; y1 : Y_Pos; x2 : X_Pos; y2 : Y_Pos) return Natural;
 
 private
 

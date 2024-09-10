@@ -13,9 +13,8 @@ package body Components.Attackers is
         elsif target.destructible.defense >= owner.attacker.damage then
             engine.gui.log(owner.name & " attacks " & target.name & " but it has no effect.");
         else
-            damage_dealt := owner.attacker.damage - target.destructible.defense;
-            engine.gui.log(owner.name & " attacks " & target.name & " for" & damage_dealt'Image & " damage!");
             damage_dealt := Destructibles.take_damage(target, owner.attacker.damage, engine);
+            engine.gui.log(owner.name & " attacks " & target.name & " for" & damage_dealt'Image & " damage!");
         end if;
     end attack;
 

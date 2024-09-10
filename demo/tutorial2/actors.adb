@@ -31,6 +31,7 @@ package body Actors is
 
     -- Common item components
     Health_Potion_Pickable : aliased Pickables.Pickable := (kind => Pickables.Kind_Health, hp => 4);
+    Bolt_Scroll_Pickable : aliased Pickables.Pickable := (kind => Pickables.Kind_Lightning_Bolt, bolt_range => 10, bolt_damage => 20);
 
     function create(id : Actor_Id; x : Maps.X_Pos; y : Maps.Y_Pos; ch : Wide_Character;
                     name : Actor_Name; color : Libtcod.Color.RGB_Color) return Actor is
@@ -41,7 +42,9 @@ package body Actors is
 
     procedure update(self : in out Actor; engine : in out Engines.Engine) is
     begin
-        AIs.update(self, engine);
+        if self.ai /= null then
+            AIs.update(self, engine);
+        end if;
     end update;
 
     procedure attack(self : in out Actor; target : in out Actor; engine : in out Engines.Engine) is
@@ -94,7 +97,7 @@ package body Actors is
         self.actor_list.Append(monster);
     end add_troll;
 
-    procedure add_item(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
+    procedure add_potion(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
         potion : Actors.Actor;
         id : Actors.Actor_Id := Actors.Actor_Id(self.actor_list.Length + 1);
     begin
@@ -102,6 +105,16 @@ package body Actors is
         potion.blocks := False;
         potion.pickable := Health_Potion_Pickable'Access;
         self.actor_list.Append(potion);
-    end add_item;
+    end add_potion;
+
+    procedure add_bolt(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos) is
+        scroll : Actors.Actor;
+        id : Actors.Actor_Id := Actors.Actor_Id(self.actor_list.Length + 1);
+    begin
+        scroll := Actors.create(id, x, y, '#', Actors.create_name("Lightning bolt scroll"), Libtcod.Color.light_yellow);
+        scroll.blocks := False;
+        scroll.pickable := Bolt_Scroll_Pickable'Access;
+        self.actor_list.Append(scroll);
+    end add_bolt;
 
 end Actors;

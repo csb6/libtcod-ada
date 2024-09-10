@@ -2,7 +2,7 @@ with Libtcod.Color, Libtcod.Maps.FOV;
 
 package body Maps is
 
-    use type Libtcod.Maps.X_Pos, Libtcod.Maps.Y_Pos;
+    use type Libtcod.Maps.X_Pos, Libtcod.Maps.Y_Pos, Libtcod.Maps.X_Diff, Libtcod.Maps.Y_Diff;
 
     subtype Console_X is Libtcod.Console.X_Pos;
     subtype Console_Y is Libtcod.Console.Y_Pos;
@@ -67,5 +67,9 @@ package body Maps is
     begin
         Libtcod.Maps.FOV.compute_FOV(self.terrain_map, pov_x, pov_y, max_radius => FOV_Radius);
     end compute_fov;
+
+    -- Manhattan distance
+    function distance(x1 : X_Pos; y1 : Y_Pos; x2 : X_Pos; y2 : Y_Pos) return Natural is
+        (Natural(abs X_Diff'(x1 - x2)) + Natural(abs Y_Diff'(y1 - y2)));
 
 end Maps;

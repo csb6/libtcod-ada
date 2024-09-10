@@ -8,7 +8,7 @@ package Actors is
     pragma Suppress (Tampering_Check); -- To enable Actor_Set to be appended to from within callbacks
 
     -- Types
-    package Actor_Names is new Ada.Strings.Bounded.Generic_Bounded_Length(Max => 16);
+    package Actor_Names is new Ada.Strings.Bounded.Generic_Bounded_Length(Max => 24);
     subtype Actor_Name is Actor_Names.Bounded_String;
     function create_name(name : String) return Actor_Name is (Actor_Names.To_Bounded_String(name));
     function name_to_string(name : Actor_Name) return String is (Actor_Names.To_String(name));
@@ -57,6 +57,7 @@ package Actors is
     procedure add_player(self : in out Engines.Engine);
     procedure add_orc(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
     procedure add_troll(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
-    procedure add_item(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
+    procedure add_potion(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
+    procedure add_bolt(self : in out Engines.Engine; x : Maps.X_Pos; y : Maps.Y_Pos);
 
 end Actors;

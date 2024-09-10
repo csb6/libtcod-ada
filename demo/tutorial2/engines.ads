@@ -22,6 +22,7 @@ package Engines is
     function game_over(self : Engine) return Boolean is (self.status = Victory or else self.status = Defeat);
     function get_actor_at_pos(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Actors.Actor_Id;
     function get_pickable_at_pos(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos) return Actors.Actor_Id;
+    function get_closest_destructible_actor(self : Engine; x : Maps.X_Pos; y : Maps.Y_Pos; max_distance : Natural) return Actors.Actor_Id;
 
     -- Actions
     procedure update(self : in out Engine);
